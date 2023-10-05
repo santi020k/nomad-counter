@@ -5,7 +5,7 @@ module.exports = {
   overrides: [
     {
       // Ts standard
-      extends: 'standard-with-typescript',
+      extends: ['standard-with-typescript', "./tsconfig.json"],
       // Define the configuration for `.astro` file.
       files: ["*.astro"],
       // Allows Astro components to be parsed.
@@ -39,7 +39,10 @@ module.exports = {
     },
     {
       files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
-      extends: 'standard-with-typescript'
+      extends: 'standard-with-typescript',
+      rules: {
+        "astro/semi": "off",
+      },
     }
   ],
 };

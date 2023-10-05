@@ -1,3 +1,5 @@
+import type { Config } from 'tailwindcss'
+
 import tailwindTypography from '@tailwindcss/typography'
 import daisyui from 'daisyui'
 import daisyuiTheme from 'daisyui/src/theming/themes'
@@ -24,4 +26,4 @@ export default {
       }
     ]
   }
-}
+} satisfies Config
