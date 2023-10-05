@@ -1,0 +1,24 @@
+---
+import i18next, { t } from "i18next";
+import { Trans, HeadHrefLangs } from "astro-i18next/components";
+---
+
+<html lang={i18next.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{t("site.title")}</title>
+    <meta name="description" content={t("site.description")} />
+    <HeadHrefLangs />
+  </head>
+  <body>
+    <h1>{t("home.title")}</h1>
+    <p>
+      <Trans i18nKey="home.subtitle">
+        This is a <em>more complex</em> string to translate, mixed with <strong
+          >html elements
+        </strong> such as <a href="https://example.com/">a cool link</a>!
+      </Trans>
+    </p>
+  </body>
+</html>

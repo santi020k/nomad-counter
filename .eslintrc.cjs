@@ -22,7 +22,7 @@ module.exports = {
       },
     },
     {
-      files: ["*.mjs"],
+      files: ["*.mjs", "*.mts"],
       env: {
         browser: true,
         es2023: true,
