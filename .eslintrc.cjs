@@ -4,6 +4,8 @@ module.exports = {
   ],
   overrides: [
     {
+      // Ts standard
+      extends: 'standard-with-typescript',
       // Define the configuration for `.astro` file.
       files: ["*.astro"],
       // Allows Astro components to be parsed.
@@ -17,12 +19,13 @@ module.exports = {
         ecmaVersion: 2023
       },
       rules: {
-        // override/add rules settings here, such as:
-        // "astro/no-set-html-directive": "error"
+        "astro/semi": "off",
       },
     },
     {
       files: ["*.mjs", "*.mts"],
+      // Ts standard
+      extends: 'standard-with-typescript',
       env: {
         browser: true,
         es2023: true,
@@ -30,6 +33,13 @@ module.exports = {
       parserOptions: {
         sourceType: "module",
       },
+      rules: {
+        "astro/semi": "off",
+      },
     },
+    {
+      files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
+      extends: 'standard-with-typescript'
+    }
   ],
 };
