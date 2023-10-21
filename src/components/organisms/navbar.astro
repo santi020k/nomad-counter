@@ -1,13 +1,16 @@
 ---
 import Modal from '@molecules/modal.astro'
+import Login from '@molecules/forms/login.astro'
 
 const isLogged = false;
 ---
 <!-- TODO: Refactor small components -->
-<div class="p-4">
+<div class="py-4 container mx-auto">
   <nav class="navbar bg-base-300 rounded-lg w-auto">
     <div class="flex-1">
-      <a class="btn btn-ghost normal-case text-xl">Nomad Counter</a>
+      <a class="btn btn-ghost normal-case text-xl">
+        <span class="text-primary">Nomad</span> <span class="text-secondary">Counter</span>
+      </a>
     </div>
     <div class="flex-none">
       {isLogged ? (
@@ -36,8 +39,8 @@ const isLogged = false;
         </ul>
       </div>
       ) : (
-        <Modal modalId="login" btnText='Login'>
-          Building
+        <Modal modalId="login" btnOpenText='Login' btnPrimaryText='Login' btnPrimaryOnClick={() => {}} btnCloseText='Cancel'>
+          <Login />
         </Modal>
       )}
     </div>

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "strict": true,
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
@@ -11,6 +12,8 @@
       "@organisms/*": ["src/components/organisms/*"],
       "@layouts/*": ["src/components/layouts/*"],
       "@pages/*": ["src/components/pages/*"],
+      "@libs/*": ["src/libs/*"],
+      "@store/*": ["src/store/*"],
     }
   },
 }
