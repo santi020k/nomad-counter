@@ -6,7 +6,7 @@ import HtmlLayout from '@layouts/html-layout.astro'
 import MainLayout from '@layouts/main-layout.astro'
 ---
 
-<HtmlLayout title="Welcome to Astro.">
+<HtmlLayout title={t('home.title')}>
   <MainLayout>
     <h1>{t('home.title')}</h1>
     <p>
