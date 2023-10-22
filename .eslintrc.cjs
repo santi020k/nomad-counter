@@ -5,7 +5,7 @@ module.exports = {
   overrides: [
     {
       // Ts standard
-      extends: ['standard-with-typescript', "./tsconfig.json"],
+      extends: ["standard-with-typescript"],
       // Define the configuration for `.astro` file.
       files: ["*.astro"],
       // Allows Astro components to be parsed.
@@ -19,13 +19,13 @@ module.exports = {
         ecmaVersion: 2023
       },
       rules: {
-        "astro/semi": "off",
+        // "astro/semi": "off",
       },
     },
     {
-      files: ["*.mjs", "*.mts"],
+      files: ["*.mjs", "*.mts", "*.js", "*.jsx", "*.ts", "*.tsx"],
       // Ts standard
-      extends: 'standard-with-typescript',
+      extends: "standard-with-typescript",
       env: {
         browser: true,
         es2023: true,
@@ -38,8 +38,8 @@ module.exports = {
       },
     },
     {
-      files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
-      extends: 'standard-with-typescript',
+      files: ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      extends: "standard-with-typescript",
       rules: {
         "astro/semi": "off",
       },
