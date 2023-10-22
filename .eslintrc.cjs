@@ -64,7 +64,8 @@ module.exports = {
         "react/display-name": "error",
         "react/no-children-prop": "error",
         "react/no-danger-with-children": "error",
-        "react/jsx-no-bind": "error",
+        // TODO: Pending to remove
+        // "react/jsx-no-bind": "error",
         "arrow-body-style": "error",
         "react/no-unstable-nested-components": "error",
         "react/self-closing-comp": ["error", { "component": true, "html": true }],

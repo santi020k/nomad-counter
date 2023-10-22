@@ -14,6 +14,7 @@
       "@pages/*": ["src/components/pages/*"],
       "@libs/*": ["src/libs/*"],
       "@store/*": ["src/store/*"],
+      "@models/*": ["src/models/*"]
     }
   },
 }

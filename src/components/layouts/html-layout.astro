@@ -2,16 +2,17 @@
 import i18next, { t } from 'i18next'
 import { HeadHrefLangs } from 'astro-i18next/components'
 
+import { defaultTheme } from '@models/theme-model'
+
 interface Props {
   title: string
 }
 
 const { title } = Astro.props
-const themes = ['light', 'dark'];
 ---
 
 <!doctype html>
-<html data-theme={themes[0]} lang={i18next.language}>
+<html data-theme={defaultTheme} lang={i18next.language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -55,3 +56,10 @@ const themes = ['light', 'dark'];
     <slot />
   </body>
 </html>
+
+<!-- TODO: Move to global styles -->
+<style>
+  html {
+    transition: background 0.5s;
+  }
+</style>

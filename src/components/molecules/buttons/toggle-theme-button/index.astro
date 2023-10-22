@@ -1,0 +1,10 @@
+---
+import SunHigh from '@atoms/icons/sun-high.astro'
+import Moon from '@atoms/icons/moon.astro'
+import ToggleThemeButton from './toggle-theme-button';
+---
+
+<ToggleThemeButton client:load>
+  <SunHigh size={17} slot='lightIcon' />
+  <Moon size={17} slot='darkIcon' />
+</ToggleThemeButton>

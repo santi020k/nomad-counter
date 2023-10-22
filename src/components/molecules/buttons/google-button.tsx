@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, type FC } from 'react'
+import useAuthStore, { type User } from '@store/use-auth-store'
 import { supabase } from '@libs/supabase'
 
-import useAuthStore, { type User } from '@store/use-auth-store'
-
-const handleGoogleSignIn = async (): void => {
+const handleGoogleSignIn = async (): Promise<void> => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -18,7 +17,7 @@ const handleGoogleSignIn = async (): void => {
   console.log('🚀 ~ file: google-button.tsx:11 ~ handleGoogleSignIn ~ data:', data, error)
 }
 
-const GoogleButton = (): void => {
+const GoogleButton: FC = () => {
   const [user, fetchSession, logIn] = useAuthStore((state) => [state.user, state.fetchSession, state.logIn])
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const GoogleButton = (): void => {
 
   if (!(user.isLogIn ?? true)) {
     return (
-      <button onClick={handleGoogleSignIn} className="btn btn-primary btn-block">
+      <button type="button" onClick={() => handleGoogleSignIn} className="btn btn-primary btn-block">
         Sign in with Google
       </button>
     )
