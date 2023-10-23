@@ -1,28 +1,28 @@
 ---
 import HeartsIcon from '@atoms/icons/hearts-icon.astro'
-import InstagramIcon from '@atoms/icons/instagram-icon.astro'
-import YoutubeIcon from '@atoms/icons/youtube-icon.astro'
-import TwitterIcon from '@atoms/icons/twitter-icon.astro'
+import InstagramIcon from '@atoms/icons/instagram-brand-icon.astro'
+import YoutubeIcon from '@atoms/icons/youtube-brand-icon.astro'
+import TwitterIcon from '@atoms/icons/twitter-brand-icon.astro'
 ---
 
 <div class="relative h-20" />
 
 <div class="absolute bottom-0 bg-base-300 w-screen">
   <div class="container mx-auto">
-    <footer class="footer items-center p-4">
-      <aside class="items-center grid-flow-col">
-        <p><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
-        <p>By @santi020k with</p>
-        <HeartsIcon size={24} />
+    <footer class="footer items-center p-4 gap-y-px">
+      <aside class="items-center grid-flow-col gap-1">
+        <p class="m-0"><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
+        <p class="m-0">By @santi020k with</p>
+        <span class="text-red-600"><HeartsIcon size={24} /></span>
       </aside>
-      <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-        <a href="https://www.instagram.com/santi020k/" target="_blank" referrerpolicy="no-referrer">
+      <nav class="grid-flow-col md:place-self-center md:justify-self-end gap-1">
+        <a href="https://www.instagram.com/santi020k/" target="_blank" referrerpolicy="no-referrer" class="hover:text-primary">
           <InstagramIcon size={24} />
         </a>
-        <a href="https://www.youtube.com/channel/UCqF4wgazBVcWtNrjSnHiItw" target="_blank" referrerpolicy="no-referrer">
+        <a href="https://www.youtube.com/channel/UCqF4wgazBVcWtNrjSnHiItw" target="_blank" referrerpolicy="no-referrer" class="hover:text-primary">
           <YoutubeIcon size={24} />
         </a>
-        <a href="https://twitter.com/santi020k" target="_blank" referrerpolicy="no-referrer">
+        <a href="https://twitter.com/santi020k" target="_blank" referrerpolicy="no-referrer" class="hover:text-primary">
           <TwitterIcon size={24} />
         </a>
       </nav>

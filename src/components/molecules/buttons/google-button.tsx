@@ -21,7 +21,7 @@ const GoogleButton: FC = () => {
   const [user, fetchSession, logIn] = useAuthStore((state) => [state.user, state.fetchSession, state.logIn])
 
   useEffect(() => {
-    fetchSession()
+    void fetchSession()
 
     const {
       data: { subscription }

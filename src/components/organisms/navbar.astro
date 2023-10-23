@@ -1,53 +1,22 @@
 ---
-// Molecules:
-import Modal from '@molecules/modal.astro'
-import Login from '@molecules/forms/login.astro'
 import ToggleTheme from '@molecules/buttons/toggle-theme-button/index.astro'
-
-// const isLogged = false;
+import SessionHandler from '@molecules/session-handler/index.astro'
 ---
-<!-- TODO: Refactor small components -->
-<nav class="navbar w-auto border-b-stone-200 border-b h-36">
-  <div class="py-4 container mx-auto">
-    <div class="flex-1">
-      <a class="btn btn-ghost normal-case text-5xl">
+
+<nav class="navbar w-auto border-b-stone-200 border-b">
+  <div class="py-4 container mx-auto flex flex-col sm:flex-row">
+    <div class="flex-1 mb-4 sm:mb-0">
+      <a href="/" class="btn btn-ghost normal-case text-5xl h-auto leading-8">
         <span class="text-primary">Nomad</span> <span class="text-secondary">Counter</span>
       </a>
     </div>
-    <div class="flex-none">
-      <!-- {isLogged ? ( -->
-      <div class="dropdown dropdown-end">
-        <!-- // TODO: Logued with profile picture -->
-        <!-- <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </label> -->
-        <!-- TODO: Logued without profile picture -->
-        <label tabindex="0" class="btn btn-ghost btn-circle avatar placeholder">
-          <div class="bg-neutral-focus text-neutral-content rounded-full w-12">
-            <span>SM</span>
-          </div>
-        </label>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li>
-            <a class="justify-between">
-              Profile
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
-        </ul>
+    <div class="flex flex-row gap-4">
+      <div class="flex items-center">
+        <SessionHandler />
       </div>
-      <!-- ) : ( -->
-        <Modal modalId="login" btnOpenText='Login' btnPrimaryText='Login' btnPrimaryOnClick={() => {}} btnCloseText='Cancel'>
-          <Login />
-        </Modal>
-      <!-- )} -->
-    </div>
-    <div class="flex-none">
-      <ToggleTheme />
+      <div class="flex-none">
+        <ToggleTheme />
+      </div>
     </div>
   </div>
 </nav>

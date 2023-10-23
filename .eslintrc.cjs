@@ -109,6 +109,7 @@ module.exports = {
           }
         ],
         "astro/semi": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off"
       },
       settings: {
         react: {

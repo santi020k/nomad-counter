@@ -12,7 +12,7 @@ export interface UserAuthState {
   user: User
   logIn: (user: User) => void
   logOut: () => void
-  fetchSession: () => Promise
+  fetchSession: () => Promise<void>
 }
 
 const useAuthStore = create<UserAuthState>()((set) => ({
