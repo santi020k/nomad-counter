@@ -1,6 +1,7 @@
 ---
 import ToggleTheme from '@molecules/buttons/toggle-theme-button/index.astro'
 import SessionHandler from '@molecules/session-handler/index.astro'
+import ToggleLanguage from '@components/molecules/buttons/toggle-language-button.astro';
 ---
 
 <nav class="navbar w-auto border-b-stone-200 border-b">
@@ -10,9 +11,12 @@ import SessionHandler from '@molecules/session-handler/index.astro'
         <span class="text-primary">Nomad</span> <span class="text-secondary">Counter</span>
       </a>
     </div>
-    <div class="flex flex-row gap-4">
+    <div class="flex flex-row gap-3">
       <div class="flex items-center">
         <SessionHandler />
+      </div>
+      <div class="flex-none">
+        <ToggleLanguage />
       </div>
       <div class="flex-none">
         <ToggleTheme />

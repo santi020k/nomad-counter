@@ -2,8 +2,6 @@
 import i18next, { t } from 'i18next'
 import { HeadHrefLangs } from 'astro-i18next/components'
 
-import { defaultTheme } from '@models/theme-model'
-
 interface Props {
   title: string
 }
@@ -12,7 +10,7 @@ const { title } = Astro.props
 ---
 
 <!doctype html>
-<html data-theme={defaultTheme} lang={i18next.language}>
+<html lang={i18next.language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -44,18 +42,23 @@ const { title } = Astro.props
     />
     <link rel="manifest" href="favicon/site.webmanifest" />
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Roboto:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
-
     <HeadHrefLangs />
+
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <!-- Prose: https://github.com/tailwindlabs/tailwindcss-typography -->
   <body class="prose max-w-none">
     <slot />
   </body>
 </html>
+
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="
+  https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Roboto:ital,wght@0,100;1,100&display=swap
+" rel="stylesheet">
 
 <!-- TODO: Move to global styles -->
 <style>

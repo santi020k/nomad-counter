@@ -5,6 +5,7 @@
     "jsxImportSource": "react",
     "strict": true,
     "baseUrl": ".",
+    "verbatimModuleSyntax": true,
     "paths": {
       "@components/*": ["src/components/*"],
       "@atoms/*": ["src/components/atoms/*"],

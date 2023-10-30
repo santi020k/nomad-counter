@@ -1,6 +1,6 @@
 import { useEffect, type FC, type ReactElement } from 'react'
 import useAuthStore, { type User } from '@store/use-auth-store'
-import { supabase } from '@libs/supabase'
+import { supabase } from '@libs/supabase/supabase'
 
 interface SessionHandlerProps {
   googleIcon?: ReactElement
@@ -27,7 +27,8 @@ const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> 
 }
 
 const SessionHandler: FC<SessionHandlerProps> = ({ googleIcon }) => {
-  const [user, fetchSession, logIn, logOut] = useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
+  const [user, fetchSession, logIn, logOut] =
+    useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
 
   useEffect(() => {
     void fetchSession()

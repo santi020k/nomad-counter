@@ -1,6 +1,7 @@
 module.exports = {
   extends: [
     "plugin:astro/all",
+    "plugin:astro/jsx-a11y-strict"
   ],
   overrides: [
     {
@@ -20,25 +21,11 @@ module.exports = {
       },
       rules: {
         "astro/semi": "off",
+        "max-len": ["error", { "code": 120 }],
       },
     },
     {
-      files: ["*.mjs", "*.mts", "*.js", "*.ts"],
-      // Ts standard
-      extends: "standard-with-typescript",
-      env: {
-        browser: true,
-        es2023: true,
-      },
-      parserOptions: {
-        sourceType: "module",
-      },
-      rules: {
-        "astro/semi": "off",
-      },
-    },
-    {
-      files: ["*.jsx", "*.tsx"],
+      files: ["*.jsx", "*.tsx", "*.mjs", "*.mts", "*.js", "*.ts"],
       env: {
         browser: true,
         es2021: true
@@ -108,6 +95,7 @@ module.exports = {
             argsIgnorePattern: "^_"
           }
         ],
+        "max-len": ["error", { "code": 120 }],
         "astro/semi": "off",
         "@typescript-eslint/strict-boolean-expressions": "off"
       },

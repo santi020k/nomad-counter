@@ -1,6 +1,6 @@
 import { useEffect, type FC } from 'react'
 import useAuthStore, { type User } from '@store/use-auth-store'
-import { supabase } from '@libs/supabase'
+import { supabase } from '@libs/supabase/supabase'
 
 const handleGoogleSignIn = async (): Promise<void> => {
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -26,9 +26,7 @@ const GoogleButton: FC = () => {
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session !== null) {
-        logIn(session as unknown as User)
-      }
+      if (session !== null) logIn(session as unknown as User)
     })
 
     return () => { subscription.unsubscribe() }

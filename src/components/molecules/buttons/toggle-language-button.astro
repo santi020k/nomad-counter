@@ -1,0 +1,17 @@
+---
+// @ts-expect-error This library has been in beta for a year and is not in current development
+// but it is the best astro i18n library, so I must temporarily ignore ts errors
+import { localizePath } from 'astro-i18next'
+import i18next from 'i18next'
+
+const toggleLanguage = i18next.language === 'en' ? 'es' : 'en'
+const currentPath = Astro.url.pathname;
+---
+
+<a href={localizePath(currentPath, toggleLanguage)}>
+  <div tab-index={0} class="btn btn-ghost btn-circle avatar placeholder">
+    <div class="bg-transparent text-current rounded-full w-12">
+      <span>{i18next.language.toUpperCase()}</span>
+    </div>
+  </div>
+</a>

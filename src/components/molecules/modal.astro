@@ -16,7 +16,7 @@ const { modalId, btnClass, btnOpenText, title, btnCloseText, btnPrimaryOnClick, 
 const buttonEvent = `${modalId}.showModal()`
 ---
 
-<button class:list={["btn", btnClass]} onclick={buttonEvent}>{btnOpenText ?? 'Open'}</button>
+<button class:list={['btn', btnClass]} onclick={buttonEvent}>{btnOpenText ?? 'Open'}</button>
 <dialog id={modalId} class="modal modal-bottom sm:modal-middle">
 
   <div class="modal-box">
@@ -31,8 +31,8 @@ const buttonEvent = `${modalId}.showModal()`
     </div>
 
     <div class="modal-action">
-      {btnPrimaryOnClick && <button class="btn btn-primary">{btnPrimaryText ?? 'Save'}</button>}
-      {btnCloseText && (
+      {(btnPrimaryOnClick !== null) && (<button class="btn btn-primary">{btnPrimaryText ?? 'Save'}</button>)}
+      {(btnCloseText !== null) && (
         <form method="dialog">
           <button class="btn">{btnCloseText ?? 'Close'}</button>
         </form>

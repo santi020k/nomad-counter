@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { supabase } from '@libs/supabase'
+import { supabase } from '@libs/supabase/supabase'
 
 export interface User {
   isLogIn?: boolean
