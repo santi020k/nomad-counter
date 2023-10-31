@@ -1,4 +1,11 @@
 {
+  "messages": {
+    "auth": {
+      "success": "Sign In Successfully",
+      "logout": "Logout"
+    },
+    "error": "Something went wrong"
+  },
   "site": {
     "title": "My awesome website!",
     "description": "Here is the description of my awesome website!"

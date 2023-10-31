@@ -1,6 +1,10 @@
 import { useEffect, type FC, type ReactElement } from 'react'
+import { t } from 'i18next'
+
 import useAuthStore from '@store/use-auth-store'
+
 import { parseAuthSession } from '@utils/parseAuthSession'
+
 import { supabase } from '@libs/supabase/supabase'
 import { toastSuccess, toastError } from '@libs/toast-alerts/toast-alert'
 
@@ -19,9 +23,9 @@ const handleGoogleSignIn = async (): Promise<void> => {
     }
   })
   if (error) {
-    toastError({ text: 'something went wrong', duration: 3000 })
+    toastError({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
   } else {
-    toastSuccess({ text: 'Sign In Success', duration: 3000 })
+    toastSuccess({ text: t('common:messages.error') ?? '', duration: 3000 })
   }
 }
 
@@ -67,7 +71,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
         {/* TODO: Coming soon  */}
         {/* <li><a>Profile</a></li> */}
         {/* <li><a>Settings</a></li> */}
-        <li><a onClick={() => { void handleSignOut({ logOut }) }}>Logout</a></li>
+        <li><a onClick={() => { void handleSignOut({ logOut }) }}>{t('messages.auth.logout')}</a></li>
       </ul>
     </div>
   )

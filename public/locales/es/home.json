@@ -1,4 +1,11 @@
 {
+  "messages": {
+    "auth": {
+      "success": "Inicio de sesión correctamente",
+      "logout": "Logout"
+    },
+    "error": "Algo salió mal"
+  },
   "site": {
     "title": "Mon super site web !",
     "description": "Voici la description de mon super site web !"
