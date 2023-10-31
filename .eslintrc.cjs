@@ -1,3 +1,33 @@
+var simpleImportRules = [
+  "error",
+  {
+    "groups": [
+      // Packages `react` related packages come first.
+      ["^react"],
+      // Libs Packages
+      ["^@?\\w", "^(@|components)(/.*|$)"],
+      // Internal packages.
+      ["^(@atoms)(/.*|$)"],
+      ["^(@molecules)(/.*|$)"],
+      ["^(@organisms)(/.*|$)"],
+      ["^(@layouts)(/.*|$)"],
+      ["^(@pages)(/.*|$)"],
+      ["^(@libs)(/.*|$)"],
+      ["^(@store)(/.*|$)"],
+      ["^(@models)(/.*|$)"],
+      ["^(@utils)(/.*|$)"],
+      // Side effect imports.
+      ["^\\u0000"],
+      // Parent imports. Put `..` last.
+      ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+      // Other relative imports. Put same-folder imports and `.` last.
+      ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+      // Style imports.
+      ["^.+\\.?(css)$"]
+    ]
+  }
+];
+
 module.exports = {
   extends: [
     "plugin:astro/all",
@@ -19,9 +49,14 @@ module.exports = {
         sourceType: "module",
         ecmaVersion: 2023
       },
+      plugins: ["simple-import-sort", "@typescript-eslint", "jsx-a11y", "unused-imports"],
       rules: {
         "astro/semi": "off",
         "max-len": ["error", { "code": 120 }],
+        // increase the severity of rules so they are auto-fixable
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "simple-import-sort/imports": simpleImportRules
       },
     },
     {
@@ -44,7 +79,7 @@ module.exports = {
         ecmaVersion: "latest",
         sourceType: "module"
       },
-      plugins: ["unused-imports", "react", "react-hooks", "@typescript-eslint", "jsx-a11y"],
+      plugins: ["unused-imports", "react", "react-hooks", "@typescript-eslint", "jsx-a11y", "simple-import-sort"],
       rules: {
         "react/react-in-jsx-scope": "off",
         "react/button-has-type": "error",
@@ -97,7 +132,11 @@ module.exports = {
         ],
         "max-len": ["error", { "code": 120 }],
         "astro/semi": "off",
-        "@typescript-eslint/strict-boolean-expressions": "off"
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        // increase the severity of rules so they are auto-fixable
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "simple-import-sort/imports": simpleImportRules
       },
       settings: {
         react: {

@@ -1,5 +1,5 @@
-import Toastify, { type Options } from 'toastify-js'
 import colors from 'tailwindcss/colors'
+import Toastify, { type Options } from 'toastify-js'
 
 export const toastAlert = (params: Options): void => {
   Toastify({

@@ -1,11 +1,11 @@
-import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
 import react from '@astrojs/react'
+import sitemap from '@astrojs/sitemap'
+import tailwind from '@astrojs/tailwind'
 import vercel from '@astrojs/vercel/serverless'
+import { defineConfig } from 'astro/config'
 // @ts-expect-error This library has been in beta for a year and is not in current development
 // but it is the best astro i18n library, so I must temporarily ignore ts errors
 import astroI18next from 'astro-i18next'
-import sitemap from '@astrojs/sitemap'
 
 const defaultLocale = 'en'
 const locales = {

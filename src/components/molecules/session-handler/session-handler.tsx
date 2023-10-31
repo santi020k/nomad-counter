@@ -1,12 +1,13 @@
-import { useEffect, type FC, type ReactElement } from 'react'
+import { type FC, type ReactElement, useEffect } from 'react'
+
 import { t } from 'i18next'
+
+import { supabase } from '@libs/supabase/supabase'
+import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
 
 import useAuthStore from '@store/use-auth-store'
 
 import { parseAuthSession } from '@utils/parseAuthSession'
-
-import { supabase } from '@libs/supabase/supabase'
-import { toastSuccess, toastError } from '@libs/toast-alerts/toast-alert'
 
 interface SessionHandlerProps {
   UserIcon?: ReactElement

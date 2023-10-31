@@ -1,12 +1,12 @@
-import { create } from 'zustand'
 import { t } from 'i18next'
+import { create } from 'zustand'
 
 import { supabase } from '@libs/supabase/supabase'
-import { toastSuccess, toastError } from '@libs/toast-alerts/toast-alert'
+import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
+
+import { type UserData, UserDataSchema } from '@models/auth-model'
 
 import { parseAuthSession } from '@utils/parseAuthSession'
-
-import { UserDataSchema, type UserData } from '@models/auth-model'
 
 export interface UserAuthState {
   user: UserData

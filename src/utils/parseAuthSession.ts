@@ -1,4 +1,4 @@
-import { UserAuthSchema, UserDataSchema, type UserData } from '@models/auth-model'
+import { UserAuthSchema, type UserData, UserDataSchema } from '@models/auth-model'
 
 export const parseAuthSession = (session: unknown): UserData | undefined => {
   const result = UserAuthSchema.safeParse(session)

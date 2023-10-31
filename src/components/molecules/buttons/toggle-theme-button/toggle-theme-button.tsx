@@ -1,5 +1,6 @@
-import { type FC, type ReactElement, useState, useEffect } from 'react'
-import { themes, defaultTheme, type Theme } from '@models/theme-model'
+import { type FC, type ReactElement, useEffect, useState } from 'react'
+
+import { defaultTheme, type Theme, themes } from '@models/theme-model'
 
 interface ToggleThemeButtonProps {
   lightIcon?: ReactElement
