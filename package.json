@@ -1,17 +1,22 @@
 {
   "name": "nomad-counter",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "pre-commit": "lint-staged",
+    "pre-push": "eslint . --fix --max-warnings=0",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@astrojs/check": "^0.3.0",
     "@astrojs/prefetch": "^0.4.1",
     "@astrojs/react": "^3.0.4",
+    "@astrojs/sitemap": "^3.0.2",
     "@astrojs/tailwind": "^5.0.2",
     "@astrojs/vercel": "^5.1.0",
     "@supabase/supabase-js": "^2.38.4",
@@ -25,11 +30,11 @@
     "react-i18next": "^12.3.1",
     "tailwindcss": "^3.3.5",
     "toastify-js": "^1.12.0",
+    "typescript": "^5.2.2",
     "zod": "^3.22.4",
     "zustand": "^4.4.4"
   },
   "devDependencies": {
-    "@astrojs/sitemap": "^3.0.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/toastify-js": "^1.12.2",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
@@ -45,6 +50,11 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-unused-imports": "^3.0.0"
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,astro,md}": ["eslint --fix"]
   }
 }
