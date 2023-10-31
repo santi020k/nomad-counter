@@ -1,13 +1,15 @@
 import { useEffect, type FC, type ReactElement } from 'react'
-import useAuthStore, { type User } from '@store/use-auth-store'
+import useAuthStore from '@store/use-auth-store'
+import { parseAuthSession } from '@utils/parseAuthSession'
 import { supabase } from '@libs/supabase/supabase'
+import { toastSuccess, toastError } from '@libs/toast-alerts/toast-alert'
 
 interface SessionHandlerProps {
-  googleIcon?: ReactElement
+  UserIcon?: ReactElement
 }
 
 const handleGoogleSignIn = async (): Promise<void> => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       queryParams: {
@@ -16,8 +18,11 @@ const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   })
-  // TODO: Temporal console
-  console.log('🚀 ~ file: google-button.tsx:11 ~ handleGoogleSignIn ~ data:', data, error)
+  if (error) {
+    toastError({ text: 'something went wrong', duration: 3000 })
+  } else {
+    toastSuccess({ text: 'Sign In Success', duration: 3000 })
+  }
 }
 
 const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
@@ -26,7 +31,7 @@ const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> 
   })
 }
 
-const SessionHandler: FC<SessionHandlerProps> = ({ googleIcon }) => {
+const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
   const [user, fetchSession, logIn, logOut] =
     useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
 
@@ -36,18 +41,17 @@ const SessionHandler: FC<SessionHandlerProps> = ({ googleIcon }) => {
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session !== null) {
-        logIn(session as unknown as User)
-      }
+      const parseAuthResponse = parseAuthSession(session)
+      if (session !== null && parseAuthResponse) logIn(parseAuthResponse)
     })
 
     return () => { subscription.unsubscribe() }
   }, [])
 
-  if (!(user.isLogIn ?? true)) {
+  if (!(user.isSignIn ?? true)) {
     return (
-      <button type="button" onClick={() => { void handleGoogleSignIn() }} className="btn btn-block">
-        {googleIcon} Sign in
+      <button type="button" onClick={() => { void handleGoogleSignIn() }} className="btn btn-block rounded-full">
+        {UserIcon}
       </button>
     )
   }
@@ -56,12 +60,13 @@ const SessionHandler: FC<SessionHandlerProps> = ({ googleIcon }) => {
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
         <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
-          <span>SM</span>
+          <span>{user?.shortName || user?.initialLetter || UserIcon}</span>
         </div>
       </label>
       <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a>Profile</a></li>
-        <li><a>Settings</a></li>
+        {/* TODO: Coming soon  */}
+        {/* <li><a>Profile</a></li> */}
+        {/* <li><a>Settings</a></li> */}
         <li><a onClick={() => { void handleSignOut({ logOut }) }}>Logout</a></li>
       </ul>
     </div>

@@ -48,8 +48,8 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>
 
 export const UserAuthSchema = z.object({
-  provider_token: z.string(),
-  provider_refresh_token: z.string(),
+  provider_token: z.string().optional(),
+  provider_refresh_token: z.string().optional(),
   access_token: z.string(),
   expires_in: z.number(),
   expires_at: z.number(),
@@ -58,3 +58,13 @@ export const UserAuthSchema = z.object({
   user: UserSchema
 })
 export type UserAuth = z.infer<typeof UserAuthSchema>
+
+export const UserDataSchema = z.object({
+  isSignIn: z.boolean().optional(),
+  name: z.string(),
+  email: z.string(),
+  avatar: z.string(),
+  shortName: z.string(),
+  initialLetter: z.string()
+})
+export type UserData = z.infer<typeof UserDataSchema>

@@ -1,36 +1,45 @@
 import { create } from 'zustand'
 
 import { supabase } from '@libs/supabase/supabase'
+import { toastSuccess, toastError } from '@libs/toast-alerts/toast-alert'
 
-export interface User {
-  isLogIn?: boolean
-  name: string
-  email: string
-}
+import { parseAuthSession } from '@utils/parseAuthSession'
+
+import { UserDataSchema, type UserData } from '@models/auth-model'
 
 export interface UserAuthState {
-  user: User
-  logIn: (user: User) => void
+  user: UserData
+  logIn: (user: UserData) => void
   logOut: () => void
   fetchSession: () => Promise<void>
 }
 
+const initialUser = UserDataSchema.parse({
+  isSignIn: false,
+  name: '',
+  email: '',
+  avatar: '',
+  shortName: '',
+  initialLetter: ''
+})
+
 const useAuthStore = create<UserAuthState>()((set) => ({
-  user: {
-    isLogIn: false,
-    name: '',
-    email: ''
-  },
-  logIn: (user) => { set({ user: { isLogIn: true, ...user } }) },
-  logOut: () => { set({ user: { isLogIn: false, name: '', email: '' } }) },
+  user: initialUser,
+  logIn: (user) => { set({ user: { isSignIn: true, ...user } }) },
+  logOut: () => { set({ user: initialUser }) },
   fetchSession: async () => {
-    // TODO: temporal logic, code in process
     await supabase.auth.getSession().then(({ data: { session } }) => {
-      // setSession(session)
-      console.log('🚀 ~ file: auth-store.ts:15 ~ await supabase.auth.getSession ~ session:', session)
-      set((state: { user: User }) => ({ user: { ...state?.user, ...session } }))
+      const parseAuthResult = parseAuthSession(session)
+
+      if (parseAuthResult) {
+        set(() => ({
+          user: parseAuthResult
+        }))
+        toastSuccess({ text: 'Sign In Success', duration: 3000 })
+      }
     }).catch((error) => {
-      console.log('🚀 ~ file: use-auth-store.ts:32 ~ awaitsupabase.auth.getSession ~ error:', error)
+      console.error(error)
+      toastError({ text: 'something went wrong', duration: 3000 })
     })
   }
 }))
