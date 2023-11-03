@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets'
+
+interface Props {
+  src: ImageMetadata
+  alt?: string
+}
+
+const { src, alt } = Astro.props
+
+const defaultAlt = alt ?? 'Default image'
+---
+
+<!-- This component -->
+<Image src={src} alt={defaultAlt} />
