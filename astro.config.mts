@@ -1,10 +1,8 @@
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
-import vercel from '@astrojs/vercel/serverless'
+import vercel from '@astrojs/vercel/static'
 import { defineConfig } from 'astro/config'
-// @ts-expect-error This library has been in beta for a year and is not in current development
-// but it is the best astro i18n library, so I must temporarily ignore ts errors
 import astroI18next from 'astro-i18next'
 
 const defaultLocale = 'en'
@@ -23,8 +21,17 @@ export default defineConfig({
         defaultLocale
       }
     })],
-  output: 'server',
-  adapter: vercel(),
+  output: 'static',
+  adapter: vercel({
+    speedInsights: {
+      enabled: true
+    },
+    webAnalytics: {
+      enabled: true
+    },
+    imageService: true,
+    devImageService: 'squoosh'
+  }),
   site: baseUrl,
   trailingSlash: 'always',
   build: {
