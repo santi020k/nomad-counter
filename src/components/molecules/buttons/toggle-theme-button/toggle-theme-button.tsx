@@ -38,7 +38,7 @@ const ToggleThemeButton: FC<ToggleThemeButtonProps> = ({ lightIcon, darkIcon }) 
       type="button"
       onClick={toggleTheme}
       className={`btn btn-circle h-12 w-12 ${isLightTheme ? 'btn-primary' : 'btn-secondary'}`}
-      aria-label="light dark theme toggle"
+      aria-label="Light dark theme toggle"
     >
       {isLightTheme ? lightIcon : darkIcon }
     </ button>

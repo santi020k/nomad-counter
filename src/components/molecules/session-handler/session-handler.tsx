@@ -55,6 +55,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
         type="button"
         onClick={() => { void handleGoogleSignIn() }}
         className="btn btn-block rounded-full"
+        aria-label="Login button"
       >
         {UserIcon}
       </button>

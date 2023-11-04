@@ -26,6 +26,7 @@ export default {
           ...daisyuiTheme['[data-theme=light]'],
           primary: '#471AA0',
           secondary: '#B579E6',
+          accent: '#f3e8fb',
           '.btn-primary': {
             'background-color': '#471AA0',
             'border-color': '#471AA0',
@@ -41,6 +42,7 @@ export default {
           ...daisyuiTheme['[data-theme=dark]'],
           primary: '#b296d6',
           secondary: '#e2c8f6',
+          accent: '#f3e8fb',
           '.btn-primary': {
             'background-color': '#b296d6',
             'border-color': '#b296d6',
