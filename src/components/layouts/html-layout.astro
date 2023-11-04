@@ -3,6 +3,8 @@ import { HeadHrefLangs } from 'astro-i18next/components'
 
 import i18n, { t } from '@libs/i18n/i18n'
 
+import '@fontsource-variable/cabin'
+
 interface Props {
   title: string
 }
@@ -49,20 +51,16 @@ const { title } = Astro.props
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <!-- Prose: https://github.com/tailwindlabs/tailwindcss-typography -->
-  <body class="prose max-w-none">
+  <body class="prose max-w-none antialiased">
     <slot />
   </body>
 </html>
 
-<!-- Google Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="
-  https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Roboto:ital,wght@0,100;1,100&display=swap
-" rel="stylesheet">
-
 <!-- TODO: Move to global styles -->
 <style>
+  * {
+    font-family: Cabin, system-ui, Roboto, Oxygen, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
   html {
     transition: background 0.5s;
   }

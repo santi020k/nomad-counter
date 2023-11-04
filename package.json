@@ -19,6 +19,7 @@
     "@astrojs/sitemap": "^3.0.3",
     "@astrojs/tailwind": "^5.0.2",
     "@astrojs/vercel": "^5.1.0",
+    "@fontsource-variable/cabin": "^5.0.16",
     "@supabase/supabase-js": "^2.38.4",
     "@types/react": "^18.2.34",
     "@types/react-dom": "^18.2.14",
