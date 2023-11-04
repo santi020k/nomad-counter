@@ -1,12 +1,12 @@
 ---
-import { localizePath } from 'astro-i18next'
-import i18next from 'i18next'
+import i18next from '@libs/i18n/i18n'
 
-const toggleLanguage = i18next.language === 'en' ? 'es' : 'en'
-const currentPath = Astro.url.pathname;
+import { handleToggleLanguage } from '@utils/redirects-utils'
+
+const pathname = Astro.url.pathname
 ---
 
-<a href={localizePath(currentPath, toggleLanguage)}>
+<a href={handleToggleLanguage({ pathname })}>
   <div tab-index={0} class="btn btn-ghost btn-circle avatar placeholder">
     <div class="bg-transparent text-current rounded-full w-12">
       <span>{i18next.language.toUpperCase()}</span>

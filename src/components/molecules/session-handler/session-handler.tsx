@@ -2,11 +2,11 @@ import { type FC, type ReactElement, useEffect } from 'react'
 
 import { t } from '@libs/i18n/i18n'
 import { supabase } from '@libs/supabase/supabase'
-import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
+import { toastError } from '@libs/toast-alerts/toast-alert'
 
 import useAuthStore from '@store/use-auth-store'
 
-import { parseAuthSession } from '@utils/parseAuthSession'
+import { parseAuthSession } from '@utils/parse-auth-session'
 
 interface SessionHandlerProps {
   UserIcon?: ReactElement
@@ -16,17 +16,14 @@ const handleGoogleSignIn = async (): Promise<void> => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
+      redirectTo: window.location.href,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent'
       }
     }
   })
-  if (error) {
-    toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
-  } else {
-    toastSuccess({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
-  }
+  if (error) toastError({ text: t('messages.error') ?? '', duration: 3000 })
 }
 
 const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
@@ -54,7 +51,11 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
 
   if (!(user.isSignIn ?? true)) {
     return (
-      <button type="button" onClick={() => { void handleGoogleSignIn() }} className="btn btn-block rounded-full">
+      <button
+        type="button"
+        onClick={() => { void handleGoogleSignIn() }}
+        className="btn btn-block rounded-full"
+      >
         {UserIcon}
       </button>
     )

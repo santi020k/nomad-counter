@@ -6,7 +6,7 @@ import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
 
 import { type UserData, UserDataSchema } from '@models/auth-model'
 
-import { parseAuthSession } from '@utils/parseAuthSession'
+import { parseAuthSession } from '@utils/parse-auth-session'
 
 export interface UserAuthState {
   user: UserData
@@ -36,11 +36,11 @@ const useAuthStore = create<UserAuthState>()((set) => ({
         set(() => ({
           user: parseAuthResult
         }))
-        toastSuccess({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
+        toastSuccess({ text: t('messages.auth.success') ?? '', duration: 3000 })
       }
     }).catch((error) => {
       console.error(error)
-      toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
+      toastError({ text: t('messages.error') ?? '', duration: 3000 })
     })
   }
 }))
