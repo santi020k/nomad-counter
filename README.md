@@ -17,7 +17,7 @@
 
 ## Demo (coming soon)
 
-Insert gif or link to demo
+![App Screenshot](./public/assets/screenshot.png)
 
 ## Description
 
@@ -108,7 +108,7 @@ To deploy this project run
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](./public/assets/screenshot.png)
 
 ## Tech Stack (Pending)
 
