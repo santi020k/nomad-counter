@@ -1,7 +1,6 @@
 import { type FC, type ReactElement, useEffect } from 'react'
 
-import { t } from 'i18next'
-
+import { t } from '@libs/i18n/i18n'
 import { supabase } from '@libs/supabase/supabase'
 import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
 
@@ -24,9 +23,9 @@ const handleGoogleSignIn = async (): Promise<void> => {
     }
   })
   if (error) {
-    toastError({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
+    toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
   } else {
-    toastSuccess({ text: t('common:messages.error') ?? '', duration: 3000 })
+    toastSuccess({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
   }
 }
 

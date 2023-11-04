@@ -1,7 +1,7 @@
 ---
-import { changeLanguage, setDefaultNamespace } from 'i18next'
-
 import IndexPage from '@pages/index-page.astro'
+
+import { changeLanguage, setDefaultNamespace } from '@libs/i18n/i18n'
 
 void changeLanguage('en')
 setDefaultNamespace('home')
