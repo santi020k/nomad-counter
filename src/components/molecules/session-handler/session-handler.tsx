@@ -23,7 +23,7 @@ const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   })
-  if (error) toastError({ text: t('messages.error') ?? '', duration: 3000 })
+  if (error) toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
 }
 
 const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
@@ -73,7 +73,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
         {/* TODO: Coming soon  */}
         {/* <li><a>Profile</a></li> */}
         {/* <li><a>Settings</a></li> */}
-        <li><a onClick={() => { void handleSignOut({ logOut }) }}>{t('messages.auth.logout')}</a></li>
+        <li><a onClick={() => { void handleSignOut({ logOut }) }}>{t('common:messages.auth.logout')}</a></li>
       </ul>
     </div>
   )
