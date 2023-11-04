@@ -1,3 +1,4 @@
+import tailwindForm from '@tailwindcss/forms'
 import tailwindTypography from '@tailwindcss/typography'
 import daisyui from 'daisyui'
 import daisyuiTheme from 'daisyui/src/theming/themes'
@@ -10,13 +11,14 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  darkMode: 'class',
   theme: {
     extend: {},
     fontFamily: {
       sans: ['"Cabin"', '"Roboto"', ...defaultTheme.fontFamily.mono]
     }
   },
-  plugins: [tailwindTypography, daisyui],
+  plugins: [tailwindForm, tailwindTypography, daisyui],
   daisyui: {
     themes: [
       {

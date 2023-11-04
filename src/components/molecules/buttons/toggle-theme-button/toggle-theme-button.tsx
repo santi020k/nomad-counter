@@ -1,5 +1,7 @@
 import { type FC, type ReactElement, useEffect, useState } from 'react'
 
+import { match } from 'ts-pattern'
+
 import { defaultTheme, type Theme, themes } from '@models/theme-model'
 
 interface ToggleThemeButtonProps {
@@ -16,6 +18,9 @@ const ToggleThemeButton: FC<ToggleThemeButtonProps> = ({ lightIcon, darkIcon }) 
     setCurrentTheme((prevTheme) => {
       const theme = prevTheme === themes.enum.dark ? themes.enum.light : themes.enum.dark
       document?.documentElement?.setAttribute('data-theme', theme)
+      match(theme)
+        .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
+        .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
       return theme
     })
   }
