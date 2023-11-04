@@ -7,8 +7,9 @@ export const toastAlert = (params: Options): void => {
     gravity: 'bottom',
     position: 'right',
     close: true,
+    className: 'alert',
     style: {
-      position: 'absolute',
+      position: 'fixed',
       zIndex: '1',
       right: '1rem',
       padding: '1rem',
@@ -20,6 +21,7 @@ export const toastAlert = (params: Options): void => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      width: 'auto',
       ...params.style
     }
   }).showToast()
@@ -28,9 +30,10 @@ export const toastAlert = (params: Options): void => {
 export const toastSuccess = (params: Options): void => {
   toastAlert({
     ...params,
-    className: 'success',
+    className: 'alert alert-success',
     style: {
-      background: `linear-gradient(to right, ${colors.green[800]}, ${colors.green[600]})`
+      color: colors.gray[100],
+      background: `linear-gradient(to right, ${colors.green[800]}, ${colors.green[700]})`
     }
   })
 }
@@ -38,9 +41,9 @@ export const toastSuccess = (params: Options): void => {
 export const toastError = (params: Options): void => {
   toastAlert({
     ...params,
-    className: 'success',
+    className: 'alert alert-error',
     style: {
-      background: `linear-gradient(to right, ${colors.red[800]}, ${colors.red[600]})`
+      background: `linear-gradient(to right, ${colors.red[900]}, ${colors.red[700]})`
     }
   })
 }
