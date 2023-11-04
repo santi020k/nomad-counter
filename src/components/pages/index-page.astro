@@ -1,20 +1,16 @@
 ---
-import { Trans } from 'astro-i18next/components'
-import { t } from 'i18next'
+import Hero from '@atoms/hero.astro'
+import CountingSection from '@atoms/sections/counting-section.astro'
 
 import HtmlLayout from '@layouts/html-layout.astro'
 import MainLayout from '@layouts/main-layout.astro'
+
+import { t } from '@libs/i18n/i18n'
 ---
 
 <HtmlLayout title={t('home.title')}>
   <MainLayout>
-    <h1>{t('home.title')}</h1>
-    <p>
-      <Trans i18nKey="home.subtitle">
-        This is a <em>more complex</em> string to translate, mixed with <strong
-          >html elements
-        </strong> such as <a href="https://example.com/">a cool link</a>!
-      </Trans>
-    </p>
+    <Hero />
+    <CountingSection />
   </MainLayout>
 </HtmlLayout>

@@ -1,17 +1,8 @@
 {
-  "messages": {
-    "auth": {
-      "success": "Inicio de sesión correctamente",
-      "logout": "Logout"
-    },
-    "error": "Algo salió mal"
-  },
-  "site": {
-    "title": "Mon super site web !",
-    "description": "Voici la description de mon super site web !"
-  },
-  "home": {
-    "title": "Bienvenue sur mon super site web !",
-    "subtitle": "Ceci est une chaine de charactères <0>plus compliquée</0> à traduire, il y a des <1>éléments html</1>, comme <2>un super lien</2> par exemple !"
+  "hero": {
+    "badge": "Lleva un Registro de tus Aventuras Mundiales",
+    "title": "¡Calcula tus días!",
+    "actionLeft": "Comienza a Contar Ahora",
+    "actionRight": "Descarga la Aplicación y Sigue Tu Viaje"
   }
 }
