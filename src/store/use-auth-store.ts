@@ -36,7 +36,7 @@ const useAuthStore = create<UserAuthState>()((set) => ({
         set(() => ({
           user: parseAuthResult
         }))
-        toastSuccess({ text: t('common:messages.auth.success') ?? '', duration: 3000000 })
+        toastSuccess({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
       }
     }).catch((error) => {
       console.error(error)
