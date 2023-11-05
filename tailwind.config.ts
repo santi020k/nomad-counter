@@ -4,13 +4,16 @@ import daisyui from 'daisyui'
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
+import heights from './config/tailwind/heights'
 import themes from './config/tailwind/themes'
 
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      ...heights
+    },
     fontFamily: {
       sans: ['"Cabin"', '"Roboto"', ...defaultTheme.fontFamily.mono]
     }
