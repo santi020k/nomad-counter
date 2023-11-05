@@ -2,25 +2,19 @@
 import { t } from '@libs/i18n/i18n'
 ---
 
-<div class="hero hero-h bg-base-200">
+<header class="hero min-h-[calc(100vh+99px)] bg-base-200">
   <div class="hero-content text-center">
     <div class="max-w-md">
-      <div
-        class="badge badge-secondary border-b-secondary rounded-md mb-0
+      <span
+        class="badge badge-secondary mb-0 rounded-md border-b-secondary
         bg-gradient-to-r from-primary via-purple-500 to-secondary"
       >
         {t('home:hero.badge')}
-      </div>
-      <h1 class="text-8xl font-bold mb-12">{t('home:hero.title')}</h1>
-      <a href="#calc" class="btn btn-primary rounded-full">{t('home:hero.actionLeft')}</a>
+      </span>
+      <h1 class="mb-12 text-8xl font-bold">{t('home:hero.title')}</h1>
+      <a href="#calc" class="btn-primary btn rounded-full">{t('home:hero.actionLeft')}</a>
       <!-- TODO: comming soon -->
       <!-- <button class="btn btn-secondary">{t('home:hero.actionRight')}</button> -->
     </div>
   </div>
-</div>
-
-<style>
-  .hero-h {
-    min-height: calc(100vh - 99px);
-  }
-</style>
+</header>

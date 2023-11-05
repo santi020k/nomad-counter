@@ -5,13 +5,13 @@ import SessionHandler from '@molecules/session-handler/index.astro'
 ---
 
 <nav
-  class="navbar w-auto border-b border-b-stone-200 dark:border-b-stone-700
-  bg-base-100 text-base-content sticky top-0 z-30 flex justify-center bg-opacity-90
-  backdrop-blur transition-all duration-100 [transform:translate3d(0,0,0)] shadow-sm"
+  class="navbar sticky top-0 z-30 flex
+  w-auto justify-center border-b border-b-stone-200 bg-base-100/90 text-base-content shadow-sm
+  backdrop-blur transition-all duration-100 [transform:translate3d(0,0,0)] dark:border-b-stone-700"
 >
-  <div class="py-4 container mx-auto flex flex-col sm:flex-row">
-    <div class="flex-1 mb-4 sm:mb-0">
-      <div class="normal-case text-5xl h-auto leading-8 font-semibold cursor-default">
+  <div class="container mx-auto flex flex-col py-4 sm:flex-row">
+    <div class="mb-4 flex-1 sm:mb-0">
+      <div class="h-auto cursor-default text-5xl font-semibold normal-case leading-8">
         <span class="text-primary">Nomad</span> <span class="text-secondary">Counter</span>
       </div>
     </div>

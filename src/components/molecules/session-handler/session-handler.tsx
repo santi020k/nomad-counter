@@ -64,12 +64,12 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
 
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
-        <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
+      <label tabIndex={0} className="avatar placeholder btn btn-circle btn-ghost">
+        <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
           <span>{user?.shortName || user?.initialLetter || UserIcon}</span>
         </div>
       </label>
-      <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+      <ul tabIndex={0} className="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow">
         {/* TODO: Coming soon  */}
         {/* <li><a>Profile</a></li> */}
         {/* <li><a>Settings</a></li> */}

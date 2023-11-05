@@ -31,8 +31,12 @@ var simpleImportRules = [
 module.exports = {
   extends: [
     "plugin:astro/all",
-    "plugin:astro/jsx-a11y-strict"
+    "plugin:astro/jsx-a11y-strict",
+    "plugin:tailwindcss/recommended"
   ],
+  rules: {
+    "tailwindcss/no-custom-classname": "off"
+  },
   overrides: [
     {
       // Ts standard
