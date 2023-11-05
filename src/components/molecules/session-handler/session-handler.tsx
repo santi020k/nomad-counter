@@ -63,7 +63,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
   }
 
   return (
-    <div className="dropdown dropdown-end">
+    <div className="dropdown sm:dropdown-end">
       <label tabIndex={0} className="avatar placeholder btn btn-circle btn-ghost">
         <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
           <span>{user?.shortName || user?.initialLetter || UserIcon}</span>
