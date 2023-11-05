@@ -20,6 +20,7 @@ export default {
   },
   plugins: [tailwindForm, tailwindTypography, daisyui],
   daisyui: {
+    logs: false,
     themes: [
       {
         light: {
