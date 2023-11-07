@@ -2,6 +2,8 @@
 import ToggleLanguage from '@molecules/buttons/toggle-language-button.astro'
 import ToggleTheme from '@molecules/buttons/toggle-theme-button/index.astro'
 import SessionHandler from '@molecules/session-handler/index.astro'
+
+import { localizePath } from '@libs/i18n/i18n'
 ---
 
 <nav
@@ -11,9 +13,12 @@ import SessionHandler from '@molecules/session-handler/index.astro'
 >
   <div class="container mx-auto flex flex-col py-4 sm:flex-row">
     <div class="mb-4 flex-1 sm:mb-0">
-      <div class="h-auto cursor-default text-4xl font-semibold normal-case leading-8 sm:text-5xl">
+      <a
+        href={localizePath('/')}
+        class="h-auto cursor-pointer text-4xl font-semibold normal-case leading-8 no-underline sm:text-5xl"
+      >
         <span class="text-primary">Nomad</span> <span class="text-secondary">Counter</span>
-      </div>
+      </a>
     </div>
     <div class="flex flex-row gap-2">
       <div class="flex items-center">

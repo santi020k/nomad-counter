@@ -3,17 +3,21 @@ import HeartsIcon from '@atoms/icons/hearts-icon.astro'
 import InstagramIcon from '@atoms/icons/instagram-brand-icon.astro'
 import TwitterIcon from '@atoms/icons/twitter-brand-icon.astro'
 import YoutubeIcon from '@atoms/icons/youtube-brand-icon.astro'
+
+import { localizePath } from '@libs/i18n/i18n'
 ---
 
-<div class="relative h-20" />
+<div class="relative h-16" />
 
 <div class="absolute bottom-0 w-screen bg-base-300">
   <div class="container mx-auto">
     <footer class="footer items-center gap-y-px p-4">
       <aside class="grid-flow-col items-center gap-1">
         <p class="m-0"><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
-        <p class="m-0">By @santi020k with</p>
+        <p class="m-0">By <a href="https://santi020k.me" target="_blank">@santi020k</a> with</p>
         <span class="text-red-600"><HeartsIcon size={24} /></span>
+        |
+        <a href={localizePath('/privacy-policy')}>Privacy Policy</a>
       </aside>
       <nav class="grid-flow-col gap-1 md:place-self-center md:justify-self-end">
         <a
