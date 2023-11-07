@@ -6,12 +6,13 @@ module.exports = [
       ['^react'],
       // Libs Packages
       ['^@?\\w', '^(@|components)(/.*|$)'],
+      // I18n
+      ['^(@i18n)'],
       // Internal packages.
       ['^(@atoms)(/.*|$)'],
       ['^(@molecules)(/.*|$)'],
       ['^(@organisms)(/.*|$)'],
       ['^(@layouts)(/.*|$)'],
-      ['^(@pages)(/.*|$)'],
       ['^(@libs)(/.*|$)'],
       ['^(@store)(/.*|$)'],
       ['^(@models)(/.*|$)'],

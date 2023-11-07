@@ -1,8 +1,9 @@
 ---
 import { ViewTransitions } from 'astro:transitions'
 
-import i18n, { HeadHrefLangs, t } from '@libs/i18n/i18n'
+import i18next, { t } from '@i18n'
 
+import 'i18n'
 import '@fontsource-variable/cabin'
 
 interface Props {
@@ -13,7 +14,7 @@ const { title } = Astro.props
 ---
 
 <!doctype html>
-<html lang={i18n.language}>
+<html lang={i18next.language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,8 +36,6 @@ const { title } = Astro.props
     <meta name="msapplication-TileColor" content="#f3e8fb">
     <meta name="msapplication-config" content="/favicons/browserconfig.xml">
     <meta name="theme-color" content="#f3e8fb">
-
-    <HeadHrefLangs />
 
     <ViewTransitions />
 

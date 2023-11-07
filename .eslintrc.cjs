@@ -36,7 +36,10 @@ module.exports = {
       files: ['*.astro'],
       extends: ['standard-with-typescript'],
       parser: 'astro-eslint-parser',
-      plugins: ['@typescript-eslint']
+      plugins: ['@typescript-eslint'],
+      rules: {
+        "@typescript-eslint/strict-boolean-expressions": "off"
+      }
     },
     {
       files: ['*.jsx', '*.tsx', '*.mjs', '*.mts', '*.js', '*.ts'],
@@ -55,6 +58,9 @@ module.exports = {
         // optional, if you want to disable language mapper, set it to `false`
         // if you want to override the default language mapper inside, you can provide your own
         "mdx/language-mapper": {}
+      },
+      rules: {
+        "max-len": "off",
       }
     }
   ]

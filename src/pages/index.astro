@@ -1,10 +1,16 @@
 ---
-import IndexPage from '@pages/index-page.astro'
+import { t } from '@i18n'
 
-import { changeLanguage, setDefaultNamespace } from '@libs/i18n/i18n'
+import Hero from '@atoms/hero.astro'
+import CountingSection from '@atoms/sections/counting-section.astro'
 
-void changeLanguage('en')
-setDefaultNamespace('home')
+import HtmlLayout from '@layouts/html-layout.astro'
+import MainLayout from '@layouts/main-layout.astro'
 ---
 
-<IndexPage />
+<HtmlLayout title={t('home:title')}>
+  <MainLayout>
+    <Hero />
+    <CountingSection />
+  </MainLayout>
+</HtmlLayout>

@@ -4,7 +4,8 @@ import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
 import vercel from '@astrojs/vercel/static'
 import { defineConfig } from 'astro/config'
-import astroI18next from 'astro-i18next'
+import { filterSitemapByDefaultLocale, i18n } from 'astro-i18n-aut/integration'
+
 const defaultLocale = 'en'
 const locales = {
   en: 'en-US',
@@ -13,12 +14,23 @@ const locales = {
 const baseUrl = 'https://nomad.santi020k.me'
 
 export default defineConfig({
-  integrations: [tailwind(), react(), astroI18next(), mdx(), sitemap({
-    i18n: {
+  integrations: [
+    tailwind(),
+    react(),
+    mdx(),
+    i18n({
       locales,
-      defaultLocale
-    }
-  })],
+      defaultLocale,
+      exclude: ['pages/api/**/*', 'pages/**/*.md', 'pages/**/*.mdx']
+    }),
+    sitemap({
+      i18n: {
+        locales,
+        defaultLocale
+      },
+      filter: filterSitemapByDefaultLocale({ defaultLocale, base: baseUrl })
+    })
+  ],
   output: 'static',
   adapter: vercel({
     speedInsights: {
@@ -27,8 +39,8 @@ export default defineConfig({
     webAnalytics: {
       enabled: true
     },
-    imageService: true,
-    devImageService: 'squoosh'
+    imageService: true
+    // devImageService: 'squoosh'
   }),
   site: baseUrl,
   trailingSlash: 'always',

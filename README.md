@@ -21,11 +21,11 @@
 
 ## Description
 
-Nomad Calculator is an essential tool for travelers and adventurers worldwide. This application, available in both Spanish and English, allows you to keep a precise record of your time spent in different countries, including days spent at airports during layovers or connections.
+Nomad Counter is an essential tool for travelers and adventurers worldwide. This application, available in both Spanish and English, allows you to keep a precise record of your time spent in different countries, including days spent at airports during layovers or connections.
 
-Have you ever wondered how many days you've spent exploring a country, even counting those unforgettable moments at airports? Nomad Calculator provides you with the answer in a simple and efficient manner. Just input your travel details, including entry and exit dates for each country, as well as the details of international airport layovers.
+Have you ever wondered how many days you've spent exploring a country, even counting those unforgettable moments at airports? Nomad Counter provides you with the answer in a simple and efficient manner. Just input your travel details, including entry and exit dates for each country, as well as the details of international airport layovers.
 
-Key Features of Nomad Calculator:
+Key Features of Nomad Counter:
 
 - **Stay Calculator:** Log your travels country by country and get the total duration of your stays in each one, whether you're visiting or in transit at an airport.
 
@@ -33,11 +33,11 @@ Key Features of Nomad Calculator:
 
 - **Bilingual Support:** The app is bilingual, with support in both Spanish and English to cater to a global audience of travelers.
 
-- **Notifications and Reminders:** Set up reminders so you never forget to log your travels and make the most of Nomad Calculator.
+- **Notifications and Reminders:** Set up reminders so you never forget to log your travels and make the most of Nomad Counter.
 
 - **Travel Statistics:** Visualize statistics and charts summarizing your journeys in a clear and easy-to-understand format.
 
-Whether you're a frequent traveler, an occasional adventure seeker, or a digital nomad, Nomad Calculator will help you keep an accurate record of your days in different countries and airports.
+Whether you're a frequent traveler, an occasional adventure seeker, or a digital nomad, Nomad Counter will help you keep an accurate record of your days in different countries and airports.
 <!-- Coming soon -->
 <!-- Download the app today and start counting your days of exploration around the world! -->
 

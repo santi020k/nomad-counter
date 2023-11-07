@@ -1,6 +1,7 @@
 import { type FC, type ReactElement, useEffect } from 'react'
 
-import { t } from '@libs/i18n/i18n'
+import { t } from '@i18n'
+
 import { supabase } from '@libs/supabase/supabase'
 import { toastError } from '@libs/toast-alerts/toast-alert'
 

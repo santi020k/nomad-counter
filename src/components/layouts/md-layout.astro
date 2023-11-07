@@ -2,11 +2,7 @@
 import HtmlLayout from '@layouts/html-layout.astro'
 import MainLayout from '@layouts/main-layout.astro'
 
-import { changeLanguage } from '@libs/i18n/i18n'
-
 const { frontmatter } = Astro.props
-
-void changeLanguage(frontmatter.lang)
 ---
 
 <HtmlLayout title={frontmatter.title}>

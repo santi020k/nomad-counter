@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
-import { t } from '@libs/i18n/i18n'
+import { t } from '@i18n'
+
 import { supabase } from '@libs/supabase/supabase'
 import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
 
