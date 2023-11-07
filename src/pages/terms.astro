@@ -1,0 +1,13 @@
+---
+import { getEntry } from 'astro:content'
+
+import { changeLanguage, getLocale } from '@i18n'
+
+const locale = getLocale(Astro.url)
+void changeLanguage(locale)
+
+const entry = await getEntry('pages', `${locale}/terms`)
+const Content = await entry?.render().then(({ Content }) => Content)
+---
+
+{Content ? <Content /> : null}
