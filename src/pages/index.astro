@@ -1,11 +1,15 @@
 ---
-import { t } from '@i18n'
+import { changeLanguage, getLocale, t } from '@i18n'
 
 import Hero from '@atoms/hero.astro'
 import CountingSection from '@atoms/sections/counting-section.astro'
 
 import HtmlLayout from '@layouts/html-layout.astro'
 import MainLayout from '@layouts/main-layout.astro'
+
+const locale = getLocale(Astro.url)
+
+void changeLanguage(locale)
 ---
 
 <HtmlLayout title={t('home:title')}>
