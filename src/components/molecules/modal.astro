@@ -1,6 +1,4 @@
 ---
-import CloseIcon from '@atoms/icons/close-icon.astro'
-
 interface Props {
   modalId: string
   btnClass?: string
@@ -21,7 +19,7 @@ const buttonEvent = `${modalId}.showModal()`
 
   <div class="modal-box">
     <form method="dialog">
-      <button class="btn btn-circle btn-ghost btn-sm absolute right-8 top-8"><CloseIcon size={30} /></button>
+      <button class="btn btn-circle btn-ghost btn-sm absolute right-8 top-8"><i class="ti ti-x" /></button>
     </form>
 
     {title ?? <h3 class="text-lg font-bold">{title}</h3>}

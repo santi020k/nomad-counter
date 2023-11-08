@@ -58,7 +58,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
         className="btn btn-block rounded-full"
         aria-label="Login button"
       >
-        {UserIcon}
+        <i className="ti ti-user text-xl" />
       </button>
     )
   }
