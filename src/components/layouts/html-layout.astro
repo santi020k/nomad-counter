@@ -8,6 +8,8 @@ import { getLocale, t } from '@utils/lang-utils'
 import '@i18n'
 import '@fontsource-variable/cabin'
 
+import '@tabler/icons-webfont/tabler-icons.css'
+
 interface Props {
   title?: string
   description?: string
@@ -22,13 +24,13 @@ const locale = getLocale(Astro.url)
 <html lang={locale} transition:animate="none">
   <head>
     <script>
+      // Note: Load i18n config client-side
       import '@i18n'
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- TODO: pending to add better description -->
     <meta
       name="description"
       content={description ?? t('common:site.description')}

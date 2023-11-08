@@ -22,6 +22,7 @@
     "@astrojs/vercel": "^5.1.0",
     "@fontsource-variable/cabin": "^5.0.16",
     "@supabase/supabase-js": "^2.38.4",
+    "@tabler/icons-webfont": "^2.40.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vercel/analytics": "^1.1.1",
