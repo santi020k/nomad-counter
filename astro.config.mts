@@ -8,10 +8,10 @@ import { filterSitemapByDefaultLocale, i18n } from 'astro-i18n-aut/integration'
 
 const defaultLocale = 'en'
 const locales = {
-  en: 'en-US',
-  es: 'es-ES'
+  en: 'en',
+  es: 'es'
 }
-const baseUrl = 'https://nomad.santi020k.me'
+const baseUrl = import.meta.env.DEV ? 'http://localhost:4321' : 'https://nomad.santi020k.me'
 
 export default defineConfig({
   integrations: [

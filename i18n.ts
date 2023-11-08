@@ -1,13 +1,13 @@
 import { initReactI18next } from 'react-i18next'
 
-import { getLocaleUrl } from 'astro-i18n-aut'
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import resourcesToBackend from 'i18next-resources-to-backend'
+import Backend from 'i18next-chained-backend'
+import FsBackend from 'i18next-fs-backend'
+import HttpApi from 'i18next-http-backend'
 
 void i18next
-  .use(resourcesToBackend(async (language: string, namespace: string) =>
-    await import(`./public/locales/${language}/${namespace}.json`)))
+  .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -15,12 +15,20 @@ void i18next
     debug: false,
     ns: ['common', 'home'],
     partialBundledLanguages: true,
-    supportedLngs: ['en', 'es']
+    supportedLngs: ['en', 'es'],
+    initImmediate: true,
+    load: 'languageOnly',
+    backend: {
+      backends: [
+        HttpApi,
+        FsBackend
+      ],
+      backendOptions: [{
+        loadPath: '/locales/{{lng}}/{{ns}}.json'
+      }, {
+        loadPath: './public/locales/{{lng}}/{{ns}}.json'
+      }]
+    }
   })
-
-export { getLocale, getLocaleUrl } from 'astro-i18n-aut'
-export * from 'i18next'
-
-export const localizePath = (url: string, location?: string): string => getLocaleUrl(url, location ?? i18next?.language)
 
 export default i18next

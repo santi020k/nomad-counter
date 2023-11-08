@@ -1,10 +1,10 @@
 ---
-import { localizePath } from '@i18n'
-
 import HeartsIcon from '@atoms/icons/hearts-icon.astro'
 import InstagramIcon from '@atoms/icons/instagram-brand-icon.astro'
 import TwitterIcon from '@atoms/icons/twitter-brand-icon.astro'
 import YoutubeIcon from '@atoms/icons/youtube-brand-icon.astro'
+
+import { localizePath, t } from '@utils/lang-utils'
 ---
 
 <div class="relative h-16" />
@@ -14,12 +14,20 @@ import YoutubeIcon from '@atoms/icons/youtube-brand-icon.astro'
     <footer class="footer items-center gap-y-px p-4">
       <aside class="grid-flow-col items-center gap-1">
         <p class="m-0"><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
-        <p class="m-0">By <a href="https://santi020k.me" target="_blank">@santi020k</a> with</p>
+        <p class="m-0">
+          {t('common:generic.by')}
+          &nbsp;
+          <a href="https://santi020k.me" target="_blank">
+            @{t('common:generic.santi020k')}
+          </a>
+          &nbsp;
+          {t('common:generic.with')}
+        </p>
         <span class="text-red-600"><HeartsIcon size={24} /></span>
         |
-        <a href={localizePath('/privacy-policy')}>Privacy Policy</a>
+        <a href={localizePath('/privacy-policy')}>{t('common:pages.privacy')}</a>
         |
-        <a href={localizePath('/terms')}>Terms and Conditions of Use</a>
+        <a href={localizePath('/terms')}>{t('common:pages.term')}</a>
       </aside>
       <nav class="grid-flow-col gap-1 md:place-self-center md:justify-self-end">
         <a

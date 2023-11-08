@@ -1,9 +1,8 @@
+import i18next from 'i18next'
 import { create } from 'zustand'
 
-import { t } from '@i18n'
-
 import { supabase } from '@libs/supabase/supabase'
-import { toastError, toastSuccess } from '@libs/toast-alerts/toast-alert'
+import { toastError } from '@libs/toast-alerts/toast-alert'
 
 import { type UserData, UserDataSchema } from '@models/auth-model'
 
@@ -37,11 +36,10 @@ const useAuthStore = create<UserAuthState>()((set) => ({
         set(() => ({
           user: parseAuthResult
         }))
-        toastSuccess({ text: t('common:messages.auth.success') ?? '', duration: 3000 })
       }
     }).catch((error) => {
       console.error(error)
-      toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
+      toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
     })
   }
 }))

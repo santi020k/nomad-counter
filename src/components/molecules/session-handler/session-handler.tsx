@@ -1,6 +1,7 @@
 import { type FC, type ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { t } from '@i18n'
+import i18next from 'i18next'
 
 import { supabase } from '@libs/supabase/supabase'
 import { toastError } from '@libs/toast-alerts/toast-alert'
@@ -24,7 +25,7 @@ const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   })
-  if (error) toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
+  if (error) toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
 }
 
 const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
@@ -34,23 +35,22 @@ const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> 
 }
 
 const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
+  const { t } = useTranslation()
   const [user, fetchSession, logIn, logOut] =
     useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
 
   useEffect(() => {
     void fetchSession()
 
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const parseAuthResponse = parseAuthSession(session)
-      if (session !== null && parseAuthResponse) logIn(parseAuthResponse)
+      if (parseAuthResponse) logIn(parseAuthResponse)
     })
 
     return () => { subscription.unsubscribe() }
   }, [])
 
-  if (!(user.isSignIn ?? true)) {
+  if (!user.isSignIn) {
     return (
       <button
         type="button"

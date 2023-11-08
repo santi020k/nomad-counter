@@ -1,9 +1,9 @@
 ---
-import { localizePath } from '@i18n'
-
 import ToggleLanguage from '@molecules/buttons/toggle-language-button.astro'
 import ToggleTheme from '@molecules/buttons/toggle-theme-button/index.astro'
 import SessionHandler from '@molecules/session-handler/index.astro'
+
+import { localizePath, t } from '@utils/lang-utils'
 ---
 
 <nav
@@ -17,7 +17,13 @@ import SessionHandler from '@molecules/session-handler/index.astro'
         href={localizePath('/')}
         class="h-auto cursor-pointer text-4xl font-semibold normal-case leading-8 no-underline sm:text-5xl"
       >
-        <span class="text-primary">Nomad</span> <span class="text-secondary">Counter</span>
+        <span class="text-primary">
+          {t('common:site.name.nomad')}
+        </span>
+        &nbsp;
+        <span class="text-secondary">
+          {t('common:site.name.counter')}
+        </span>
       </a>
     </div>
     <div class="flex flex-row gap-2">

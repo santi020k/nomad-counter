@@ -12,8 +12,9 @@ module.exports = {
     "plugin:astro/all",
     "plugin:astro/jsx-a11y-strict",
     "plugin:tailwindcss/recommended",
+    "plugin:i18next/recommended"
   ],
-  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports"],
+  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,

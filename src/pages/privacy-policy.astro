@@ -1,10 +1,9 @@
 ---
 import { getEntry } from 'astro:content'
 
-import { changeLanguage, getLocale } from '@i18n'
+import { getLocale } from '@utils/lang-utils'
 
 const locale = getLocale(Astro.url)
-void changeLanguage(locale)
 
 const entry = await getEntry('pages', `${locale}/privacy-policy`)
 const Content = await entry?.render().then(({ Content }) => Content)
