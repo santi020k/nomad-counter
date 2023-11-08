@@ -1,26 +1,20 @@
 ---
-import { t } from '@libs/i18n/i18n'
+import { t } from 'i18next'
 ---
 
-<div class="hero hero-h bg-base-200">
+<header class="hero min-h-[calc(100dvh-128px)] bg-base-200 sm:min-h-[calc(100dvh-97px)]">
   <div class="hero-content text-center">
     <div class="max-w-md">
-      <div
-        class="badge badge-secondary border-b-secondary rounded-md mb-0
-        bg-gradient-to-r from-primary via-purple-500 to-secondary"
+      <span
+        class="badge badge-secondary mb-1 h-auto rounded-md border-b-secondary bg-gradient-to-r
+        from-primary via-purple-500 to-secondary"
       >
         {t('home:hero.badge')}
-      </div>
-      <h1 class="text-8xl font-bold mb-12">{t('home:hero.title')}</h1>
-      <a href="#calc" class="btn btn-primary rounded-full">{t('home:hero.actionLeft')}</a>
+      </span>
+      <h1 class="mb-8 text-5xl font-bold sm:text-8xl">{t('home:hero.title')}</h1>
+      <a href="#calc" class="btn-primary btn rounded-full">{t('home:hero.actionLeft')}</a>
       <!-- TODO: comming soon -->
       <!-- <button class="btn btn-secondary">{t('home:hero.actionRight')}</button> -->
     </div>
   </div>
-</div>
-
-<style>
-  .hero-h {
-    min-height: calc(100vh - 99px);
-  }
-</style>
+</header>

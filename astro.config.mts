@@ -1,26 +1,36 @@
+import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
 import vercel from '@astrojs/vercel/static'
 import { defineConfig } from 'astro/config'
-import astroI18next from 'astro-i18next'
+import { filterSitemapByDefaultLocale, i18n } from 'astro-i18n-aut/integration'
 
 const defaultLocale = 'en'
 const locales = {
-  en: 'en-US', // the `defaultLocale` value must present in `locales` keys
-  es: 'es-ES'
+  en: 'en',
+  es: 'es'
 }
-const baseUrl = 'https://nomad.santi020k.me'
+const baseUrl = import.meta.env.DEV ? 'http://localhost:4321' : 'https://nomad.santi020k.me'
 
-// https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react(), astroI18next(),
+  integrations: [
+    tailwind(),
+    react(),
+    mdx(),
+    i18n({
+      locales,
+      defaultLocale,
+      exclude: ['pages/api/**/*', 'pages/**/*.md', 'pages/**/*.mdx']
+    }),
     sitemap({
       i18n: {
         locales,
         defaultLocale
-      }
-    })],
+      },
+      filter: filterSitemapByDefaultLocale({ defaultLocale, base: baseUrl })
+    })
+  ],
   output: 'static',
   adapter: vercel({
     speedInsights: {
@@ -29,8 +39,8 @@ export default defineConfig({
     webAnalytics: {
       enabled: true
     },
-    imageService: true,
-    devImageService: 'squoosh'
+    imageService: true
+    // devImageService: 'squoosh'
   }),
   site: baseUrl,
   trailingSlash: 'always',

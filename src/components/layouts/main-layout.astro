@@ -7,7 +7,9 @@ import Navbar from '@organisms/navbar.astro'
   <!-- Nav -->
   <Navbar />
   <!-- Content -->
-  <slot />
+  <main transition:animate="fade">
+    <slot />
+  </main>
   <!-- Footer -->
   <Footer />
 </main>

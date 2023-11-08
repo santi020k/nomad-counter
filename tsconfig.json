@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "allowJs": true,
     "strict": true,
     "baseUrl": ".",
     "verbatimModuleSyntax": true,
@@ -11,11 +12,11 @@
       "@molecules/*": ["src/components/molecules/*"],
       "@organisms/*": ["src/components/organisms/*"],
       "@layouts/*": ["src/components/layouts/*"],
-      "@pages/*": ["src/components/pages/*"],
       "@libs/*": ["src/libs/*"],
       "@store/*": ["src/store/*"],
       "@models/*": ["src/models/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@i18n": ["./i18n"]
     }
   }
 }
