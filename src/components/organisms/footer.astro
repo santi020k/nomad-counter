@@ -3,19 +3,29 @@ import HeartsIcon from '@atoms/icons/hearts-icon.astro'
 import InstagramIcon from '@atoms/icons/instagram-brand-icon.astro'
 import TwitterIcon from '@atoms/icons/twitter-brand-icon.astro'
 import YoutubeIcon from '@atoms/icons/youtube-brand-icon.astro'
+
+import { localizePath, t } from '@utils/lang-utils'
 ---
 
-<div class="relative h-20" />
+<div class="relative h-32 sm:h-24 md:h-14" />
 
-<div class="absolute bottom-0 bg-base-300 w-screen">
+<div class="absolute bottom-0 w-screen bg-base-300">
   <div class="container mx-auto">
-    <footer class="footer items-center p-4 gap-y-px">
-      <aside class="items-center grid-flow-col gap-1">
+    <footer class="footer items-center gap-y-px p-4">
+      <nav class="mb-4 flex grid-flow-col flex-wrap items-center gap-1 md:mb-0">
         <p class="m-0"><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
-        <p class="m-0">By @santi020k with</p>
+        <p class="m-0 flex gap-1">
+          {t('common:generic.by')}
+          <a href="https://santi020k.me" target="_blank">@{t('common:generic.santi020k')}</a>
+          {t('common:generic.with')}
+        </p>
         <span class="text-red-600"><HeartsIcon size={24} /></span>
-      </aside>
-      <nav class="grid-flow-col md:place-self-center md:justify-self-end gap-1">
+        |
+        <a href={localizePath('/privacy-policy')}>{t('common:pages.privacy')}</a>
+        |
+        <a href={localizePath('/terms')}>{t('common:pages.terms')}</a>
+      </nav>
+      <nav class="grid-flow-col gap-1 md:place-self-center md:justify-self-end">
         <a
           href="https://www.instagram.com/santi020k/"
           target="_blank"

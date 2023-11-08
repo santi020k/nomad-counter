@@ -1,14 +1,15 @@
 ---
-import i18next from '@libs/i18n/i18n'
+import i18next from 'i18next'
 
-import { handleToggleLanguage } from '@utils/redirects-utils'
+import { getLocale, toggleLanguage } from '@utils/lang-utils'
 
 const pathname = Astro.url.pathname
+const language = getLocale(Astro.url)
 ---
 
-<a href={handleToggleLanguage({ pathname })}>
-  <div tab-index={0} class="btn btn-ghost btn-circle avatar placeholder">
-    <div class="bg-transparent text-current rounded-full w-12">
+<a href={toggleLanguage({ pathname, language })}>
+  <div tab-index={0} class="avatar placeholder btn btn-circle btn-ghost">
+    <div class="w-12 rounded-full bg-transparent text-current">
       <span>{i18next.language.toUpperCase()}</span>
     </div>
   </div>

@@ -5,5 +5,23 @@
       "logout": "Logout"
     },
     "error": "Something went wrong"
+  },
+  "site": {
+    "title": "Nomad Counter By santi020k",
+    "description": "Nomad Counter is an essential tool for travelers and adventurers worldwide. This application, available in both Spanish and English, allows you to keep a precise record of your time spent in different countries, including days spent at airports during layovers or connections.",
+    "name": {
+      "full": "Nomad Counter",
+      "nomad": "Nomad",
+      "counter": "Counter"
+    }
+  },
+  "generic": {
+    "by": "By",
+    "santi020k": "Santi020k",
+    "with": "With"
+  },
+  "pages": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions of Use"
   }
 }

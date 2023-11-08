@@ -21,17 +21,17 @@ const buttonEvent = `${modalId}.showModal()`
 
   <div class="modal-box">
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-8 top-8"><CloseIcon size={30} /></button>
+      <button class="btn btn-circle btn-ghost btn-sm absolute right-8 top-8"><CloseIcon size={30} /></button>
     </form>
 
-    {title ?? <h3 class="font-bold text-lg">{title}</h3>}
+    {title ?? <h3 class="text-lg font-bold">{title}</h3>}
 
     <div class="modal-body">
       <slot />
     </div>
 
     <div class="modal-action">
-      {(btnPrimaryOnClick !== null) && (<button class="btn btn-primary">{btnPrimaryText ?? 'Save'}</button>)}
+      {(btnPrimaryOnClick !== null) && (<button class="btn-primary btn">{btnPrimaryText ?? 'Save'}</button>)}
       {(btnCloseText !== null) && (
         <form method="dialog">
           <button class="btn">{btnCloseText ?? 'Close'}</button>
@@ -40,5 +40,5 @@ const buttonEvent = `${modalId}.showModal()`
     </div>
   </div>
 
-  <label class="modal-backdrop" for={modalId}>Close</label>
+  <label class="modal-backdrop" for={modalId}>{'Close'}</label>
 </dialog>

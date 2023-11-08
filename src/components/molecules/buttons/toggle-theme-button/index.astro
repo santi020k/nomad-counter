@@ -5,7 +5,7 @@ import SunHigh from '@atoms/icons/sun-high-icon.astro'
 import ToggleThemeButton from './toggle-theme-button';
 ---
 
-<ToggleThemeButton client:load>
+<ToggleThemeButton client:visible>
   <SunHigh size={17} slot='lightIcon' />
   <Moon size={17} slot='darkIcon' />
 </ToggleThemeButton>

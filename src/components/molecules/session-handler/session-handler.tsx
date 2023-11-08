@@ -1,6 +1,8 @@
 import { type FC, type ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { t } from '@libs/i18n/i18n'
+import i18next from 'i18next'
+
 import { supabase } from '@libs/supabase/supabase'
 import { toastError } from '@libs/toast-alerts/toast-alert'
 
@@ -23,7 +25,7 @@ const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   })
-  if (error) toastError({ text: t('common:messages.error') ?? '', duration: 3000 })
+  if (error) toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
 }
 
 const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
@@ -33,23 +35,22 @@ const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> 
 }
 
 const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
+  const { t } = useTranslation()
   const [user, fetchSession, logIn, logOut] =
     useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
 
   useEffect(() => {
     void fetchSession()
 
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const parseAuthResponse = parseAuthSession(session)
-      if (session !== null && parseAuthResponse) logIn(parseAuthResponse)
+      if (parseAuthResponse) logIn(parseAuthResponse)
     })
 
     return () => { subscription.unsubscribe() }
   }, [])
 
-  if (!(user.isSignIn ?? true)) {
+  if (!user.isSignIn) {
     return (
       <button
         type="button"
@@ -63,13 +64,13 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
   }
 
   return (
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost btn-circle avatar placeholder">
-        <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
+    <div className="dropdown sm:dropdown-end">
+      <label tabIndex={0} className="avatar placeholder btn btn-circle btn-ghost">
+        <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
           <span>{user?.shortName || user?.initialLetter || UserIcon}</span>
         </div>
       </label>
-      <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+      <ul tabIndex={0} className="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow">
         {/* TODO: Coming soon  */}
         {/* <li><a>Profile</a></li> */}
         {/* <li><a>Settings</a></li> */}
