@@ -23,10 +23,6 @@ const locale = getLocale(Astro.url)
 <!doctype html>
 <html lang={locale} transition:animate="none">
   <head>
-    <script>
-      // Note: Load i18n config client-side
-      import '@i18n'
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -60,6 +56,13 @@ const locale = getLocale(Astro.url)
     <slot />
   </body>
 </html>
+
+<script>
+  // Note: Load i18n config client-side
+  import '@i18n'
+  // Darepicker
+  import 'flowbite/dist/datepicker'
+</script>
 
 <!-- TODO: Move to global styles -->
 <style>

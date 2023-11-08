@@ -28,6 +28,7 @@
     "@vercel/analytics": "^1.1.1",
     "astro": "^3.4.3",
     "astro-i18n-aut": "^0.4.25",
+    "flowbite": "^2.0.0",
     "i18next": "23.6.0",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-chained-backend": "^4.5.0",
