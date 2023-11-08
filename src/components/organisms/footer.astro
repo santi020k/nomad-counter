@@ -7,28 +7,24 @@ import YoutubeIcon from '@atoms/icons/youtube-brand-icon.astro'
 import { localizePath, t } from '@utils/lang-utils'
 ---
 
-<div class="relative h-16" />
+<div class="relative h-32 sm:h-24 md:h-14" />
 
 <div class="absolute bottom-0 w-screen bg-base-300">
   <div class="container mx-auto">
     <footer class="footer items-center gap-y-px p-4">
-      <aside class="grid-flow-col items-center gap-1">
+      <nav class="mb-4 flex grid-flow-col flex-wrap items-center gap-1 md:mb-0">
         <p class="m-0"><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
-        <p class="m-0">
+        <p class="m-0 flex gap-1">
           {t('common:generic.by')}
-          &nbsp;
-          <a href="https://santi020k.me" target="_blank">
-            @{t('common:generic.santi020k')}
-          </a>
-          &nbsp;
+          <a href="https://santi020k.me" target="_blank">@{t('common:generic.santi020k')}</a>
           {t('common:generic.with')}
         </p>
         <span class="text-red-600"><HeartsIcon size={24} /></span>
         |
         <a href={localizePath('/privacy-policy')}>{t('common:pages.privacy')}</a>
         |
-        <a href={localizePath('/terms')}>{t('common:pages.term')}</a>
-      </aside>
+        <a href={localizePath('/terms')}>{t('common:pages.terms')}</a>
+      </nav>
       <nav class="grid-flow-col gap-1 md:place-self-center md:justify-self-end">
         <a
           href="https://www.instagram.com/santi020k/"
