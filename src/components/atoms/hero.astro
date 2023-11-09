@@ -2,19 +2,51 @@
 import { t } from 'i18next'
 ---
 
-<header class="hero min-h-[calc(100dvh-128px)] bg-base-200 sm:min-h-[calc(100dvh-97px)]">
-  <div class="hero-content text-center">
-    <div class="max-w-md">
-      <span
-        class="badge badge-secondary mb-1 h-auto rounded-md border-b-secondary bg-gradient-to-r
-        from-primary via-purple-500 to-secondary"
-      >
-        {t('home:hero.badge')}
-      </span>
-      <h1 class="mb-8 text-5xl font-bold sm:text-8xl">{t('home:hero.title')}</h1>
-      <a href="#calc" class="btn-primary btn rounded-full">{t('home:hero.actionLeft')}</a>
-      <!-- TODO: comming soon -->
-      <!-- <button class="btn btn-secondary">{t('home:hero.actionRight')}</button> -->
+<header
+  class="hero mt-[-128px] min-h-screen bg-[url('/assets/bg/hero.png')]
+  bg-contain bg-repeat transition-opacity sm:mt-[-97px]"
+>
+  <div class="hero-content h-full w-full bg-base-200/80">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <span
+          class="badge badge-secondary mb-1 h-auto rounded-md border-b-secondary bg-gradient-to-r
+          from-primary to-secondary text-white"
+        >
+          {t('home:hero.badge')}
+        </span>
+        <h1 class="mb-8 text-5xl font-bold sm:text-8xl">{t('home:hero.title')}</h1>
+        <a href="#calc" class="btn-primary btn rounded-full">{t('home:hero.actionLeft')}</a>
+        <!-- TODO: comming soon -->
+        <!-- <button class="btn btn-secondary">{t('home:hero.actionRight')}</button> -->
+      </div>
     </div>
   </div>
 </header>
+
+<style>
+  .hero {
+    /* background:
+      linear-gradient(
+        45deg,
+        rgba(255,175,189,.5),
+        rgba(100,216,243,.5),
+        rgba(234,236,198,.5),
+        rgba(245,146,176,.5),
+        rgba(52,219,216,.7)
+      ) 0 0 / 1000% no-repeat, url(/assets/bg/hero.png) 0 0 / contain repeat; */
+    animation: gradientAnimation 40s ease infinite;
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 30%, 0 0;
+    }
+    50% {
+      background-position: 100% 70%, 0 0;
+    }
+    100% {
+      background-position: 0% 30%, 0 0;
+    }
+  }
+</style>
