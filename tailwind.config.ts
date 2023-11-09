@@ -9,7 +9,10 @@ import heights from './config/tailwind/heights'
 import themes from './config/tailwind/themes'
 
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}', './node_modules/flowbite/**/*.js'],
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
+  ],
   darkMode: 'class',
   theme: {
     extend: heights,
