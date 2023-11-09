@@ -20,19 +20,22 @@ export default [
     },
     dark: {
       ...daisyuiTheme['[data-theme=dark]'],
-      primary: '#b296d6',
-      secondary: '#e2c8f6',
+      primary: '#5C469C',
+      secondary: '#D4ADFC',
       accent: '#f3e8fb',
+      textColor: '#fff',
+
       '.btn-primary': {
-        'background-color': '#b296d6',
-        'border-color': '#b296d6',
+        'background-color': '#5C469C',
+        'border-color': '#5C469C',
         color: '#fff'
       },
       '.btn-secondary': {
-        'background-color': '#e2c8f6',
-        'border-color': '#e2c8f6',
+        'background-color': '#D4ADFC',
+        'border-color': '#D4ADFC',
         color: '#fff'
-      }
+      },
+      'base-content': '#dadada'
     }
   }
 ]
