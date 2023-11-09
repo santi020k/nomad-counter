@@ -3,10 +3,10 @@ import { t } from 'i18next'
 ---
 
 <header
-  class="hero mt-[-128px] min-h-screen bg-[url('/assets/bg/hero.png')]
+  class="background-animation mt-[-128px] min-h-screen bg-[url('/assets/bg/hero.png')]
   bg-contain bg-repeat transition-opacity sm:mt-[-97px]"
 >
-  <div class="hero h-full w-full bg-base-200/80">
+  <div class="hero h-screen w-screen bg-base-200/80">
     <div class="hero-content text-center">
       <div class="max-w-md">
         <span
@@ -24,21 +24,13 @@ import { t } from 'i18next'
   </div>
 </header>
 
+<!-- TODO: Move this to separate file -->
 <style>
-  .hero {
-    /* background:
-      linear-gradient(
-        45deg,
-        rgba(255,175,189,.5),
-        rgba(100,216,243,.5),
-        rgba(234,236,198,.5),
-        rgba(245,146,176,.5),
-        rgba(52,219,216,.7)
-      ) 0 0 / 1000% no-repeat, url(/assets/bg/hero.png) 0 0 / contain repeat; */
-    animation: gradientAnimation 40s ease infinite;
+  .background-animation {
+    animation: backgroundAnimation 40s ease infinite;
   }
 
-  @keyframes gradientAnimation {
+  @keyframes backgroundAnimation {
     0% {
       background-position: 0% 30%, 0 0;
     }
