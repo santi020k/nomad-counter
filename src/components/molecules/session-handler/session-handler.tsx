@@ -8,7 +8,7 @@ import { toastError } from '@libs/toast-alerts/toast-alert'
 
 import useAuthStore from '@store/use-auth-store'
 
-import { parseAuthSession } from '@utils/parse-auth-session'
+import { parseAuthSession } from '@utils/parse-auth-session-utils'
 
 interface SessionHandlerProps {
   UserIcon?: ReactElement

@@ -6,7 +6,7 @@ import { toastError } from '@libs/toast-alerts/toast-alert'
 
 import { type UserData, UserDataSchema } from '@models/auth-model'
 
-import { parseAuthSession } from '@utils/parse-auth-session'
+import { parseAuthSession } from '@utils/parse-auth-session-utils'
 
 export interface UserAuthState {
   user: UserData
