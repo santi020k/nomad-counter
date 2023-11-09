@@ -24,7 +24,7 @@ const initialUser = UserDataSchema.parse({
   initialLetter: ''
 })
 
-const useAuthStore = create<UserAuthState>()((set) => ({
+const useAuthStore = create<UserAuthState>((set) => ({
   user: initialUser,
   logIn: (user) => { set({ user: { isSignIn: true, ...user } }) },
   logOut: () => { set({ user: initialUser }) },
@@ -32,11 +32,7 @@ const useAuthStore = create<UserAuthState>()((set) => ({
     await supabase.auth.getSession().then(({ data: { session } }) => {
       const parseAuthResult = parseAuthSession(session)
 
-      if (parseAuthResult) {
-        set(() => ({
-          user: parseAuthResult
-        }))
-      }
+      if (parseAuthResult) set(() => ({ user: parseAuthResult }))
     }).catch((error) => {
       console.error(error)
       toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
