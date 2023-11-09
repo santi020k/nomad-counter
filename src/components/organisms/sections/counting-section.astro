@@ -1,6 +1,6 @@
 ---
-import Datepicker from '@atoms/datepicker.astro'
-import Input from '@atoms/input.astro'
+import Datepicker from '@atoms/datepicker.tsx'
+import Input from '@atoms/input.tsx'
 
 import { t } from '@utils/lang-utils'
 ---
@@ -16,23 +16,23 @@ import { t } from '@utils/lang-utils'
       <!-- Country -->
       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
         <div class="sm:col-span-4">
-          <Input name={t('home:counting.country')} required />
+          <Input name={t('home:counting.country')} required client:visible />
         </div>
 
         <!-- Arrived -->
         <div class="sm:col-span-4">
-          <Datepicker name={t('home:counting.arrival')} required />
+          <Datepicker name={t('home:counting.arrival')} required client:visible />
         </div>
 
         <!-- Departed -->
         <div class="sm:col-span-4">
-          <Datepicker name={t('home:counting.departure')} required />
+          <Datepicker name={t('home:counting.departure')} required client:visible />
         </div>
       </div>
     </div>
 
     <div class="mt-14 flex items-center justify-end gap-x-6">
-      <button type="submit" class="btn-primary btn">
+      <button type="button" class="btn-primary btn">
         {t('home:counting.action')}
       </button>
     </div>
