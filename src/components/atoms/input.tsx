@@ -1,12 +1,13 @@
-import { type FC } from 'react'
+import { type FC, type InputHTMLAttributes } from 'react'
 
-interface InputProps {
+import classNames from 'classNames'
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   label?: string
-  required?: boolean
 }
 
-const Input: FC<InputProps> = ({ name, label, required }) => (
+const Input: FC<InputProps> = ({ name, label, className, ...restProps }) => (
   <>
     <label htmlFor={name} className="mb-2 block text-sm font-medium leading-6">
       {label ?? name}
@@ -14,12 +15,15 @@ const Input: FC<InputProps> = ({ name, label, required }) => (
     <input
       type="text"
       id={name}
-      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900
-      focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white
-      dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      className={classNames(
+        'block w-full rounded-lg border focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600',
+        'dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 ',
+        'dark:focus:ring-blue-500',
+        className
+      )}
       placeholder={name}
       name={name}
-      required={required}
+      {...restProps}
     />
   </>
 )

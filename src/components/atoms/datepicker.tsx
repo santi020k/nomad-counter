@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unknown-property */
 import { type FC } from 'react'
 
-import { Datepicker as DatepickerFlow } from 'flowbite-react'
+import { Datepicker as DatepickerFlow, type DatepickerProps as DatepickerPropsFlow } from 'flowbite-react'
 
-interface DatepickerProps {
+interface DatepickerProps extends DatepickerPropsFlow {
   name: string
   label?: string
   required?: boolean
@@ -26,15 +26,16 @@ const datepickerTheme = {
   }
 }
 
-const Datepicker: FC<DatepickerProps> = ({ name, label, required }) => (
+const Datepicker: FC<DatepickerProps> = ({ name, label, ...restProps }) => (
   <>
     <label htmlFor={name} className="mb-2 block text-sm font-medium leading-6">
       {label ?? name}
     </label>
     <DatepickerFlow
       name={name}
-      required={required ?? false}
+      id={name}
       theme={datepickerTheme}
+      {...restProps}
     />
   </>
 )
