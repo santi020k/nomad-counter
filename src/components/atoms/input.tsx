@@ -1,7 +1,5 @@
 import { type FC, type InputHTMLAttributes } from 'react'
 
-import classNames from 'classNames'
-
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   label?: string
@@ -15,12 +13,12 @@ const Input: FC<InputProps> = ({ name, label, className, ...restProps }) => (
     <input
       type="text"
       id={name}
-      className={classNames(
+      className={[
         'block w-full rounded-lg border focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600',
         'dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 ',
         'dark:focus:ring-blue-500',
         className
-      )}
+      ].join(' ')}
       placeholder={name}
       name={name}
       {...restProps}
