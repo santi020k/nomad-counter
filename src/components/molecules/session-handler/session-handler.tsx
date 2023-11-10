@@ -1,37 +1,14 @@
 import { type FC, type ReactElement, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import i18next from 'i18next'
-
 import { supabase } from '@libs/supabase/supabase'
-import { toastError } from '@libs/toast-alerts/toast-alert'
 
 import useAuthStore from '@store/use-auth-store'
 
-import { parseAuthSession } from '@utils/parse-auth-session-utils'
+import { handleGoogleSignIn, handleSignOut, parseAuthSession } from '@utils/auth-session-utils'
 
 interface SessionHandlerProps {
   UserIcon?: ReactElement
-}
-
-const handleGoogleSignIn = async (): Promise<void> => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: window.location.href,
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent'
-      }
-    }
-  })
-  if (error) toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
-}
-
-const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
-  await supabase.auth.signOut().then(({ error }) => {
-    if (!error) logOut()
-  })
 }
 
 const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
