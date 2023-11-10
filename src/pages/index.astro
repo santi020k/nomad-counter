@@ -1,8 +1,10 @@
 ---
 import { changeLanguage, t } from 'i18next'
 
-import Hero from '@atoms/hero.astro'
-import CountingSection from '@atoms/sections/counting-section.astro'
+import Hero from '@molecules/hero.astro'
+
+import CountingSection from '@organisms/sections/counting-section'
+import ListCountingSection from '@organisms/sections/list-counting-section'
 
 import HtmlLayout from '@layouts/html-layout.astro'
 import MainLayout from '@layouts/main-layout.astro'
@@ -17,6 +19,13 @@ void changeLanguage(locale)
 <HtmlLayout title={t('home:title') ?? ''}>
   <MainLayout>
     <Hero />
-    <CountingSection />
+    <!-- TODO: pendding sections component improve order -->
+    <section
+      id="calc"
+      class="container mx-auto flex min-h-screen flex-col flex-wrap items-center justify-center py-[128px] sm:py-[97px]"
+    >
+      <CountingSection client:idle t={t('home:counting', { returnObjects: true })} />
+      <ListCountingSection client:idle />
+    </section>
   </MainLayout>
 </HtmlLayout>

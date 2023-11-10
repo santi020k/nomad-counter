@@ -10,6 +10,10 @@ Features:
 
 -
 
+Refactor:
+
+-
+
 ## Type of Change
 
 <!-- Put an `x` in all the boxes that apply: -->

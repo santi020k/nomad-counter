@@ -1,7 +1,7 @@
 ---
 import ToggleLanguage from '@molecules/buttons/toggle-language-button.astro'
-import ToggleTheme from '@molecules/buttons/toggle-theme-button/index.astro'
-import SessionHandler from '@molecules/session-handler/index.astro'
+import ToggleTheme from '@molecules/buttons/toggle-theme-button/toggle-theme-button'
+import SessionHandler from '@molecules/session-handler/session-handler'
 
 import { localizePath, t } from '@utils/lang-utils'
 ---
@@ -27,13 +27,13 @@ import { localizePath, t } from '@utils/lang-utils'
     </div>
     <div class="flex flex-row gap-2">
       <div class="flex items-center">
-        <SessionHandler />
+        <SessionHandler logoutText={t('common:messages.auth.logout')} client:visible />
       </div>
       <div class="flex-none">
         <ToggleLanguage />
       </div>
       <div class="flex-none">
-        <ToggleTheme />
+        <ToggleTheme client:visible />
       </div>
     </div>
   </div>

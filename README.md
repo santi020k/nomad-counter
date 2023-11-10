@@ -10,12 +10,12 @@
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Zod Badge](https://img.shields.io/badge/Zod-3E67B1?logo=zod&logoColor=fff&style=flat)
+![Zod Badge](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)
 
 <!-- Coming soon -->
 ![Logo](./public/assets/logo.webp)
 
-## Demo (coming soon)
+## Demo ([Production Website](https://nomad.santi020k.me/))
 
 ![App Screenshot](./public/assets/screenshot.png)
 

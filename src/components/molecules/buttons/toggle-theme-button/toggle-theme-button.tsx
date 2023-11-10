@@ -1,15 +1,10 @@
-import { type FC, type ReactElement, useEffect, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
 import { defaultTheme, type Theme, themes } from '@models/theme-model'
 
-interface ToggleThemeButtonProps {
-  lightIcon?: ReactElement
-  darkIcon?: ReactElement
-}
-
-const ToggleThemeButton: FC<ToggleThemeButtonProps> = ({ lightIcon, darkIcon }) => {
+const ToggleThemeButton: FC = () => {
   const [currentTheme, setCurrentTheme] = useState<Theme>(defaultTheme)
 
   const isLightTheme = currentTheme === themes.enum.light
@@ -30,6 +25,7 @@ const ToggleThemeButton: FC<ToggleThemeButtonProps> = ({ lightIcon, darkIcon }) 
     // but with astro and static pages it is necessary
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setCurrentTheme(themes.enum.dark)
+      document.documentElement.classList.add('dark')
     }
   }, [])
 
@@ -40,7 +36,7 @@ const ToggleThemeButton: FC<ToggleThemeButtonProps> = ({ lightIcon, darkIcon }) 
       className={`btn btn-circle h-12 w-12 ${isLightTheme ? 'btn-primary' : 'btn-secondary'}`}
       aria-label="Light dark theme toggle"
     >
-      {isLightTheme ? lightIcon : darkIcon }
+      {isLightTheme ? <i className="ti ti-sun-high text-xl" /> : <i className="ti ti-moon text-xl" /> }
     </ button>
   )
 }
