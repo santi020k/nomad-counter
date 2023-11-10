@@ -37,7 +37,7 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => {
           <div className="sm:col-span-4">
             <Input
               className='disabled:cursor-not-allowed disabled:opacity-50'
-              name={t?.country}
+              name={t?.country ?? ''}
               required
               disabled={disabled}
             />
@@ -45,12 +45,12 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => {
 
           {/* Arrived */}
           <div className="sm:col-span-4">
-            <Datepicker name={t?.arrival} required disabled={disabled} />
+            <Datepicker name={t?.arrival ?? ''} required disabled={disabled} />
           </div>
 
           {/* Departed */}
           <div className="sm:col-span-4">
-            <Datepicker name={t?.departure} required disabled={disabled} />
+            <Datepicker name={t?.departure ?? ''} required disabled={disabled} />
           </div>
         </div>
       </div>
