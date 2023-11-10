@@ -1,5 +1,4 @@
-import { type FC, type ReactElement, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { type FC, useEffect } from 'react'
 
 import { supabase } from '@libs/supabase/supabase'
 
@@ -8,11 +7,11 @@ import useAuthStore from '@store/use-auth-store'
 import { handleGoogleSignIn, handleSignOut, parseAuthSession } from '@utils/auth-session-utils'
 
 interface SessionHandlerProps {
-  UserIcon?: ReactElement
+  logoutText?: string
+
 }
 
-const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
-  const { t } = useTranslation()
+const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
   const [user, fetchSession, logIn, logOut] =
     useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
 
@@ -44,14 +43,14 @@ const SessionHandler: FC<SessionHandlerProps> = ({ UserIcon }) => {
     <div className="dropdown sm:dropdown-end">
       <label tabIndex={0} className="avatar placeholder btn btn-circle btn-ghost">
         <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
-          <span>{user?.shortName || user?.initialLetter || UserIcon}</span>
+          <span>{user?.shortName || user?.initialLetter}</span>
         </div>
       </label>
       <ul tabIndex={0} className="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow">
         {/* TODO: Coming soon  */}
         {/* <li><a>Profile</a></li> */}
         {/* <li><a>Settings</a></li> */}
-        <li><a onClick={() => { void handleSignOut({ logOut }) }}>{t('common:messages.auth.logout')}</a></li>
+        <li><a onClick={() => { void handleSignOut({ logOut }) }}>{logoutText}</a></li>
       </ul>
     </div>
   )

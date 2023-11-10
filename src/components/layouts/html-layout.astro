@@ -21,7 +21,7 @@ const locale = getLocale(Astro.url)
 ---
 
 <!doctype html>
-<html lang={locale} transition:animate="none">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,6 +31,7 @@ const locale = getLocale(Astro.url)
       name="description"
       content={description ?? t('common:site.description')}
     />
+
     <title>{title ?? t('common:site.title')}</title>
 
     <!-- Favicon -->
@@ -52,15 +53,10 @@ const locale = getLocale(Astro.url)
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <!-- Prose: https://github.com/tailwindlabs/tailwindcss-typography -->
-  <body class="prose max-w-none antialiased" transition:name="body">
+  <body class="prose max-w-none antialiased">
     <slot />
   </body>
 </html>
-
-<script>
-  // Note: Load i18n config client-side
-  import '@i18n'
-</script>
 
 <!-- TODO: Move to global styles -->
 <style>

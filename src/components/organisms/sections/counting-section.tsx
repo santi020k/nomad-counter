@@ -6,9 +6,12 @@ import Input from '@atoms/input'
 import useAuthStore from '@store/use-auth-store'
 
 import { handleGoogleSignIn } from '@utils/auth-session-utils'
-import { t } from '@utils/lang-utils'
 
-const CountingSection: FC = () => {
+interface CountingSectionProps {
+  t: Record<string, string>
+}
+
+const CountingSection: FC<CountingSectionProps> = ({ t }) => {
   const user = useAuthStore((state) => state.user)
 
   const disabled = !user?.isSignIn
@@ -22,37 +25,39 @@ const CountingSection: FC = () => {
   }
 
   return (
-    <form className="p-4">
+    <form className="w-full p-4">
       <div className="space-y-6">
-        <h2 className="mt-0 text-base font-semibold leading-7">{t('home:counting.title')}</h2>
-        <p className="mt-1 text-sm leading-6">
-          {t('home:counting.description')}
-        </p>
+        <div className="w-full">
+          <h2 className="mt-0 text-base font-semibold leading-7">{t.title}</h2>
+          <p className="mt-1 text-sm leading-6">{t.description}</p>
+        </div>
 
         {/* Country */}
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
           <div className="sm:col-span-4">
             <Input
               className='disabled:cursor-not-allowed disabled:opacity-50'
-              name={t('home:counting.country')} required disabled={disabled}
+              name={t?.country}
+              required
+              disabled={disabled}
             />
           </div>
 
           {/* Arrived */}
           <div className="sm:col-span-4">
-            <Datepicker name={t('home:counting.arrival')} required disabled={disabled} />
+            <Datepicker name={t?.arrival} required disabled={disabled} />
           </div>
 
           {/* Departed */}
           <div className="sm:col-span-4">
-            <Datepicker name={t('home:counting.departure')} required disabled={disabled} />
+            <Datepicker name={t?.departure} required disabled={disabled} />
           </div>
         </div>
       </div>
 
       <div className="mt-14 flex items-center justify-end gap-x-6">
         <button onClick={handleButton} type="button" className="btn-primary btn">
-          {user?.isSignIn ? t('home:counting.action') : t('home:counting.need')}
+          {user?.isSignIn ? t?.action : t?.need}
         </button>
       </div>
     </form>
