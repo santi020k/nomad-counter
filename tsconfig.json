@@ -16,7 +16,8 @@
       "@store/*": ["src/store/*"],
       "@models/*": ["src/models/*"],
       "@utils/*": ["src/utils/*"],
-      "@i18n": ["./i18n"]
+      "@i18n": ["./i18n"],
+      "@themes": ["./config/tailwind/themes"],
     }
   }
 }
