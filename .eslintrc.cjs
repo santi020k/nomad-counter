@@ -14,6 +14,7 @@ module.exports = {
     "plugin:tailwindcss/recommended",
     "plugin:i18next/recommended"
   ],
+  ignorePatterns: ["*.md"],
   plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next"],
   parserOptions: {
     ecmaFeatures: {
