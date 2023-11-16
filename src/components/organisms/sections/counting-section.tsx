@@ -41,9 +41,10 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => {
             mt-0 inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text
             text-base font-semibold leading-7 text-transparent"
           >
-            # {t.title}
+            # {t.subtitle}
           </h2>
-          <p className="mt-1 text-sm leading-6">{t.description}</p>
+          <h3>{t.title}</h3>
+          <p className="mt-1 text-sm leading-6">{t.description}.</p>
         </div>
 
         {/* Country */}

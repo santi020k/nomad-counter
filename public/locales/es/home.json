@@ -7,8 +7,9 @@
     "actionRight": "Descarga la Aplicación y Sigue Tu Viaje"
   },
   "counting": {
-    "title": "Contando tus Días",
-    "description": "Nomad Counter es una aplicación simple que te ayuda a rastrear tus días en cada país. Es una excelente manera de realizar un seguimiento de tus viajes y ver cuántos días has pasado en cada país.",
+    "title": "Explora tu Historial de Viajes y Suma Cada Día",
+    "subtitle": "Contando tus Días",
+    "description": "Descubre cuántos días has pasado en cada país con Nomad Counter, una aplicación sencilla que te ayuda a llevar un registro detallado de tus aventuras. Organiza tu historial de viajes y observa fácilmente la duración de tus estancias en diferentes destinos",
     "country": "País",
     "arrival": "Llegada",
     "departure": "Salida",
