@@ -1,5 +1,7 @@
 import { type FC, useEffect } from 'react'
 
+import { IconUser } from '@tabler/icons-react'
+
 import { supabase } from '@libs/supabase/supabase'
 
 import useAuthStore from '@store/use-auth-store'
@@ -34,7 +36,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
         className="btn btn-block rounded-full"
         aria-label="Login button"
       >
-        <i className="ti ti-user text-xl" />
+        <IconUser />
       </button>
     )
   }
@@ -42,11 +44,11 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
   return (
     <div className="dropdown sm:dropdown-end">
       <label tabIndex={0} className="avatar placeholder btn btn-circle btn-ghost">
-        <div className="w-12 rounded-full bg-neutral-focus text-neutral-content">
+        <div className="w-12 rounded-full bg-neutral text-neutral-content">
           <span>{user?.shortName || user?.initialLetter}</span>
         </div>
       </label>
-      <ul tabIndex={0} className="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow">
+      <ul tabIndex={0} className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
         {/* TODO: Coming soon  */}
         {/* <li><a>Profile</a></li> */}
         {/* <li><a>Settings</a></li> */}
