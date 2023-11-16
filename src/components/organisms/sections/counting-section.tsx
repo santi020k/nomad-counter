@@ -1,6 +1,6 @@
-import { type FC } from 'react'
+import { type FC, useState } from 'react'
 
-import Datepicker from '@atoms/datepicker'
+import Datepicker, { type DateValueType } from '@atoms/datepicker'
 import Input from '@atoms/input'
 
 import useAuthStore from '@store/use-auth-store'
@@ -13,6 +13,10 @@ interface CountingSectionProps {
 
 const CountingSection: FC<CountingSectionProps> = ({ t }) => {
   const user = useAuthStore((state) => state.user)
+  const [value, setValue] = useState<DateValueType>({
+    startDate: null,
+    endDate: null
+  })
 
   const disabled = !user?.isSignIn
 
@@ -24,17 +28,27 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => {
     }
   }
 
+  const handleValueChange = (newValue: DateValueType): void => {
+    console.log('newValue:', newValue)
+    setValue(newValue)
+  }
+
   return (
-    <form className="w-full p-4">
+    <form className="w-full max-w-4xl p-4">
       <div className="space-y-6">
         <div className="w-full">
-          <h2 className="mt-0 text-base font-semibold leading-7">{t.title}</h2>
+          <h2 className="
+            mt-0 inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text
+            text-base font-semibold leading-7 text-transparent"
+          >
+            # {t.title}
+          </h2>
           <p className="mt-1 text-sm leading-6">{t.description}</p>
         </div>
 
         {/* Country */}
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
-          <div className="sm:col-span-4">
+          <div className="sm:col-span-6">
             <Input
               className='disabled:cursor-not-allowed disabled:opacity-50'
               name={t?.country ?? ''}
@@ -43,14 +57,14 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => {
             />
           </div>
 
-          {/* Arrived */}
-          <div className="sm:col-span-4">
-            <Datepicker name={t?.arrival ?? ''} required disabled={disabled} />
-          </div>
-
-          {/* Departed */}
-          <div className="sm:col-span-4">
-            <Datepicker name={t?.departure ?? ''} required disabled={disabled} />
+          {/* Dates */}
+          <div className="sm:col-span-6">
+            <Datepicker
+              name={t?.arrival ?? ''}
+              required disabled={disabled}
+              value={value}
+              onChange={handleValueChange}
+            />
           </div>
         </div>
       </div>
