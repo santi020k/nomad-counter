@@ -39,8 +39,8 @@ export default defineConfig({
     webAnalytics: {
       enabled: true
     },
-    imageService: true
-    // devImageService: 'squoosh'
+    imageService: true,
+    devImageService: 'squoosh'
   }),
   site: baseUrl,
   trailingSlash: 'always',

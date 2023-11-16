@@ -1,5 +1,6 @@
 import { type FC, useEffect, useState } from 'react'
 
+import { IconMoon, IconSunHigh } from '@tabler/icons-react'
 import { match } from 'ts-pattern'
 
 import { defaultTheme, type Theme, themes } from '@models/theme-model'
@@ -22,7 +23,17 @@ const ToggleThemeButton: FC = () => {
 
   useEffect(() => {
     // NOTE: Normally in react it is not advisable to use window or document,
-    // but with astro and static pages it is necessary
+    // but with astro and static pages it is necessary to use them.
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      const newTheme = event.matches ? themes.enum.dark : themes.enum.light
+      setCurrentTheme(newTheme)
+      document.documentElement.setAttribute('data-theme', newTheme)
+      match(newTheme)
+        .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
+        .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
+    })
+
+    // First time load
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setCurrentTheme(themes.enum.dark)
       document.documentElement.classList.add('dark')
@@ -30,14 +41,22 @@ const ToggleThemeButton: FC = () => {
   }, [])
 
   return (
-    <button
-      type="button"
-      onClick={toggleTheme}
-      className={`btn btn-circle h-12 w-12 ${isLightTheme ? 'btn-primary' : 'btn-secondary'}`}
+    <label
+      htmlFor="toggle-theme-button"
+      className={`btn btn-circle swap swap-rotate h-12 w-12 ${isLightTheme ? 'btn-primary' : 'btn-secondary'}`}
       aria-label="Light dark theme toggle"
     >
-      {isLightTheme ? <i className="ti ti-sun-high text-xl" /> : <i className="ti ti-moon text-xl" /> }
-    </ button>
+      <input
+        onChange={toggleTheme}
+        type="checkbox"
+        checked={isLightTheme}
+        id="toggle-theme-button"
+        className="hidden"
+      />
+
+      <IconSunHigh className="swap-on fill-current" />
+      <IconMoon className="swap-off fill-current" />
+    </ label>
   )
 }
 
