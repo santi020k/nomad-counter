@@ -47,6 +47,9 @@ const locale = getLocale(Astro.url)
 
     <HeadHrefLangs />
 
+    <!-- In process -->
+    <link rel="canonical" href={Astro.url.origin} />
+
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
