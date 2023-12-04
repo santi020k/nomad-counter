@@ -12,7 +12,7 @@ export default {
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
     './node_modules/react-tailwindcss-datepicker/dist/index.esm.js'
   ],
-  darkMode: 'class',
+  darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: heights,
     fontFamily: {

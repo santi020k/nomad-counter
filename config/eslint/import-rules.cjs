@@ -17,6 +17,7 @@ module.exports = [
       ['^(@layouts)(/.*|$)'],
       ['^(@libs)(/.*|$)'],
       ['^(@store)(/.*|$)'],
+      ['^(@hooks)(/.*|$)'],
       ['^(@models)(/.*|$)'],
       ['^(@utils)(/.*|$)'],
       // Side effect imports.
