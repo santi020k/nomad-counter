@@ -36,7 +36,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
         className="btn btn-block rounded-full"
         aria-label="Login button"
       >
-        <IconUser />
+        <IconUser size={18} />
       </button>
     )
   }
