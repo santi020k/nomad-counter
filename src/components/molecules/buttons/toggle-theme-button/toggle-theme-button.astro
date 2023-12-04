@@ -45,6 +45,10 @@ import { IconMoon, IconSunHigh } from '@tabler/icons-react'
   }
 
   document.addEventListener('astro:after-swap', themeLogic)
+
+  // TODO: Pending improvements
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', themeLogic)
+
   themeLogic()
 </script>
 
