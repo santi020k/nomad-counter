@@ -1,15 +1,32 @@
 ---
 import Footer from '@organisms/footer.astro'
 import Navbar from '@organisms/navbar.astro'
+
+import HtmlLayout from '@layouts/html-layout.astro'
+
+import { changeLanguage, getLocale } from '@utils/lang-utils'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const { title } = Astro.props
+
+const locale = getLocale(Astro.url)
+
+void changeLanguage(locale)
 ---
 
-<div class="relative min-h-screen">
-  <!-- Nav -->
-  <Navbar />
-  <!-- Content -->
-  <main transition:animate="fade">
-    <slot />
-  </main>
-  <!-- Footer -->
-  <Footer />
-</div>
+<HtmlLayout title={title ?? ''}>
+  <div class="relative min-h-screen">
+    <!-- Nav -->
+    <Navbar />
+    <!-- Content -->
+    <main transition:animate="fade">
+      <slot />
+    </main>
+    <!-- Footer -->
+    <Footer />
+  </div>
+</HtmlLayout>
