@@ -3,40 +3,38 @@ import { type FC, useEffect, useState } from 'react'
 import { IconMoon, IconSunHigh } from '@tabler/icons-react'
 import { match } from 'ts-pattern'
 
+import useSessionStorage from '@hooks/use-session-storage'
+
 import { defaultTheme, type Theme, themes } from '@models/theme-model'
 
 const ToggleThemeButton: FC = () => {
-  const [currentTheme, setCurrentTheme] = useState<Theme>(defaultTheme)
+  const [currentTheme, setCurrentTheme] = useSessionStorage<Theme>('theme', defaultTheme)
+  const [isLightTheme, setIsLightTheme] = useState<boolean>(currentTheme === themes.enum.light)
 
-  const isLightTheme = currentTheme === themes.enum.light
+  console.log('🚀 ~ file: toggle-theme-button.tsx:13 ~ isLightTheme:', isLightTheme, currentTheme)
+
+  const handleTheme = (theme: Theme): void => {
+    setCurrentTheme(theme)
+    setIsLightTheme(theme === themes.enum.light)
+    document.documentElement.setAttribute('data-theme', theme)
+    match(theme)
+      .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
+      .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
+  }
 
   const toggleTheme = (): void => {
-    setCurrentTheme((prevTheme) => {
-      const theme = prevTheme === themes.enum.dark ? themes.enum.light : themes.enum.dark
-      document?.documentElement?.setAttribute('data-theme', theme)
-      match(theme)
-        .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
-        .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
-      return theme
-    })
+    handleTheme(currentTheme === themes.enum.dark ? themes.enum.light : themes.enum.dark)
   }
 
   useEffect(() => {
-    // NOTE: Normally in react it is not advisable to use window or document,
-    // but with astro and static pages it is necessary to use them.
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-      const newTheme = event.matches ? themes.enum.dark : themes.enum.light
-      setCurrentTheme(newTheme)
-      document.documentElement.setAttribute('data-theme', newTheme)
-      match(newTheme)
-        .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
-        .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
+      setCurrentTheme(event.matches ? themes.enum.dark : themes.enum.light)
+      setIsLightTheme(!event.matches)
     })
 
-    // First time load
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setCurrentTheme(themes.enum.dark)
-      document.documentElement.classList.add('dark')
+      setIsLightTheme(false)
     }
   }, [])
 
@@ -44,7 +42,7 @@ const ToggleThemeButton: FC = () => {
     <label
       htmlFor="toggle-theme-button"
       className={`btn btn-circle swap swap-rotate h-12 w-12 ${isLightTheme ? 'btn-primary' : 'btn-secondary'}`}
-      aria-label="Light dark theme toggle"
+      aria-label="light dark theme toggle"
     >
       <input
         onChange={toggleTheme}
@@ -54,8 +52,8 @@ const ToggleThemeButton: FC = () => {
         className="hidden"
       />
 
-      <IconSunHigh className="swap-on fill-current" />
-      <IconMoon className="swap-off fill-current" />
+      <IconSunHigh size={18} className="swap-on fill-current" />
+      <IconMoon size={18} className="swap-off fill-current" />
     </ label>
   )
 }

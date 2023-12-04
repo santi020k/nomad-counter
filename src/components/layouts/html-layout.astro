@@ -3,6 +3,8 @@ import { ViewTransitions } from 'astro:transitions'
 
 import HeadHrefLangs from '@atoms/head-href-langs.astro'
 
+import { themes } from '@models/theme-model'
+
 import { getLocale, t } from '@utils/lang-utils'
 
 import '@i18n'
@@ -19,8 +21,38 @@ const locale = getLocale(Astro.url)
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} transition:animate="none">
   <head>
+    <!-- TODO: move this script to separate file -->
+    <script is:inline define:vars={{ themes: themes.enum }}>
+      const extractTheme = () => {
+        const defaultIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        const theme = defaultIsDark ? themes.dark : themes.light
+        return window?.localStorage?.getItem('theme') ?? theme
+      }
+
+      const handleTheme = (newTheme) => {
+        document.documentElement.setAttribute('data-theme', newTheme)
+        if (newTheme === themes.dark) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+
+      const currentTheme = extractTheme()
+
+      handleTheme(currentTheme)
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        const newTheme = event.matches ? themes.dark : themes.light
+        handleTheme(newTheme)
+        localStorage.setItem('theme', newTheme)
+      })
+
+      document.addEventListener("astro:after-swap", () => handleTheme(currentTheme));
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />

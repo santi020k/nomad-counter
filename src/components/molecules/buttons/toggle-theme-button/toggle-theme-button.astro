@@ -1,0 +1,68 @@
+---
+import { IconMoon, IconSunHigh } from '@tabler/icons-react'
+
+---
+
+<script>
+  import { match } from 'ts-pattern'
+  import { type Theme, themes } from '@models/theme-model'
+
+  const themeLogic = () => {
+    const inputDocument = document.getElementById('toggle-theme-button') as HTMLInputElement
+    const labelDocument = document.getElementById('toggle-theme-button-label') as HTMLLabelElement
+
+    const handleTheme = (theme: Theme): void => {
+      localStorage.setItem('theme', theme)
+
+      document.documentElement.setAttribute('data-theme', theme)
+      match(theme)
+        .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
+        .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
+
+      if (theme === themes.enum.light) {
+        labelDocument.classList.remove('btn-secondary')
+        labelDocument.classList.add('btn-primary')
+      } else {
+        labelDocument.classList.remove('btn-primary')
+        labelDocument.classList.add('btn-secondary')
+      }
+
+      inputDocument.checked = theme === themes.enum.light
+    }
+
+    const extractTheme = (): Theme => {
+      const defaultIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      const theme = defaultIsDark ? themes.enum.dark : themes.enum.light
+      return (window?.localStorage?.getItem('theme') ?? theme) as Theme
+    }
+
+    inputDocument.addEventListener('change', () => {
+      const currentTheme = extractTheme()
+      handleTheme(currentTheme === themes.enum.dark ? themes.enum.light : themes.enum.dark)
+    })
+
+    handleTheme(extractTheme())
+  }
+
+  document.addEventListener('astro:after-swap', themeLogic)
+  themeLogic()
+</script>
+
+<label
+  for="toggle-theme-button"
+  id="toggle-theme-button-label"
+  class="btn-primary btn btn-circle swap swap-rotate h-12 w-12"
+  aria-label="light dark theme toggle"
+>
+  <input
+    type="checkbox"
+    id="toggle-theme-button"
+    class="hidden"
+  />
+  <span class="swap-on fill-current">
+    <IconSunHigh size={18} client:idle />
+  </span>
+  <span class="swap-off fill-current">
+    <IconMoon size={18} client:idle />
+  </span>
+</label>
