@@ -4,8 +4,19 @@ import { IconMoon, IconSunHigh } from '@tabler/icons-react'
 ---
 
 <script>
-  import { match } from 'ts-pattern'
   import { type Theme, themes } from '@models/theme-model'
+
+  const THEME_ACTIONS = {
+    [themes.enum.dark]: () => document.documentElement.classList.add('dark'),
+    [themes.enum.light]: () => document.documentElement.classList.remove('dark'),
+  };
+
+  const BASE_BUTTON_CLASS = 'btn btn-circle swap swap-rotate h-12 w-12';
+
+  const BUTTON_CLASSES = {
+    [themes.enum.dark]: `${BASE_BUTTON_CLASS} btn-secondary`,
+    [themes.enum.light]: `${BASE_BUTTON_CLASS} btn-primary`,
+  };
 
   const themeLogic = () => {
     const inputDocument = document.getElementById('toggle-theme-button') as HTMLInputElement
@@ -13,20 +24,10 @@ import { IconMoon, IconSunHigh } from '@tabler/icons-react'
 
     const handleTheme = (theme: Theme): void => {
       localStorage.setItem('theme', theme)
-
       document.documentElement.setAttribute('data-theme', theme)
-      match(theme)
-        .with(themes.enum.dark, () => { document.documentElement.classList.add('dark') })
-        .with(themes.enum.light, () => { document.documentElement.classList.remove('dark') })
+      THEME_ACTIONS[theme]();
 
-      if (theme === themes.enum.light) {
-        labelDocument.classList.remove('btn-secondary')
-        labelDocument.classList.add('btn-primary')
-      } else {
-        labelDocument.classList.remove('btn-primary')
-        labelDocument.classList.add('btn-secondary')
-      }
-
+      labelDocument.className = BUTTON_CLASSES[theme];
       inputDocument.checked = theme === themes.enum.light
     }
 
@@ -45,10 +46,7 @@ import { IconMoon, IconSunHigh } from '@tabler/icons-react'
   }
 
   document.addEventListener('astro:after-swap', themeLogic)
-
-  // TODO: Pending improvements
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', themeLogic)
-
   themeLogic()
 </script>
 

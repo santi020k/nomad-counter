@@ -25,6 +25,11 @@ const locale = getLocale(Astro.url)
   <head>
     <!-- TODO: move this script to separate file -->
     <script is:inline define:vars={{ themes: themes.enum }}>
+      const THEME_ACTIONS = {
+        [themes.dark]: () => document.documentElement.classList.add('dark'),
+        [themes.light]: () => document.documentElement.classList.remove('dark'),
+      };
+
       const extractTheme = () => {
         const defaultIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         const theme = defaultIsDark ? themes.dark : themes.light
@@ -33,11 +38,7 @@ const locale = getLocale(Astro.url)
 
       const handleTheme = (newTheme) => {
         document.documentElement.setAttribute('data-theme', newTheme)
-        if (newTheme === themes.dark) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
+        THEME_ACTIONS[newTheme]();
       }
 
       const currentTheme = extractTheme()
