@@ -8,10 +8,11 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "pre-commit": "lint-staged",
-    "pre-push": "eslint . --fix --max-warnings=0",
+    "pre-commit": "lint-staged && vitest run",
+    "pre-push": "eslint . --fix --max-warnings=0 && npm run build",
     "prepare": "husky install config/.husky",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.1",
