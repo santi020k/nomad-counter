@@ -6,16 +6,16 @@ import { supabase } from '@libs/supabase/supabase'
 
 import useAuthStore from '@store/use-auth-store'
 
-import { handleGoogleSignIn, handleSignOut, parseAuthSession } from '@utils/auth-session-utils'
+import { handleGoogleSignIn, parseAuthSession } from '@utils/auth-session-utils'
+
+import SessionUserAvatar from './session-user-avatar'
 
 interface SessionHandlerProps {
   logoutText?: string
-
 }
 
 const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
-  const [user, fetchSession, logIn, logOut] =
-    useAuthStore((state) => [state.user, state.fetchSession, state.logIn, state.logOut])
+  const { user, fetchSession, logIn } = useAuthStore(state => state)
 
   useEffect(() => {
     void fetchSession()
@@ -28,7 +28,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
     return () => { subscription.unsubscribe() }
   }, [])
 
-  if (!user.isSignIn) {
+  if (!user?.isSignIn) {
     return (
       <button
         type="button"
@@ -41,21 +41,7 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
     )
   }
 
-  return (
-    <div className="dropdown sm:dropdown-end">
-      <label tabIndex={0} className="avatar placeholder btn btn-circle btn-ghost">
-        <div className="w-12 rounded-full bg-neutral text-neutral-content">
-          <span>{user?.shortName || user?.initialLetter}</span>
-        </div>
-      </label>
-      <ul tabIndex={0} className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
-        {/* TODO: Coming soon  */}
-        {/* <li><a>Profile</a></li> */}
-        {/* <li><a>Settings</a></li> */}
-        <li><a onClick={() => { void handleSignOut({ logOut }) }}>{logoutText}</a></li>
-      </ul>
-    </div>
-  )
+  return <SessionUserAvatar logoutText={logoutText ?? ''} />
 }
 
 export default SessionHandler

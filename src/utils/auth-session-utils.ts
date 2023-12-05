@@ -5,17 +5,18 @@ import { toastError } from '@libs/toast-alerts/toast-alert'
 
 import { UserAuthSchema, type UserData, UserDataSchema } from '@models/auth-model'
 
-export const parseAuthSession = (session: unknown): UserData | undefined => {
-  const result = UserAuthSchema.safeParse(session)
+const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
+const TOAST_DURATION = 3000
 
+export const parseAuthSession = (session: unknown): UserData | undefined => {
   if (session === null) return undefined
+
+  const result = UserAuthSchema.safeParse(session)
 
   if (result?.success) {
     const { user: { user_metadata: userMetadata } } = result.data
     const splitNames = userMetadata?.name?.split(' ')
-    const splitFirstName = splitNames?.[0]?.split('') ?? ''
-    const splitLastName = splitNames?.[1]?.split('') ?? ''
-    const shortName = `${splitFirstName?.[0] ?? ''}${splitLastName?.[0] ?? ''}`
+    const shortName = `${splitNames?.[0]?.[0] ?? ''}${splitNames?.[1]?.[0] ?? ''}`
 
     const userDataSchema = UserDataSchema.safeParse({
       isSignIn: true,
@@ -23,7 +24,7 @@ export const parseAuthSession = (session: unknown): UserData | undefined => {
       email: userMetadata?.email,
       avatar: userMetadata?.avatar_url,
       shortName,
-      initialLetter: splitFirstName?.[0] ?? ''
+      initialLetter: splitNames?.[0]?.[0] ?? ''
     })
 
     if (userDataSchema.success) {
@@ -45,11 +46,5 @@ export const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   })
-  if (error) toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
-}
-
-export const handleSignOut = async ({ logOut }: { logOut: () => void }): Promise<void> => {
-  await supabase.auth.signOut().then(({ error }) => {
-    if (!error) logOut()
-  })
+  if (error) toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
 }
