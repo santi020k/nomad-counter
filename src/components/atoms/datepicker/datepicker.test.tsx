@@ -12,6 +12,12 @@ const defaultValues = {
 let defaultProps: DatepickerProps
 const onChange = vi.fn()
 
+// Fake
+const inputValue = '2024-01-08 ~ 2024-01-18'
+const inputLabel = 'Test Label'
+const inputPlaceholder = 'Enter text'
+const inputName = 'test'
+
 beforeEach(() => {
   onChange.mockReset()
   defaultProps = {
@@ -22,20 +28,25 @@ beforeEach(() => {
 })
 
 test('Datepicker renders with provided label', () => {
-  render(<Datepicker label="Test Label" {...defaultProps} />)
-  assert.ok(screen.getByLabelText('Test Label'))
+  render(<Datepicker {...defaultProps} label={inputLabel} />)
+  assert.ok(screen.getByLabelText(inputLabel))
 })
 
 test('Datepicker renders with name as label if no label is provided', () => {
   render(<Datepicker {...defaultProps} />)
-  assert.ok(screen.getByLabelText('test'))
+  assert.ok(screen.getByLabelText(inputName))
 })
 
 test('Datepicker changes value when a date is selected', async () => {
   render(<Datepicker {...defaultProps} />)
   const user = userEvent.setup()
-  const input: HTMLInputElement = screen.getByLabelText('test')
-  await user.type(input, '2024-01-08 ~ 2024-01-18')
-  assert.equal(input.value, '2024-01-08 ~ 2024-01-18')
+  const input: HTMLInputElement = screen.getByLabelText(inputName)
+  await user.type(input, inputValue)
+  assert.equal(input.value, inputValue)
   expect(onChange).toBeCalledTimes(1)
+})
+
+test('Datepicker renders with provided placeholder', () => {
+  render(<Datepicker {...defaultProps} placeholder={inputPlaceholder} />)
+  assert.ok(screen.getByPlaceholderText(inputPlaceholder))
 })
