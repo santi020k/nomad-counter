@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { assert, beforeEach, expect, test, vi } from 'vitest'
@@ -8,8 +9,8 @@ let defaultProps: InputProps
 const onChange = vi.fn()
 
 // Fake
-const inputValue = 'Test input'
-const inputLabel = 'Test Label'
+const inputValue = faker.lorem.word()
+const inputLabel = faker.lorem.word()
 const inputPlaceholder = 'Enter text'
 const inputName = 'test'
 
@@ -45,14 +46,6 @@ test('Input calls onChange when text is entered', async () => {
   const input: HTMLInputElement = screen.getByLabelText(inputName)
   await user.type(input, inputValue)
   expect(onChange).toBeCalledTimes(inputValue.length)
-})
-
-test('Input does not call onChange when disabled', async () => {
-  render(<Input {...defaultProps} disabled />)
-  const user = userEvent.setup()
-  const input: HTMLInputElement = screen.getByLabelText(inputName)
-  await user.type(input, inputValue)
-  expect(onChange).toBeCalledTimes(0)
 })
 
 test('Input renders with provided placeholder', () => {

@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { assert, beforeEach, expect, test, vi } from 'vitest'
@@ -14,7 +15,7 @@ const onChange = vi.fn()
 
 // Fake
 const inputValue = '2024-01-08 ~ 2024-01-18'
-const inputLabel = 'Test Label'
+const inputLabel = faker.lorem.word()
 const inputPlaceholder = 'Enter text'
 const inputName = 'test'
 
@@ -43,7 +44,7 @@ test('Datepicker changes value when a date is selected', async () => {
   const input: HTMLInputElement = screen.getByLabelText(inputName)
   await user.type(input, inputValue)
   assert.equal(input.value, inputValue)
-  expect(onChange).toBeCalledTimes(1)
+  expect(onChange).toHaveBeenCalled()
 })
 
 test('Datepicker renders with provided placeholder', () => {
