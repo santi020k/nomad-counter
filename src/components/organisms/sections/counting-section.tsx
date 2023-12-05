@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react'
 
-import Datepicker, { type DateValueType } from '@atoms/datepicker'
+import Datepicker, { type DateValueType } from '@atoms/datepicker/datepicker'
 import Input from '@atoms/input'
 
 import useAuthStore from '@store/use-auth-store'
