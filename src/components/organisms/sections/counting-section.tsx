@@ -12,7 +12,7 @@ interface CountingSectionProps {
 }
 
 const CountingSection: FC<CountingSectionProps> = ({ t }) => {
-  const user = useAuthStore((state) => state.user)
+  const { user } = useAuthStore(state => state)
   const [value, setValue] = useState<DateValueType>({
     startDate: null,
     endDate: null
