@@ -25,4 +25,4 @@ pnpm-debug.log*
 astro_tmp_pages_*
 
 # coverage
-coverage/*
+coverage
