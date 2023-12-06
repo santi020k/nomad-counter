@@ -10,6 +10,7 @@ import { parseAuthSession } from '@utils/auth-session-utils'
 
 export interface UserAuthState {
   user: UserData
+  resetState: () => void
   logIn: (user: UserData) => void
   logOut: () => Promise<void>
   fetchSession: () => Promise<void>
@@ -29,9 +30,10 @@ const TOAST_DURATION = 3000
 
 const useAuthStore = create<UserAuthState>((set) => ({
   user: initialUser,
+  resetState: () => { set({ user: initialUser }) },
   logIn: (user) => { set({ user: { isSignIn: true, ...user } }) },
   logOut: async () => {
-    const { error } = await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut() ?? { error: undefined }
 
     if (!error) set({ user: initialUser })
     if (error) toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
