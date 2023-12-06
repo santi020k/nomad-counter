@@ -10,7 +10,7 @@ const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
 const TOAST_DURATION = 3000
 
 export const parseAuthSession = (session: Session): UserData | undefined => {
-  if (session === null) return undefined
+  if (!session) return undefined
 
   const result = UserAuthSchema.safeParse(session)
 
@@ -47,6 +47,6 @@ export const handleGoogleSignIn = async (): Promise<void> => {
         prompt: 'consent'
       }
     }
-  })
+  }) ?? { error: undefined }
   if (error) toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
 }

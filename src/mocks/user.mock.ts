@@ -1,8 +1,12 @@
 import { faker } from '@faker-js/faker'
 
-const provider = faker.lorem.word()
+import { type UserData } from '@models/auth-model'
 
-const mockUser = {
+import { parseAuthSession } from '@utils/auth-session-utils'
+
+export const provider = faker.lorem.word()
+
+export const mockUser = Object.freeze({
   access_token: faker.string.uuid(),
   refresh_token: faker.string.uuid(),
   expires_in: faker.number.int(),
@@ -10,7 +14,7 @@ const mockUser = {
   token_type: faker.lorem.word(),
   user: {
     name: faker.person.fullName(),
-    avatar: faker.image.avatar(),
+    avatar_url: faker.image.avatar(),
     id: faker.string.uuid(),
     app_metadata: {
       provider,
@@ -18,13 +22,13 @@ const mockUser = {
     },
     user_metadata: {
       name: faker.person.fullName(),
-      avatar: faker.image.avatar(),
+      avatar_url: faker.image.avatar(),
       email: faker.internet.email()
     },
     aud: faker.lorem.word(),
     email: faker.internet.email(),
     created_at: faker.date.past().toString()
   }
-}
+})
 
-export default mockUser
+export const parsedMockUser = Object.freeze(parseAuthSession(mockUser) as UserData)

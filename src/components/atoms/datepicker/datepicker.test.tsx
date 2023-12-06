@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { assert, beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, assert, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import Datepicker, { type DatepickerProps } from './datepicker'
 
@@ -27,6 +27,10 @@ describe('Datepicker Tests', () => {
       onChange,
       value: defaultValues
     }
+  })
+
+  afterEach(() => {
+    cleanup()
   })
 
   test('Datepicker renders with provided label', () => {
