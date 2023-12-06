@@ -20,20 +20,24 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
   useEffect(() => {
     void fetchSession()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       const parseAuthResponse = parseAuthSession(session)
       if (parseAuthResponse) logIn(parseAuthResponse)
-    })
+    }) ?? {}
 
-    return () => { subscription.unsubscribe() }
+    const { subscription } = data ?? {}
+
+    return () => { subscription?.unsubscribe() }
   }, [])
 
   if (!user?.isSignIn) {
     return (
       <button
         type="button"
+        role="button"
         onClick={() => { void handleGoogleSignIn() }}
         className="btn btn-block rounded-full"
+        id="login-button"
         aria-label="Login button"
       >
         <IconUser size={18} />
