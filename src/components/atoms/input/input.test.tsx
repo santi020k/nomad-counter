@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { assert, beforeEach, describe, expect, test, vi } from 'vitest'
+import { assert, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Input, { type InputProps } from './input'
 
@@ -14,7 +14,7 @@ const inputLabel = faker.lorem.word()
 const inputPlaceholder = 'Enter text'
 const inputName = 'test'
 
-describe('Input Tests', () => {
+describe('input Tests', () => {
   beforeEach(() => {
     onChange.mockReset()
     defaultProps = {
@@ -23,17 +23,17 @@ describe('Input Tests', () => {
     }
   })
 
-  test('Input renders with provided label', () => {
+  it('input renders with provided label', () => {
     render(<Input {...defaultProps} label={inputLabel} />)
     assert.ok(screen.getByLabelText(inputLabel))
   })
 
-  test('Input renders with name as label if no label is provided', () => {
+  it('input renders with name as label if no label is provided', () => {
     render(<Input {...defaultProps} />)
     assert.ok(screen.getByLabelText(inputName))
   })
 
-  test('Input changes value when text is entered', async () => {
+  it('input changes value when text is entered', async () => {
     render(<Input {...defaultProps} />)
     const user = userEvent.setup()
     const input: HTMLInputElement = screen.getByLabelText(inputName)
@@ -41,15 +41,15 @@ describe('Input Tests', () => {
     assert.equal(input.value, inputValue)
   })
 
-  test('Input calls onChange when text is entered', async () => {
+  it('input calls onChange when text is entered', async () => {
     render(<Input {...defaultProps} />)
     const user = userEvent.setup()
     const input: HTMLInputElement = screen.getByLabelText(inputName)
     await user.type(input, inputValue)
-    expect(onChange).toBeCalledTimes(inputValue.length)
+    expect(onChange).toHaveBeenCalledTimes(inputValue.length)
   })
 
-  test('Input renders with provided placeholder', () => {
+  it('input renders with provided placeholder', () => {
     render(<Input {...defaultProps} placeholder={inputPlaceholder} />)
     assert.ok(screen.getByPlaceholderText(inputPlaceholder))
   })

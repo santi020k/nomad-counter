@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, assert, describe, expect, test, vi } from 'vitest'
+import { afterEach, assert, describe, expect, it, vi } from 'vitest'
 
 import useAuthStore from '@store/use-auth-store'
 
@@ -11,7 +11,7 @@ import SessionHandler from './session-handler'
 
 vi.mock('@libs/supabase/supabase')
 
-describe('SessionHandler Tests', () => {
+describe('sessionHandler Tests', () => {
   const { resetState, logIn } = useAuthStore.getState()
 
   afterEach(() => {
@@ -19,20 +19,20 @@ describe('SessionHandler Tests', () => {
     cleanup()
   })
 
-  test('SessionHandler calls fetchSession on mount', () => {
+  it('sessionHandler calls fetchSession on mount', () => {
     const fetchSession = vi.spyOn(useAuthStore.getState(), 'fetchSession')
     render(<SessionHandler />)
-    expect(fetchSession).toBeCalledTimes(1)
+    expect(fetchSession).toHaveBeenCalledTimes(1)
   })
 
-  test('SessionHandler calls handleGoogleSignIn when button is clicked', () => {
+  it('sessionHandler calls handleGoogleSignIn when button is clicked', () => {
     const handleGoogleSignInSpy = vi.spyOn(authSession, 'handleGoogleSignIn')
     render(<SessionHandler />)
     fireEvent.click(screen.getByRole('button'))
-    expect(handleGoogleSignInSpy).toBeCalledTimes(1)
+    expect(handleGoogleSignInSpy).toHaveBeenCalledTimes(1)
   })
 
-  test('SessionHandler renders SessionUserAvatar when user is signed in', () => {
+  it('sessionHandler renders SessionUserAvatar when user is signed in', () => {
     logIn(parsedMockUser)
     render(<SessionHandler logoutText='Logout' />)
     assert.ok(screen.getByText('Logout'))

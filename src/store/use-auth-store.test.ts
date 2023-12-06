@@ -1,5 +1,5 @@
 import { act } from '@testing-library/react'
-import { afterEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { supabase } from '@libs/supabase/supabase'
 
@@ -27,47 +27,47 @@ describe('useAuthStore Tests', () => {
     resetState()
   })
 
-  test('logIn sets user data', () => {
+  it('logIn sets user data', () => {
     act(() => {
       logIn(parsedMockUser)
     })
 
-    expect(logInUser).toEqual(useAuthStore.getState().user)
+    expect(logInUser).toStrictEqual(useAuthStore.getState().user)
   })
 
-  test('resetState resets user data', () => {
+  it('resetState resets user data', () => {
     act(() => {
       logIn(parsedMockUser)
     })
 
-    expect(useAuthStore.getState().user).not.toEqual(initialUser)
+    expect(useAuthStore.getState().user).not.toStrictEqual(initialUser)
 
     act(() => {
       resetState()
     })
 
-    expect(useAuthStore.getState().user).toEqual(initialUser)
+    expect(useAuthStore.getState().user).toStrictEqual(initialUser)
   })
 
-  test('logOut resets user data', async () => {
+  it('logOut resets user data', async () => {
     await act(async () => {
       await logOut()
     })
 
-    expect(useAuthStore.getState().user).toEqual(initialUser)
+    expect(useAuthStore.getState().user).toStrictEqual(initialUser)
   })
 
-  test('logOut call supabase sign out', async () => {
+  it('logOut call supabase sign out', async () => {
     const signOutSpy = vi.spyOn(supabase.auth, 'signOut')
 
     await act(async () => {
       await logOut()
     })
 
-    expect(signOutSpy).toBeCalledTimes(1)
+    expect(signOutSpy).toHaveBeenCalledTimes(1)
   })
 
-  test('fetchSession sets user data', async () => {
+  it('fetchSession sets user data', async () => {
     const getSessionSpy = vi.spyOn(supabase.auth, 'getSession')
 
     getSessionSpy.mockResolvedValue({ data: { session: mockUser }, error: null })
@@ -76,6 +76,6 @@ describe('useAuthStore Tests', () => {
       await fetchSession()
     })
 
-    expect(useAuthStore.getState().user).toEqual(logInUser)
+    expect(useAuthStore.getState().user).toStrictEqual(logInUser)
   })
 })

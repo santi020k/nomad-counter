@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, assert, beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Datepicker, { type DatepickerProps } from './datepicker'
 
@@ -19,7 +19,7 @@ const inputLabel = faker.lorem.word()
 const inputPlaceholder = 'Enter text'
 const inputName = 'test'
 
-describe('Datepicker Tests', () => {
+describe('datepicker Tests', () => {
   beforeEach(() => {
     onChange.mockReset()
     defaultProps = {
@@ -33,26 +33,26 @@ describe('Datepicker Tests', () => {
     cleanup()
   })
 
-  test('Datepicker renders with provided label', () => {
+  it('datepicker renders with provided label', () => {
     render(<Datepicker {...defaultProps} label={inputLabel} />)
     assert.ok(screen.getByLabelText(inputLabel))
   })
 
-  test('Datepicker renders with name as label if no label is provided', () => {
+  it('datepicker renders with name as label if no label is provided', () => {
     render(<Datepicker {...defaultProps} />)
     assert.ok(screen.getByLabelText(inputName))
   })
 
-  test('Datepicker changes value when a date is selected', async () => {
+  it('datepicker changes value when a date is selected', async () => {
     render(<Datepicker {...defaultProps} />)
     const user = userEvent.setup()
     const input: HTMLInputElement = screen.getByLabelText(inputName)
     await user.type(input, inputValue)
     assert.equal(input.value, inputValue)
-    expect(onChange).toHaveBeenCalled()
+    expect(onChange).toHaveBeenCalledTimes(1)
   })
 
-  test('Datepicker renders with provided placeholder', () => {
+  it('datepicker renders with provided placeholder', () => {
     render(<Datepicker {...defaultProps} placeholder={inputPlaceholder} />)
     assert.ok(screen.getByPlaceholderText(inputPlaceholder))
   })

@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, assert, beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import useAuthStore from '@store/use-auth-store'
 
@@ -9,7 +9,7 @@ import SessionUserAvatar from './session-user-avatar'
 
 const logoutText = 'Logout'
 
-describe('SessionUserAvatar Tests', () => {
+describe('sessionUserAvatar Tests', () => {
   const { resetState, logIn } = useAuthStore.getState()
 
   beforeEach(() => {
@@ -21,21 +21,21 @@ describe('SessionUserAvatar Tests', () => {
     cleanup()
   })
 
-  test('SessionUserAvatar renders with user shortName', () => {
+  it('sessionUserAvatar renders with user shortName', () => {
     render(<SessionUserAvatar logoutText={logoutText} />)
-    assert.ok(screen.getByText(parsedMockUser?.shortName ?? ''))
+    assert.ok(screen.getByText(parsedMockUser?.shortName as string))
   })
 
-  test('SessionUserAvatar calls logOut when logout link is clicked', async () => {
+  it('sessionUserAvatar calls logOut when logout link is clicked', async () => {
     const logOutSpy = vi.spyOn(useAuthStore.getState(), 'logOut')
     render(<SessionUserAvatar logoutText={logoutText} />)
     fireEvent.click(screen.getByText(logoutText))
-    expect(logOutSpy).toBeCalledTimes(1)
+    expect(logOutSpy).toHaveBeenCalledTimes(1)
   })
 
-  test('SessionUserAvatar renders with user initialLetter', () => {
+  it('sessionUserAvatar renders with user initialLetter', () => {
     logIn({ ...parsedMockUser, shortName: undefined })
     render(<SessionUserAvatar logoutText={logoutText} />)
-    assert.ok(screen.getByText(parsedMockUser?.initialLetter ?? ''))
+    assert.ok(screen.getByText(parsedMockUser?.initialLetter as string))
   })
 })
