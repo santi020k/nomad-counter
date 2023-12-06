@@ -1,32 +1,26 @@
-import { faker } from '@faker-js/faker'
 import { cleanup, fireEvent, render, renderHook, screen } from '@testing-library/react'
 import { afterEach, assert, describe, expect, test, vi } from 'vitest'
 
 import useAuthStore from '@store/use-auth-store'
 
+import { type UserData } from '@models/auth-model'
+
 import { parseAuthSession } from '@utils/auth-session-utils'
 import * as authSession from '@utils/auth-session-utils'
+
+import mockUser from '@mocks/user.mock'
 
 import SessionHandler from './session-handler'
 
 vi.mock('@libs/supabase/supabase')
 vi.mock('@utils/auth-session-utils')
 
-const defaultUser = {
-  isSignIn: true,
-  email: faker.internet.email(),
-  name: faker.person.fullName(),
-  avatar: faker.image.avatar(),
-  shortName: faker.person.firstName(),
-  initialLetter: faker.person.firstName()
-}
-
-const parsedUser = parseAuthSession(defaultUser) ?? defaultUser
+const parsedUser = parseAuthSession(mockUser) as UserData
 
 describe('SessionHandler Tests', () => {
-  afterEach(cleanup)
-
   const { result: { current } } = renderHook(() => useAuthStore(state => state))
+
+  afterEach(cleanup)
 
   test('SessionHandler calls fetchSession on mount', () => {
     const fetchSession = vi.spyOn(current, 'fetchSession')

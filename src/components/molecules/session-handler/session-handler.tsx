@@ -21,8 +21,10 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
     void fetchSession()
 
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      const parseAuthResponse = parseAuthSession(session)
-      if (parseAuthResponse) logIn(parseAuthResponse)
+      if (session) {
+        const parseAuthResponse = parseAuthSession(session)
+        if (parseAuthResponse) logIn(parseAuthResponse)
+      }
     }) ?? {}
 
     const { subscription } = data ?? {}

@@ -20,6 +20,7 @@ module.exports = [
       ['^(@hooks)(/.*|$)'],
       ['^(@models)(/.*|$)'],
       ['^(@utils)(/.*|$)'],
+      ['^(@mocks)(/.*|$)'],
       // Side effect imports.
       ['^\\u0000'],
       // Parent imports. Put `..` last.

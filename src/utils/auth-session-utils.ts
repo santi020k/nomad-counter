@@ -1,3 +1,4 @@
+import { type Session } from '@supabase/supabase-js'
 import i18next from 'i18next'
 
 import { supabase } from '@libs/supabase/supabase'
@@ -8,13 +9,14 @@ import { UserAuthSchema, type UserData, UserDataSchema } from '@models/auth-mode
 const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
 const TOAST_DURATION = 3000
 
-export const parseAuthSession = (session: unknown): UserData | undefined => {
+export const parseAuthSession = (session: Session): UserData | undefined => {
   if (session === null) return undefined
 
   const result = UserAuthSchema.safeParse(session)
 
   if (result?.success) {
-    const { user: { user_metadata: userMetadata } } = result.data
+    const { user } = result.data ?? {}
+    const { user_metadata: userMetadata } = user ?? {}
     const splitNames = userMetadata?.name?.split(' ')
     const shortName = `${splitNames?.[0]?.[0] ?? ''}${splitNames?.[1]?.[0] ?? ''}`
 
