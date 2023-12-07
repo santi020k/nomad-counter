@@ -21,7 +21,7 @@
     "@astrojs/react": "^3.0.7",
     "@astrojs/sitemap": "^3.0.3",
     "@astrojs/tailwind": "^5.0.3",
-    "@astrojs/vercel": "^6.0.0",
+    "@astrojs/vercel": "^6.0.1",
     "@fontsource-variable/cabin": "^5.0.17",
     "@supabase/supabase-js": "^2.39.0",
     "@tabler/icons-react": "^2.42.0",
@@ -58,8 +58,8 @@
     "@types/toastify-js": "^1.12.3",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
-    "@vitest/coverage-v8": "^1.0.1",
-    "@vitest/ui": "^1.0.1",
+    "@vitest/coverage-v8": "^1.0.2",
+    "@vitest/ui": "^1.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "daisyui": "^4.4.19",
     "eslint": "^8.55.0",
@@ -81,7 +81,7 @@
     "husky": "^8.0.3",
     "jsdom": "^23.0.1",
     "lint-staged": "^15.2.0",
-    "vitest": "^1.0.1"
+    "vitest": "^1.0.2"
   },
   "overrides": {
     "astro-i18n-aut": {
