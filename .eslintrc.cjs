@@ -13,10 +13,11 @@ module.exports = {
     "plugin:astro/jsx-a11y-strict",
     "plugin:tailwindcss/recommended",
     "plugin:i18next/recommended",
+    'plugin:testing-library/react',
     "plugin:vitest/all"
   ],
   ignorePatterns: ["*.md"],
-  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next", "vitest"],
+  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next", "vitest", "testing-library"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -35,7 +36,8 @@ module.exports = {
       {
         "allow": ["afterEach", "afterAll", "beforeEach", "beforeAll"]
       }
-    ]
+    ],
+    "testing-library/no-manual-cleanup": "off"
   },
   overrides: [
     {
