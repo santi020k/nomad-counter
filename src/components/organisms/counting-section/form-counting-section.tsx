@@ -7,11 +7,11 @@ import useAuthStore from '@store/use-auth-store'
 
 import { handleGoogleSignIn } from '@utils/auth-session-utils'
 
-interface CountingSectionProps {
+interface FormCountingSectionProps {
   t: Record<string, string>
 }
 
-const CountingSection: FC<CountingSectionProps> = ({ t }) => {
+const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   const { user } = useAuthStore(state => state)
   const [value, setValue] = useState<DateValueType>({
     startDate: null,
@@ -79,4 +79,4 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => {
   )
 }
 
-export default CountingSection
+export default FormCountingSection
