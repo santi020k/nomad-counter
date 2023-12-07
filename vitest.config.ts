@@ -4,6 +4,10 @@ import { getViteConfig } from 'astro/config'
 export default getViteConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom'
+    environment: 'jsdom',
+    coverage: {
+      include: ['src/**'],
+      exclude: ['config/**', 'src/env.d.ts', 'src/models/**', 'src/mocks/**']
+    }
   }
 })
