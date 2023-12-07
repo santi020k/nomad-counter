@@ -1,11 +1,15 @@
-import { type FC } from 'react'
+import { type FC, type MouseEvent } from 'react'
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
 import type { DateValueType } from 'react-tailwindcss-datepicker'
 
 import Datepicker from '@atoms/datepicker/datepicker'
 import Input from '@atoms/input/input'
 
+import { supabase } from '@libs/supabase/supabase'
+
 import useAuthStore from '@store/use-auth-store'
+
+import { CountingFormSchema } from '@models/counting-form-model'
 
 import { handleGoogleSignIn } from '@utils/auth-session-utils'
 
@@ -26,25 +30,54 @@ enum InputsNames {
 const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   const { user } = useAuthStore(state => state)
 
-  const { register, handleSubmit, watch, control, formState: { errors } } = useForm<Inputs>({
-    defaultValues: { arrival: { startDate: null, endDate: null } }
+  const { register, handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
+    // TODO: In future versions, this will be the default behavior setting in user account.
+    // defaultValues: { arrival: { startDate: null, endDate: null } }
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data, event) => {
-    event?.preventDefault()
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (!data.arrival?.endDate || !data.arrival?.startDate) {
+      setError(InputsNames.arrival, {
+        type: 'manual',
+        message: 'This field is required'
+      })
+      return
+    }
+    const result = CountingFormSchema.safeParse(data)
+    if (result.success) {
+      const { data, error } = await supabase
+        .from('list-calculations')
+        .insert([
+          {
+            country: result.data.country,
+            arrival: result.data.arrival.startDate,
+            departure: result.data.arrival.endDate
+          }
+        ])
+        .select()
+      // TODO: Handle error
+      console.log('🚀 ~ file: form-counting-section.tsx:54 ~ data, error:', data, error)
+    } else {
+      result.error.issues.forEach(issue => {
+        setError(issue.path[0] as keyof Inputs, {
+          type: 'manual',
+          message: issue.message
+        })
+      })
+    }
+  }
+
+  const handleForm = (event: MouseEvent<HTMLElement>): void => {
+    event.preventDefault()
     if (user?.isSignIn) {
-      console.log(data)
+      void handleSubmit(onSubmit)()
     } else {
       void handleGoogleSignIn()
     }
   }
 
-  console.log(watch(InputsNames.country), watch(InputsNames.arrival))
-
-  const handleForm = (): () => void => handleSubmit(onSubmit)
-
   return (
-    <form className="w-full max-w-4xl p-4" onSubmit={handleForm()}>
+    <form className="w-full max-w-4xl p-4">
       <div className="space-y-6">
         <div className="w-full">
           <h2 className="
@@ -68,6 +101,8 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
               label={t?.country ?? InputsNames.country}
               {...register(InputsNames.country, { required: true })}
             />
+            {/* eslint-disable-next-line i18next/no-literal-string */}
+            {errors.country ? <span>This field is required</span> : null}
           </div>
 
           {/* Dates */}
@@ -75,6 +110,7 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
             <Controller
               control={control}
               name={InputsNames.arrival}
+              rules={{ required: true }}
               render={({ field: { onChange, value, name } }) => (
                 <Datepicker
                   disabled={!user?.isSignIn || false}
@@ -84,18 +120,14 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
                 />
               )}
             />
+            {/* eslint-disable-next-line i18next/no-literal-string */}
+            {errors.arrival ? <span>This field is required</span> : null}
           </div>
         </div>
       </div>
 
-      {/* TODO: Temporal string fix */}
-      {/* eslint-disable-next-line i18next/no-literal-string */}
-      {errors.country ? <span>This field is required</span> : null}
-      {/* eslint-disable-next-line i18next/no-literal-string */}
-      {errors.arrival ? <span>This field is required</span> : null}
-
       <div className="mt-14 flex items-center justify-end gap-x-6">
-        <button type="submit" className="btn-primary btn">
+        <button type="submit" onClick={handleForm} className="btn-primary btn">
           {user?.isSignIn ? t?.action : t?.need}
         </button>
       </div>

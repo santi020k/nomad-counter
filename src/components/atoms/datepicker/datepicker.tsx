@@ -6,7 +6,7 @@ export interface DatepickerProps extends DatepickerType {
   label?: string
 }
 
-const Datepicker: FC<DatepickerProps> = ({ label, placeholder, name, disabled, value, onChange, ...restProps }) => (
+const Datepicker: FC<DatepickerProps> = ({ label, name, ...restProps }) => (
   <>
     <label htmlFor={name} className="mb-2 block text-sm font-medium leading-6">
       {label ?? name}
@@ -20,10 +20,6 @@ const Datepicker: FC<DatepickerProps> = ({ label, placeholder, name, disabled, v
       startWeekOn="mon"
       inputName={name}
       inputId={name}
-      disabled={disabled ?? false}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder ?? ''}
       {...restProps}
     />
   </>
