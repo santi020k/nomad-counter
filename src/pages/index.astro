@@ -3,13 +3,12 @@ import { t } from 'i18next'
 
 import Hero from '@molecules/hero.astro'
 
-import CountingSection from '@organisms/sections/counting-section'
+import CountingSection from '@organisms/counting-section/counting-section'
 
 import MainLayout from '@layouts/main-layout.astro'
 ---
 
 <MainLayout title={t('home:title')}>
   <Hero />
-  <!-- TODO: pendding sections component improve order -->
   <CountingSection client:idle t={t('home:counting', { returnObjects: true })} />
 </MainLayout>

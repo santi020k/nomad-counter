@@ -1,6 +1,6 @@
 import { type FC, useEffect, useState } from 'react'
 
-import ItemCountingSection from '@components/organisms/counting-section/item-counting-section'
+import ItemCountingSection from '@organisms/counting-section/item-counting-section'
 
 import { type ListCalculations } from '@libs/supabase/database.types'
 import { supabase } from '@libs/supabase/supabase'

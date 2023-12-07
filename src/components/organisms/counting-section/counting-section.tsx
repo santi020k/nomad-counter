@@ -15,7 +15,7 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => (
     "
   >
     <FormCountingSection t={t} />
-    <ListCountingSection client:idle />
+    <ListCountingSection />
   </section>
 )
 

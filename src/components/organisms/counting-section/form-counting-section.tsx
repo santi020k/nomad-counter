@@ -1,6 +1,8 @@
-import { type FC, useState } from 'react'
+import { type FC } from 'react'
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
+import type { DateValueType } from 'react-tailwindcss-datepicker'
 
-import Datepicker, { type DateValueType } from '@atoms/datepicker/datepicker'
+import Datepicker from '@atoms/datepicker/datepicker'
 import Input from '@atoms/input/input'
 
 import useAuthStore from '@store/use-auth-store'
@@ -11,30 +13,38 @@ interface FormCountingSectionProps {
   t: Record<string, string>
 }
 
+interface Inputs {
+  country: string
+  arrival: DateValueType
+}
+
+enum InputsNames {
+  country = 'country',
+  arrival = 'arrival'
+}
+
 const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   const { user } = useAuthStore(state => state)
-  const [value, setValue] = useState<DateValueType>({
-    startDate: null,
-    endDate: null
+
+  const { register, handleSubmit, watch, control, formState: { errors } } = useForm<Inputs>({
+    defaultValues: { arrival: { startDate: null, endDate: null } }
   })
 
-  const disabled = !user?.isSignIn
-
-  const handleButton = (): void => {
+  const onSubmit: SubmitHandler<Inputs> = (data, event) => {
+    event?.preventDefault()
     if (user?.isSignIn) {
-      console.log('temp')
+      console.log(data)
     } else {
       void handleGoogleSignIn()
     }
   }
 
-  const handleValueChange = (newValue: DateValueType): void => {
-    console.log('newValue:', newValue)
-    setValue(newValue)
-  }
+  console.log(watch(InputsNames.country), watch(InputsNames.arrival))
+
+  const handleForm = (): () => void => handleSubmit(onSubmit)
 
   return (
-    <form className="w-full max-w-4xl p-4">
+    <form className="w-full max-w-4xl p-4" onSubmit={handleForm()}>
       <div className="space-y-6">
         <div className="w-full">
           <h2 className="
@@ -52,26 +62,40 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
           <div className="sm:col-span-6">
             <Input
               className='disabled:cursor-not-allowed disabled:opacity-50'
-              name={t?.country ?? ''}
               required
-              disabled={disabled}
+              placeholder='Colombia'
+              disabled={!user?.isSignIn || false}
+              label={t?.country ?? InputsNames.country}
+              {...register(InputsNames.country, { required: true })}
             />
           </div>
 
           {/* Dates */}
           <div className="sm:col-span-6">
-            <Datepicker
-              name={t?.arrival ?? ''}
-              required disabled={disabled}
-              value={value}
-              onChange={handleValueChange}
+            <Controller
+              control={control}
+              name={InputsNames.arrival}
+              render={({ field: { onChange, value, name } }) => (
+                <Datepicker
+                  disabled={!user?.isSignIn || false}
+                  name={name}
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
             />
           </div>
         </div>
       </div>
 
+      {/* TODO: Temporal string fix */}
+      {/* eslint-disable-next-line i18next/no-literal-string */}
+      {errors.country ? <span>This field is required</span> : null}
+      {/* eslint-disable-next-line i18next/no-literal-string */}
+      {errors.arrival ? <span>This field is required</span> : null}
+
       <div className="mt-14 flex items-center justify-end gap-x-6">
-        <button onClick={handleButton} type="button" className="btn-primary btn">
+        <button type="submit" className="btn-primary btn">
           {user?.isSignIn ? t?.action : t?.need}
         </button>
       </div>
