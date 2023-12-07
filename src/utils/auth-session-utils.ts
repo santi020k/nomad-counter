@@ -9,7 +9,7 @@ import { UserAuthSchema, type UserData, UserDataSchema } from '@models/auth-mode
 const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
 const TOAST_DURATION = 3000
 
-export const parseAuthSession = (session: Session): UserData | undefined => {
+export const parseAuthSession = (session: Session | undefined): UserData | undefined => {
   if (!session) return undefined
 
   const result = UserAuthSchema.safeParse(session)
