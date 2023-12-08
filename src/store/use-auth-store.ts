@@ -43,7 +43,7 @@ const useAuthStore = create<UserAuthState>((set) => ({
       const { data } = await supabase.auth.getSession() ?? {}
       const { session } = data ?? {}
 
-      if (session === null) throw new Error('Session not found')
+      if (session === null) return
 
       const parseAuthResult = parseAuthSession(session)
 
