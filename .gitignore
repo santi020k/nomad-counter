@@ -23,3 +23,6 @@ pnpm-debug.log*
 
 # i18n
 astro_tmp_pages_*
+
+# coverage
+coverage

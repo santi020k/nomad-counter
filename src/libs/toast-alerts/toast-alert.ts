@@ -1,30 +1,38 @@
 import colors from 'tailwindcss/colors'
-import Toastify, { type Options } from 'toastify-js'
+import toastify, { type Options } from 'toastify-js'
+
+export const defaultParams: toastify.Options = {
+  gravity: 'bottom',
+  position: 'right',
+  close: true,
+  className: 'alert'
+}
+
+export const defaultStyles = {
+  position: 'fixed',
+  zIndex: '1',
+  right: '1rem',
+  padding: '1rem',
+  lineHeight: '1',
+  color: colors.white,
+  borderRadius: '0.25rem',
+  cursor: 'default',
+  gap: '.5rem',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: 'auto'
+}
 
 export const toastAlert = (params: Options): void => {
-  Toastify({
+  toastify({
+    ...defaultParams,
     ...params,
-    gravity: 'bottom',
-    position: 'right',
-    close: true,
-    className: 'alert',
     style: {
-      position: 'fixed',
-      zIndex: '1',
-      right: '1rem',
-      padding: '1rem',
-      lineHeight: '1',
-      color: colors.white,
-      borderRadius: '0.25rem',
-      cursor: 'default',
-      gap: '.5rem',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 'auto',
+      ...defaultStyles,
       ...params.style
     }
-  }).showToast()
+  })?.showToast()
 }
 
 export const toastSuccess = (params: Options): void => {

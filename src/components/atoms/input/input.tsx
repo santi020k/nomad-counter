@@ -1,11 +1,13 @@
-import { type FC, type InputHTMLAttributes } from 'react'
+import { forwardRef, type InputHTMLAttributes } from 'react'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   label?: string
 }
 
-const Input: FC<InputProps> = ({ name, label, className, ...restProps }) => (
+export type Ref = HTMLInputElement
+
+const Input = forwardRef<Ref, InputProps>(({ name, label, className, placeholder, ...restProps }, ref) => (
   <>
     <label htmlFor={name} className="mb-2 block text-sm font-medium leading-6">
       {label ?? name}
@@ -19,11 +21,14 @@ const Input: FC<InputProps> = ({ name, label, className, ...restProps }) => (
         'dark:focus:ring-blue-500',
         className
       ].join(' ')}
-      placeholder={name}
+      placeholder={placeholder ?? name}
       name={name}
+      ref={ref}
       {...restProps}
     />
   </>
-)
+))
+
+Input.displayName = 'Input'
 
 export default Input

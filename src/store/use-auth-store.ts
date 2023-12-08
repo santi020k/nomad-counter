@@ -10,12 +10,13 @@ import { parseAuthSession } from '@utils/auth-session-utils'
 
 export interface UserAuthState {
   user: UserData
+  resetState: () => void
   logIn: (user: UserData) => void
-  logOut: () => void
+  logOut: () => Promise<void>
   fetchSession: () => Promise<void>
 }
 
-const initialUser = UserDataSchema.parse({
+export const initialUser = UserDataSchema.parse({
   isSignIn: false,
   name: '',
   email: '',
@@ -24,19 +25,33 @@ const initialUser = UserDataSchema.parse({
   initialLetter: ''
 })
 
+const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
+const TOAST_DURATION = 3000
+
 const useAuthStore = create<UserAuthState>((set) => ({
   user: initialUser,
+  resetState: () => { set({ user: initialUser }) },
   logIn: (user) => { set({ user: { isSignIn: true, ...user } }) },
-  logOut: () => { set({ user: initialUser }) },
+  logOut: async () => {
+    const { error } = await supabase.auth.signOut() ?? { error: undefined }
+
+    if (!error) set({ user: initialUser })
+    if (error) toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
+  },
   fetchSession: async () => {
-    await supabase.auth.getSession().then(({ data: { session } }) => {
+    try {
+      const { data } = await supabase.auth.getSession() ?? {}
+      const { session } = data ?? {}
+
+      if (session === null) throw new Error('Session not found')
+
       const parseAuthResult = parseAuthSession(session)
 
-      if (parseAuthResult) set(() => ({ user: parseAuthResult }))
-    }).catch((error) => {
+      if (parseAuthResult) set({ user: parseAuthResult })
+    } catch (error) {
       console.error(error)
-      toastError({ text: i18next.t('common:messages.error') ?? '', duration: 3000 })
-    })
+      toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
+    }
   }
 }))
 

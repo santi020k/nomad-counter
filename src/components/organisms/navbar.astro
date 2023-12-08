@@ -1,15 +1,18 @@
 ---
 import ToggleLanguage from '@molecules/buttons/toggle-language-button.astro'
-import ToggleTheme from '@molecules/buttons/toggle-theme-button/toggle-theme-button'
+import ToggleTheme from '@molecules/buttons/toggle-theme-button/toggle-theme-button.astro'
 import SessionHandler from '@molecules/session-handler/session-handler'
 
 import { localizePath, t } from '@utils/lang-utils'
 ---
 
 <nav
+  transition:animate="none"
+  transition:name="navbar"
   class="navbar sticky top-0 z-30 flex w-auto justify-center border-b border-b-stone-200
   bg-base-100/90 p-0 text-base-content shadow-sm backdrop-blur transition-all
-  duration-100 [transform:translate3d(0,0,0)] dark:border-b-stone-700 sm:p-2"
+  duration-100 [transform:translate3d(0,0,0)] dark:border-b-stone-700
+  dark:shadow-[0_1px_2px_0_rgba(255,255,255,0.05)] sm:p-2"
 >
   <div class="container mx-auto flex flex-col py-4 sm:flex-row">
     <div class="mb-4 flex-1 sm:mb-0">
@@ -33,7 +36,7 @@ import { localizePath, t } from '@utils/lang-utils'
         <ToggleLanguage />
       </div>
       <div class="flex-none">
-        <ToggleTheme client:visible />
+        <ToggleTheme />
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@ export const enum darkColors {
 export default [
   {
     light: {
-      ...daisyuiTheme['[data-theme=light]'],
+      ...daisyuiTheme?.light,
       primary: lightColors.PRIMARY,
       secondary: lightColors.SECONDARY,
       accent: lightColors.ACCENT,
@@ -39,7 +39,7 @@ export default [
       }
     },
     dark: {
-      ...daisyuiTheme['[data-theme=dark]'],
+      ...daisyuiTheme?.dark,
       primary: darkColors.PRIMARY,
       secondary: darkColors.SECONDARY,
       accent: darkColors.ACCENT,

@@ -1,7 +1,6 @@
 import tailwindForm from '@tailwindcss/forms'
 import tailwindTypography from '@tailwindcss/typography'
 import daisyui from 'daisyui'
-import flowbite from 'flowbite/plugin'
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
@@ -11,16 +10,16 @@ import themes from './config/tailwind/themes'
 export default {
   content: [
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
+    './node_modules/react-tailwindcss-datepicker/dist/index.esm.js'
   ],
-  darkMode: 'class',
+  darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: heights,
     fontFamily: {
       sans: ['"Cabin"', '"Roboto"', ...defaultTheme.fontFamily.mono]
     }
   },
-  plugins: [tailwindForm, tailwindTypography, daisyui, flowbite],
+  plugins: [tailwindForm, tailwindTypography, daisyui],
   daisyui: {
     logs: false,
     themes

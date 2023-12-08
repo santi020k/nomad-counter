@@ -12,9 +12,12 @@ module.exports = {
     "plugin:astro/all",
     "plugin:astro/jsx-a11y-strict",
     "plugin:tailwindcss/recommended",
-    "plugin:i18next/recommended"
+    "plugin:i18next/recommended",
+    'plugin:testing-library/react',
+    "plugin:vitest/all"
   ],
-  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next"],
+  ignorePatterns: ["*.md"],
+  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next", "vitest", "testing-library"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -28,6 +31,13 @@ module.exports = {
     "max-len": ["error", { code: 120 }],
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": importRules,
+    "vitest/no-hooks": [
+      "error",
+      {
+        "allow": ["afterEach", "afterAll", "beforeEach", "beforeAll"]
+      }
+    ],
+    "testing-library/no-manual-cleanup": "off"
   },
   overrides: [
     {

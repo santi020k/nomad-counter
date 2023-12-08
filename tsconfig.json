@@ -16,8 +16,10 @@
       "@store/*": ["src/store/*"],
       "@models/*": ["src/models/*"],
       "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@i18n": ["./i18n"],
       "@themes": ["./config/tailwind/themes"],
+      "@mocks/*": ["src/mocks/*"],
     }
   }
 }

@@ -40,11 +40,11 @@ export default defineConfig({
       enabled: true
     },
     imageService: true
-    // devImageService: 'squoosh'
   }),
   site: baseUrl,
   trailingSlash: 'always',
   build: {
     format: 'directory'
-  }
+  },
+  prefetch: true
 })

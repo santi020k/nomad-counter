@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { Image as AstroImage } from 'astro:assets'
 
 interface Props {
   src: ImageMetadata
@@ -12,4 +12,4 @@ const defaultAlt = alt ?? 'Default image'
 ---
 
 <!-- This component -->
-<Image src={src} alt={defaultAlt} />
+<AstroImage src={src} alt={defaultAlt} />
