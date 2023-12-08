@@ -30,7 +30,7 @@ import { localizePath, t } from '@utils/lang-utils'
     </div>
     <div class="flex flex-row gap-2">
       <div class="flex items-center">
-        <SessionHandler logoutText={t('common:messages.auth.logout')} client:visible />
+        <SessionHandler logoutText={t('common:messages.auth.logout')} client:only="react" />
       </div>
       <div class="flex-none">
         <ToggleLanguage />
