@@ -8,14 +8,18 @@ export const enum themes {
 export const enum lightColors {
   PRIMARY = '#471AA0',
   SECONDARY = '#B579E6',
-  ACCENT = '#f3e8fb',
+  PRIMARY_CONTENT = '#C7BAE2',
+  SECONDARY_CONTENT = '#e8d6f7',
+  ACCENT = '#1ECDBC',
   WHITE = '#fff'
 }
 
 export const enum darkColors {
   PRIMARY = '#5C469C',
   SECONDARY = '#D4ADFC',
-  ACCENT = '#f3e8fb',
+  PRIMARY_CONTENT = '#cec7e1',
+  SECONDARY_CONTENT = '#f2e6fe',
+  ACCENT = '#1ECDBC',
   WHITE = '#fff',
   BASE = '#dadada'
 }

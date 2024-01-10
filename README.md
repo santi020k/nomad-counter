@@ -12,6 +12,8 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Zod Badge](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)
 
+<!-- TODO: add vitest badge and others -->
+
 <!-- Coming soon -->
 ![Logo](./public/assets/logo.webp)
 
