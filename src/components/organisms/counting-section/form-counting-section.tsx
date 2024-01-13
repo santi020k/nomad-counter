@@ -1,4 +1,4 @@
-import { type FC, type MouseEvent } from 'react'
+import { type FC, memo, type MouseEvent } from 'react'
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
 import type { DateValueType } from 'react-tailwindcss-datepicker'
 
@@ -138,4 +138,4 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   )
 }
 
-export default FormCountingSection
+export default memo(FormCountingSection)

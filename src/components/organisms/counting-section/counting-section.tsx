@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { type FC, memo } from 'react'
 
 import FormCountingSection from '@organisms/counting-section/form-counting-section'
 import ListCountingSection from '@organisms/counting-section/list-counting-section'
@@ -17,4 +17,4 @@ const CountingSection: FC<CountingSectionProps> = ({ t }) => (
   </>
 )
 
-export default CountingSection
+export default memo(CountingSection)

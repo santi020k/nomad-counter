@@ -1,5 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
-import { type FC, useEffect, useState } from 'react'
+import { type FC, memo, useEffect, useState } from 'react'
 
 import ItemCountingSection from '@organisms/counting-section/item-counting-section'
 
@@ -35,7 +35,7 @@ const ListCountingSection: FC = () => {
             <th>Total Days</th>
             <th>Last Year Days</th>
             <th>183 Days?</th>
-            <th>Default Country</th>
+            <th>Residency</th>
           </tr>
         </thead>
         <tbody>
@@ -45,8 +45,8 @@ const ListCountingSection: FC = () => {
             item={{
               id: 'residency',
               country: 'Residency',
-              arrival: '-------',
-              departure: '-------',
+              arrival: '',
+              departure: '',
               isResidency: true
             }}
           />
@@ -58,4 +58,4 @@ const ListCountingSection: FC = () => {
   )
 }
 
-export default ListCountingSection
+export default memo(ListCountingSection)
