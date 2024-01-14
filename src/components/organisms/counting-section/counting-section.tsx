@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { type FC, memo } from 'react'
 
 import FormCountingSection from '@organisms/counting-section/form-counting-section'
 import ListCountingSection from '@organisms/counting-section/list-counting-section'
@@ -8,15 +8,13 @@ interface CountingSectionProps {
 }
 
 const CountingSection: FC<CountingSectionProps> = ({ t }) => (
-  <section
-    id="calc"
-    className="
-      container mx-auto flex min-h-screen flex-col flex-wrap items-center justify-center py-[140px] sm:py-[100px]
-    "
-  >
-    <FormCountingSection t={t} />
-    <ListCountingSection />
-  </section>
+  <>
+    <div id="calc" className='relative top-[-128px] sm:top-[-97px]' />
+    <section className="container mx-auto flex flex-col flex-wrap items-center justify-center py-[100px]">
+      <FormCountingSection t={t} />
+      <ListCountingSection />
+    </section>
+  </>
 )
 
-export default CountingSection
+export default memo(CountingSection)

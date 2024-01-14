@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { type FC, memo } from 'react'
 import DatepickerTailwind, { type DatepickerType } from 'react-tailwindcss-datepicker'
 
 export interface DatepickerProps extends DatepickerType {
@@ -25,4 +25,4 @@ const Datepicker: FC<DatepickerProps> = ({ label, name, ...restProps }) => (
   </>
 )
 
-export default Datepicker
+export default memo(Datepicker)

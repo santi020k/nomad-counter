@@ -23,6 +23,8 @@ describe('sessionUserAvatar Tests', () => {
 
   it('sessionUserAvatar renders with user shortName', () => {
     render(<SessionUserAvatar logoutText={logoutText} />)
+    // Simplify the complexity of Test regarding code quality
+    // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
     assert.ok(screen.getByText(parsedMockUser?.shortName as string))
   })
 
@@ -36,6 +38,8 @@ describe('sessionUserAvatar Tests', () => {
   it('sessionUserAvatar renders with user initialLetter', () => {
     logIn({ ...parsedMockUser, shortName: undefined })
     render(<SessionUserAvatar logoutText={logoutText} />)
+    // Simplify the complexity of Test regarding code quality
+    // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
     assert.ok(screen.getByText(parsedMockUser?.initialLetter as string))
   })
 })

@@ -1,6 +1,8 @@
-import { type FC, type MouseEvent } from 'react'
+import { type FC, memo, type MouseEvent } from 'react'
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
 import type { DateValueType } from 'react-tailwindcss-datepicker'
+
+import startCase from 'lodash/startCase'
 
 import Datepicker from '@atoms/datepicker/datepicker'
 import Input from '@atoms/input/input'
@@ -19,12 +21,12 @@ interface FormCountingSectionProps {
 
 interface Inputs {
   country: string
-  arrival: DateValueType
+  dates: DateValueType
 }
 
 enum InputsNames {
   country = 'country',
-  arrival = 'arrival'
+  dates = 'dates'
 }
 
 const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
@@ -32,12 +34,12 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
 
   const { register, handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
     // TODO: In future versions, this will be the default behavior setting in user account.
-    // defaultValues: { arrival: { startDate: null, endDate: null } }
+    // defaultValues: { dates: { startDate: null, endDate: null } }
   })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (!data.arrival?.endDate || !data.arrival?.startDate) {
-      setError(InputsNames.arrival, {
+    if (!data.dates?.endDate || !data.dates?.startDate) {
+      setError(InputsNames.dates, {
         type: 'manual',
         message: 'This field is required'
       })
@@ -50,8 +52,8 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
         .insert([
           {
             country: result.data.country,
-            arrival: result.data.arrival.startDate,
-            departure: result.data.arrival.endDate
+            arrival: result.data.dates.startDate,
+            departure: result.data.dates.endDate
           }
         ])
         .select()
@@ -109,19 +111,20 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
           <div className="sm:col-span-6">
             <Controller
               control={control}
-              name={InputsNames.arrival}
+              name={InputsNames.dates}
               rules={{ required: true }}
               render={({ field: { onChange, value, name } }) => (
                 <Datepicker
                   disabled={!user?.isSignIn || false}
                   name={name}
+                  label={startCase(name)}
                   onChange={onChange}
                   value={value}
                 />
               )}
             />
             {/* eslint-disable-next-line i18next/no-literal-string */}
-            {errors.arrival ? <span>This field is required</span> : null}
+            {errors.dates ? <span>This field is required</span> : null}
           </div>
         </div>
       </div>
@@ -135,4 +138,4 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   )
 }
 
-export default FormCountingSection
+export default memo(FormCountingSection)

@@ -1,4 +1,5 @@
-import { type FC, useEffect, useState } from 'react'
+/* eslint-disable i18next/no-literal-string */
+import { type FC, memo, useEffect, useState } from 'react'
 
 import ItemCountingSection from '@organisms/counting-section/item-counting-section'
 
@@ -23,10 +24,38 @@ const ListCountingSection: FC = () => {
   }, [])
 
   return (
-    <>
-      {list?.map((item) => <ItemCountingSection key={item.id} item={item} />)}
-    </>
+    <div className="overflow-x-auto">
+      <table className="table">
+        <thead>
+          <tr>
+            <th/>
+            <th>Country</th>
+            <th>Arrival</th>
+            <th>Departure</th>
+            <th>Total Days</th>
+            <th>Last Year Days</th>
+            <th>183 Days?</th>
+            <th>Residency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Residency */}
+          <ItemCountingSection
+            index={0}
+            item={{
+              id: 'residency',
+              country: 'Residency',
+              arrival: '',
+              departure: '',
+              isResidency: true
+            }}
+          />
+          {/*  */}
+          {list?.map((item, index) => <ItemCountingSection key={item.id} index={index + 1} item={item} />)}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
-export default ListCountingSection
+export default memo(ListCountingSection)

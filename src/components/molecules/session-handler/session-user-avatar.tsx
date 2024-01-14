@@ -1,4 +1,4 @@
-import { type FC } from 'react'
+import { type FC, memo } from 'react'
 
 import useAuthStore from '@store/use-auth-store'
 
@@ -26,4 +26,4 @@ const SessionUserAvatar: FC<SessionUserAvatarProps> = ({ logoutText }) => {
   )
 }
 
-export default SessionUserAvatar
+export default memo(SessionUserAvatar)

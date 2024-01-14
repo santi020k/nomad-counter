@@ -1,4 +1,4 @@
-import { type FC, useEffect } from 'react'
+import { type FC, memo, useEffect } from 'react'
 
 import { IconUser } from '@tabler/icons-react'
 
@@ -50,4 +50,4 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
   return <SessionUserAvatar logoutText={logoutText ?? ''} />
 }
 
-export default SessionHandler
+export default memo(SessionHandler)
