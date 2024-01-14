@@ -37,6 +37,7 @@ module.exports = {
         "allow": ["afterEach", "afterAll", "beforeEach", "beforeAll"]
       }
     ],
+    "vitest/prefer-expect-assertions": "off",
     "testing-library/no-manual-cleanup": "off"
   },
   overrides: [

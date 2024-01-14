@@ -3,8 +3,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { supabase } from '@libs/supabase/supabase'
 
-import { type UserData } from '@models/auth-model'
-
 import { parseAuthSession } from '@utils/auth-session-utils'
 
 import { mockUser } from '@mocks/user.mock'
@@ -13,7 +11,9 @@ import useAuthStore, { initialUser } from './use-auth-store'
 
 vi.mock('@libs/supabase/supabase')
 
-export const parsedMockUser = parseAuthSession(mockUser) as UserData
+// Simplify the complexity of tests regarding code quality
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const parsedMockUser = parseAuthSession(mockUser)!
 
 const logInUser = {
   isSignIn: true,

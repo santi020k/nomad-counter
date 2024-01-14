@@ -5,7 +5,7 @@ import { changeLanguage } from '@utils/lang-utils'
 
 const { frontmatter } = Astro.props
 
-void changeLanguage(frontmatter.lang)
+void changeLanguage(frontmatter.lang as string)
 ---
 
 <MainLayout title={frontmatter.title}>

@@ -1,7 +1,5 @@
 import { faker } from '@faker-js/faker'
 
-import { type UserData } from '@models/auth-model'
-
 import { parseAuthSession } from '@utils/auth-session-utils'
 
 export const provider = faker.lorem.word()
@@ -31,4 +29,6 @@ export const mockUser = Object.freeze({
   }
 })
 
-export const parsedMockUser = Object.freeze(parseAuthSession(mockUser) as UserData)
+// Simplify the complexity of Mocks regarding code quality
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const parsedMockUser = Object.freeze(parseAuthSession(mockUser)!)
