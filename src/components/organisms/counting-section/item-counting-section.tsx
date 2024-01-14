@@ -23,7 +23,7 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
   }
 
   const countTotalDays = (arrival: string, departure: string): number => {
-    if (!isValidDates(arrival, departure)) return 'All'
+    if (!isValidDates(arrival, departure)) return 0
     const arrivalDate = new Date(arrival)
     const departureDate = new Date(departure)
     const diffTime = Math.abs(departureDate.getTime() - arrivalDate.getTime())
@@ -33,7 +33,7 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
 
   const countLastYearDays = (arrival: string, departure: string): number => {
   // TODO: This is not working properly, fix it!
-    if (!isValidDates(arrival, departure)) return 'All'
+    if (!isValidDates(arrival, departure)) return 0
     const arrivalDate = new Date(arrival)
     const departureDate = new Date(departure)
     const diffTime = Math.abs(departureDate.getTime() - arrivalDate.getTime())
@@ -60,15 +60,15 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
       {/* Country */}
       <td>{item.country}</td>
       {/* Arrival */}
-      <td>{formatDate(item.arrival)}</td>
+      <td>{formatDate(item.arrival ?? '')}</td>
       {/* Departure */}
-      <td>{formatDate(item.departure)}</td>
+      <td>{formatDate(item.departure ?? '')}</td>
       {/* Total Days */}
-      <td>{countTotalDays(item.arrival, item.departure) ?? 'All'}</td>
+      <td>{countTotalDays(item.arrival ?? '', item.departure ?? '') || 'All'}</td>
       {/* Last Year Days */}
-      <td>{countLastYearDays(item.arrival, item.departure) ?? 181}</td>
+      <td>{countLastYearDays(item.arrival ?? '', item.departure ?? '') || 'All'}</td>
       {/* 183 Days? */}
-      <td>{isMoreThan183Days(item.arrival, item.departure) ? 'Si' : 'No'}</td>
+      <td>{isMoreThan183Days(item.arrival ?? '', item.departure ?? '') ? 'Si' : 'No'}</td>
       {/* Residency */}
       <th>
         <label>
