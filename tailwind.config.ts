@@ -18,7 +18,7 @@ export default {
   theme: {
     extend: heights,
     fontFamily: {
-      sans: ['"Cabin"', '"Roboto"', ...defaultTheme.fontFamily.mono]
+      sans: ['"Inter Variable"', '"Roboto"', ...defaultTheme.fontFamily.mono]
     },
     colors: {
       americViolet: {

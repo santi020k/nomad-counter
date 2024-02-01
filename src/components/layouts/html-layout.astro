@@ -6,12 +6,7 @@ import BaseHead from '@atoms/base-head.astro'
 import { getLocale } from '@utils/lang-utils'
 
 import '@i18n'
-import '@fontsource-variable/cabin'
-
-// interface Props {
-//   title?: string
-//   description?: string
-// }
+import '@fontsource-variable/inter'
 
 type Props = CollectionEntry<'pages'>['data']
 
@@ -36,7 +31,7 @@ const locale = getLocale(Astro.url)
 <!-- TODO: Move to global styles -->
 <style>
   * {
-    font-family: Cabin, system-ui, Roboto, Oxygen, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter Variable', Cabin, system-ui, Roboto, Oxygen, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   html {
     transition: background 0.5s;
