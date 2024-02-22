@@ -36,10 +36,8 @@ const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
     return (
       <button
         type="button"
-        className="inline-flex items-center gap-x-2 rounded-lg
-          border border-gray-200 bg-white
-          px-3 py-[10px]
-          text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 disabled:pointer-events-none
+        className="inline-flex items-center gap-x-2 rounded-lg border border-gray-200 bg-white
+          px-3 py-[10px] text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 disabled:pointer-events-none
           disabled:opacity-50 dark:border-gray-700 dark:bg-slate-900 dark:text-white dark:hover:bg-gray-800
           dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
         role="button"

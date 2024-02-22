@@ -15,11 +15,16 @@ import { version } from '../../../package.json';
   dark:shadow-[0_1px_2px_0_rgba(255,255,255,0.05)]"
 >
   <nav
-    class="mx-auto flex w-full max-w-[85rem] basis-full flex-wrap items-center justify-between gap-4 p-4"
+    class="mx-auto flex w-full max-w-[85rem] basis-full flex-wrap items-center justify-between gap-4 p-4
+      sm:flex-row sm:justify-between"
     aria-label="Global"
   >
-    <div class="row flex w-full justify-center gap-3">
-      <a href="/" class="text-[26px] font-bold leading-none text-americViolet-500 decoration-0 dark:text-magenta-500">
+    <div class="row flex w-full justify-center gap-3 sm:w-auto">
+      <a
+        href="/"
+        class="text-[26px] font-bold leading-none text-americViolet-500 decoration-0
+        dark:text-magenta-500 sm:text-[31px]"
+      >
         {'Nomad Counter'}
       </a>
       <div class="flex items-center gap-x-2">
@@ -32,7 +37,7 @@ import { version } from '../../../package.json';
       </div>
     </div>
 
-    <div class="hs-collapse grow basis-full overflow-hidden transition-all duration-300">
+    <div class="hs-collapse grow overflow-hidden transition-all duration-300 sm:w-auto sm:grow-0">
       <div class="flex flex-col gap-5">
         <div class="flex flex-row justify-center gap-2">
           <div class="flex">
