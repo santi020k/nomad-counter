@@ -14,13 +14,26 @@ export default {
     './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
     './node_modules/preline/preline.js'
   ],
-  darkMode: ['class', '[data-theme="dark"]'],
+  darkMode: [
+    'class',
+    '[data-theme="dark"]'
+  ],
   theme: {
-    extend: heights,
-    fontFamily: {
-      sans: ['"Inter Variable"', '"Roboto"', ...defaultTheme.fontFamily.mono]
+    extend: {
+      ...heights,
+      colors
     },
-    colors
+    fontFamily: {
+      sans: [
+        '"Inter Variable"',
+        '"Roboto"',
+        ...defaultTheme.fontFamily.mono
+      ]
+    }
   },
-  plugins: [tailwindForm, tailwindTypography, preline]
+  plugins: [
+    tailwindForm,
+    tailwindTypography,
+    preline
+  ]
 } satisfies Config

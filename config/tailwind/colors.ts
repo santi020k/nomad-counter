@@ -1,7 +1,4 @@
-import colors from 'tailwindcss/colors'
-
 export default {
-  ...colors,
   americViolet: {
     50: '#ECE5FB',
     100: '#D6C6F6',
