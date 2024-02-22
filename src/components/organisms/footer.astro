@@ -1,151 +1,135 @@
 ---
 import {
+  IconBrandGithub,
   IconBrandInstagram,
-  IconBrandX,
-  IconBrandYoutube
+  IconBrandLinkedin
 } from '@tabler/icons-react'
 
 import { localizePath, t } from '@utils/lang-utils';
 ---
 
+<!-- TODO: Refactor to smaller components -->
+
 <footer
   class="inline-flex w-full flex-col items-start justify-start gap-5 bg-gradient-to-r
   from-violet-900 to-purple-400 p-16"
 >
-  <div class="text-3xl font-bold tracking-tight text-white">
+  <h3 class="m-0 text-3xl font-bold tracking-tight text-white">
     {'Nomad Counter'}
-  </div>
-  <div
-    class="flex h-[754px] flex-col items-start justify-start gap-16 self-stretch"
-  >
-    <div
-      class="flex h-64 flex-col items-start justify-start gap-4 self-stretch"
-    >
-      <div class="text-xl font-bold tracking-tight text-white">
+  </h3>
+
+  <div class="flex flex-col items-start justify-start gap-16 self-stretch md:flex-row md:gap-8 lg:gap-16">
+    <!-- About -->
+    <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[40%]">
+      <h4 class="m-0 text-xl font-bold tracking-tight text-white">
         {'About'}
-      </div>
-      <div
-        class="self-stretch text-base font-normal leading-normal tracking-tight text-white"
-      >
-        <p>
+      </h4>
+      <div class="flex flex-col gap-2 self-stretch text-base font-normal leading-normal tracking-tight text-white">
+        <p class="m-0">
           {'This platform, created by Santi020k, is your gateway to the digital nomad lifestyle.'}
         </p>
-        <p>
+        <p class="m-0">
           {'Learn how to navigate your days in diverse'}
           {'countries and discover effective strategies to prevent tax implications'}
           {'when surpassing 183 days in a single location.'}
         </p>
       </div>
     </div>
-    <div
-      class="flex h-[98px] flex-col items-start justify-start gap-4 self-stretch"
-    >
+
+    <!-- Explore -->
+    <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[20%]">
       <div class="text-xl font-bold tracking-tight text-white">
         {'Explore'}
       </div>
       <div class="flex flex-col items-start justify-start gap-2.5">
-        <div class="inline-flex items-start justify-start">
-          <div class="flex items-center justify-start gap-2.5">
-            <div class="inline-flex flex-col items-start justify-start gap-0.5">
-              <div
-                class="text-center text-base font-semibold leading-normal tracking-tight text-white"
-              >
-                {'FAQ’s'}
-              </div>
-            </div>
-          </div>
+        <div class="text-left text-base font-semibold leading-normal tracking-tight text-white">
+          {'FAQ’s'}
         </div>
-        <div class="inline-flex items-start justify-start">
-          <div class="flex items-center justify-start gap-2.5">
-            <div class="inline-flex flex-col items-start justify-start gap-0.5">
-              <div
-                class="text-center text-base font-semibold leading-normal tracking-tight text-white"
-              >
-                {'Start Counting'}
-              </div>
-            </div>
-          </div>
+        <div class="text-left text-base font-semibold leading-normal tracking-tight text-white">
+          {'Start Counting'}
         </div>
       </div>
     </div>
-    <div
-      class="flex h-[98px] flex-col items-start justify-start gap-4 self-stretch"
-    >
+
+    <!-- Legal -->
+    <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[20%]">
       <div class="text-xl font-bold tracking-tight text-white">
         {'Legal'}
       </div>
       <div class="flex flex-col items-start justify-start gap-2.5">
         <a
           href={localizePath('/privacy-policy')}
-          class="text-center text-base font-semibold leading-normal tracking-tight text-white
+          class="text-left text-base font-semibold leading-normal tracking-tight text-white
           no-underline transition-all hover:text-violet-200"
         >
           {t('common:pages.privacy')}
         </a>
         <a
           href={localizePath('/terms')}
-          class="text-center text-base font-semibold leading-normal tracking-tight text-white
+          class="text-left text-base font-semibold leading-normal tracking-tight text-white
           no-underline transition-all hover:text-violet-200">
           {t('common:pages.terms')}
         </a>
       </div>
     </div>
-    <nav class="flex h-[110px] flex-col items-start justify-start gap-4 self-stretch">
+
+    <!-- Developed By -->
+    <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[20%]">
       <div class="text-xl font-bold tracking-tight text-white">
         {'Developed By'}
       </div>
-      <div class="flex h-[70px] flex-col items-start justify-start self-stretch">
+      <nav class="flex flex-col items-start justify-start self-stretch">
         <a
           href="https://santi020k.me"
           target="_blank"
-          class="self-stretch text-base font-normal leading-normal tracking-tight text-white
+          class="text-left text-base font-semibold leading-normal tracking-tight text-white
           no-underline transition-all hover:text-violet-200"
         >
             @{t('common:generic.santi020k')}
         </a>
 
         <div class="inline-flex items-start justify-start gap-2.5 self-stretch">
-          <div class="flex size-[46px] items-center justify-center rounded-lg">
-            <div class="relative size-6">
-              <a
-                href="https://www.instagram.com/santi020k/"
-                target="_blank"
-                referrerpolicy="no-referrer"
-                class="text-white no-underline transition-all hover:text-violet-200"
-                aria-label="Go to my instagram page"
-              >
-                <IconBrandInstagram />
-              </a>
-            </div>
-          </div>
-          <div class="flex size-[46px] items-center justify-center rounded-lg">
-            <div class="relative size-6">
-              <a
-                href="https://www.youtube.com/channel/UCqF4wgazBVcWtNrjSnHiItw"
-                target="_blank"
-                referrerpolicy="no-referrer"
-                class="text-white no-underline transition-all hover:text-violet-200"
-                aria-label="Go to my youtube page"
-              >
-                <IconBrandYoutube />
-              </a>
-            </div>
-          </div>
-          <div class="flex size-[46px] items-center justify-center rounded-lg">
-            <div class="relative size-6">
-              <a
-                href="https://twitter.com/santi020k"
-                target="_blank"
-                referrerpolicy="no-referrer"
-                class="text-white no-underline transition-all hover:text-violet-200"
-                aria-label="Go to my twitter page"
-              >
-                <IconBrandX />
-              </a>
-            </div>
-          </div>
+          <!-- Github -->
+          <a
+            href="https://github.com/santi020k/"
+            target="_blank"
+            referrerpolicy="no-referrer"
+            class="text-white no-underline transition-all hover:text-violet-200"
+            aria-label="Go to my youtube page"
+          >
+            <span class="flex size-[46px] items-center justify-center rounded-lg">
+              <IconBrandGithub size={24} />
+            </span>
+          </a>
+
+          <!-- Instagram -->
+          <a
+            href="https://www.instagram.com/santi020k/"
+            target="_blank"
+            referrerpolicy="no-referrer"
+            class="text-white no-underline transition-all hover:text-violet-200"
+            aria-label="Go to my instagram page"
+          >
+            <span class="flex size-[46px] items-center justify-center rounded-lg">
+              <IconBrandInstagram size={24} />
+            </span>
+          </a>
+
+          <!-- Linkedin -->
+          <a
+            href="https://linkedin.com/in/santi020k"
+            target="_blank"
+            referrerpolicy="no-referrer"
+            class="text-white no-underline transition-all hover:text-violet-200"
+            aria-label="Go to my twitter page"
+          >
+            <span class="flex size-[46px] items-center justify-center rounded-lg">
+              <IconBrandLinkedin size={24} />
+            </span>
+          </a>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
+
   </div>
 </footer>
