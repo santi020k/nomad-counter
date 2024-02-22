@@ -76,6 +76,14 @@ module.exports = {
       'error',
       'always'
     ],
+    '@stylistic/padded-blocks': [
+      'error',
+      'never'
+    ],
+    '@stylistic/arrow-parens': [
+      'error',
+      'as-needed'
+    ],
     '@stylistic/member-delimiter-style': 'off',
     '@stylistic/no-extra-parens': 'off'
   },
