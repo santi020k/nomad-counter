@@ -1,24 +1,66 @@
 ---
-import { t } from 'i18next'
+// import { t } from 'i18next'
+import {
+  IconChevronRight
+} from '@tabler/icons-react'
 ---
 
 <header
-  class="background-animation mt-[-128px] min-h-screen bg-[url('/assets/bg/hero.webp')]
-  bg-contain bg-repeat transition-opacity sm:mt-[-97px]"
+  class="background-animation mt-[-118px] min-h-screen bg-[url('/assets/bg/hero.webp')]
+  bg-cover bg-repeat transition-opacity sm:mt-[-97px]"
 >
-  <div class="hero bg-base-200/80 h-screen w-screen">
-    <div class="hero-content mt-[66.5px] text-center sm:mt-[49.5px]">
-      <div class="max-w-md">
-        <span
-          class="badge badge-secondary border-primary to-primary mb-1 h-auto rounded-md
-          bg-gradient-to-r from-purple-950 text-white"
-        >
-          {t('home:hero.badge')}
-        </span>
-        <h1 class="mb-8 text-5xl font-bold sm:text-8xl">{t('home:hero.title')}</h1>
-        <a href="#calc" class="btn-primary btn rounded-full">{t('home:hero.actionLeft')}</a>
-        <!-- TODO: comming soon -->
-        <!-- <button class="btn btn-secondary">{t('home:hero.actionRight')}</button> -->
+  <div class="hero bg-base-200/80 overlay flex h-screen w-screen items-center justify-center">
+    <div class="hero-content mt-[59px] text-center sm:mt-[49.5px]">
+      <div class="m-4 inline-flex max-w-[400px] flex-col items-start justify-end gap-7 md:m-16 md:max-w-[900px]">
+        <h1 class="m-0 self-stretch text-center text-5xl font-bold tracking-tight text-white">
+          {'Embark on Your Day'}
+          <span class="gradient">{'Counting'}</span>
+          {'Adventure'}
+        </h1>
+        <div class="self-stretch text-center text-xl font-medium tracking-tight text-gray-300">
+          {'We\'ve gathered insights from fellow digital nomads to help you track and compare your days spent'}
+          {'in different countries. Embrace the freedom of the nomadic lifestyle.'}
+        </div>
+        <div class="inline-flex items-center justify-center gap-4 self-stretch py-3">
+          <a
+            href="#counting"
+            type="button"
+            class="inline-flex items-center gap-x-2 rounded-lg border border-violet-900 bg-violet-900
+              px-4 py-3 text-center text-sm font-semibold tracking-tight text-white no-underline
+              shadow-sm transition-all hover:bg-violet-500 disabled:pointer-events-none
+              disabled:opacity-50 dark:border-gray-700 dark:bg-slate-900 dark:text-white
+              dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+          >
+            {'Start Counting Your Days'}
+            <IconChevronRight size={18} />
+          </a>
+          <a
+            href="#faqs"
+            type="button"
+            class="inline-flex items-center gap-x-2 rounded-lg border border-white px-4
+              py-3 text-sm font-semibold tracking-tight text-white no-underline transition-all
+              hover:border-gray-300 hover:text-gray-300 disabled:pointer-events-none
+              disabled:opacity-50 dark:border-white dark:text-white dark:hover:border-gray-300
+              dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+          >
+            {'FAQ’S'}
+          </a>
+          <!-- <div class="flex items-start justify-start">
+            <div class="flex items-center justify-center gap-2.5 rounded-lg bg-violet-900 px-4 py-3.5">
+              <div class="text-center text-[15px] font-semibold tracking-tight text-white">
+                {'Start Counting Your Days'}
+              </div>
+              <div class="relative h-[18px] w-3.5"></div>
+            </div>
+          </div> -->
+          <!-- <div class="flex items-start justify-start">
+            <div class="flex items-center justify-center gap-2.5 rounded-lg border border-white px-4 py-3.5">
+              <div class="text-center text-[15px] font-semibold tracking-tight text-white">
+                {'FAQ’S'}
+              </div>
+            </div>
+          </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -28,6 +70,17 @@ import { t } from 'i18next'
 <style>
   .background-animation {
     animation: backgroundAnimation 40s ease infinite;
+  }
+
+  .overlay {
+    background: linear-gradient(111deg, rgba(71, 26, 160, 0.60) 5.36%, #471AA0 93.91%);
+  }
+
+  .gradient {
+    background: linear-gradient(92deg, #FFF 62.48%, #B579E6 141.73%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   @keyframes backgroundAnimation {

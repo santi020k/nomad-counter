@@ -19,14 +19,13 @@ void changeLanguage(locale)
 ---
 
 <HtmlLayout title={title ?? ''}>
-  <div class="relative min-h-screen bg-americViolet-100">
+  <div class="relative min-h-screen">
     <!-- Navbar -->
     <Navbar transition:name="navbar" transition:persist />
     <!-- Content -->
-    <!-- TODO: Temporaly disabled -->
-    <!-- <main transition:animate="fade">
+    <main transition:animate="fade">
       <slot />
-    </main> -->
+    </main>
     <!-- Footer -->
     <Footer transition:name="footer" transition:persist />
   </div>

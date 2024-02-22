@@ -12,13 +12,14 @@ import { localizePath, t } from '@utils/lang-utils';
 
 <footer
   class="inline-flex w-full flex-col items-start justify-start gap-5 bg-gradient-to-r
-  from-violet-900 to-purple-400 p-16"
+  from-violet-900 to-purple-400 p-8 md:p-16"
 >
   <h3 class="m-0 text-3xl font-bold tracking-tight text-white">
     {'Nomad Counter'}
   </h3>
 
   <div class="flex flex-col items-start justify-start gap-16 self-stretch md:flex-row md:gap-8 lg:gap-16">
+
     <!-- About -->
     <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[40%]">
       <h4 class="m-0 text-xl font-bold tracking-tight text-white">
@@ -38,9 +39,9 @@ import { localizePath, t } from '@utils/lang-utils';
 
     <!-- Explore -->
     <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[20%]">
-      <div class="text-xl font-bold tracking-tight text-white">
+      <h4 class="m-0 text-xl font-bold tracking-tight text-white">
         {'Explore'}
-      </div>
+      </h4>
       <div class="flex flex-col items-start justify-start gap-2.5">
         <div class="text-left text-base font-semibold leading-normal tracking-tight text-white">
           {'FAQ’s'}
@@ -53,9 +54,9 @@ import { localizePath, t } from '@utils/lang-utils';
 
     <!-- Legal -->
     <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[20%]">
-      <div class="text-xl font-bold tracking-tight text-white">
+      <h4 class="m-0 text-xl font-bold tracking-tight text-white">
         {'Legal'}
-      </div>
+      </h4>
       <div class="flex flex-col items-start justify-start gap-2.5">
         <a
           href={localizePath('/privacy-policy')}
@@ -75,9 +76,9 @@ import { localizePath, t } from '@utils/lang-utils';
 
     <!-- Developed By -->
     <div class="flex flex-col items-start justify-start gap-4 self-stretch md:w-[20%]">
-      <div class="text-xl font-bold tracking-tight text-white">
+      <h4 class="m-0 text-xl font-bold tracking-tight text-white">
         {'Developed By'}
-      </div>
+      </h4>
       <nav class="flex flex-col items-start justify-start self-stretch">
         <a
           href="https://santi020k.me"

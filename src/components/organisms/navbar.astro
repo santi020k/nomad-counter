@@ -9,12 +9,12 @@ import { t } from '@utils/lang-utils'
 import { version } from '../../../package.json';
 ---
 
-<header
+<nav
   class="sticky top-0 z-30 flex w-full flex-wrap bg-white/80 text-sm shadow-sm
   backdrop-blur transition-all duration-100 [transform:translate3d(0,0,0)] dark:bg-gray-800
   dark:shadow-[0_1px_2px_0_rgba(255,255,255,0.05)]"
 >
-  <nav
+  <div
     class="mx-auto flex w-full max-w-[85rem] basis-full flex-wrap items-center justify-between gap-4 p-4
       sm:flex-row sm:justify-between"
     aria-label="Global"
@@ -52,5 +52,5 @@ import { version } from '../../../package.json';
         </div>
       </div>
     </div>
-  </nav>
-</header>
+  </div>
+</nav>

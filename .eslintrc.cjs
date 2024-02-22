@@ -76,7 +76,8 @@ module.exports = {
       'error',
       'always'
     ],
-    '@stylistic/member-delimiter-style': 'off'
+    '@stylistic/member-delimiter-style': 'off',
+    '@stylistic/no-extra-parens': 'off'
   },
   overrides: [
     {
