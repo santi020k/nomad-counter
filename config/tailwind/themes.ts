@@ -1,4 +1,4 @@
-import daisyuiTheme from 'daisyui/src/theming/themes'
+// TODO: Deprecated Code
 
 export const enum themes {
   LIGHT = 'light',
@@ -27,7 +27,6 @@ export const enum darkColors {
 export default [
   {
     light: {
-      ...daisyuiTheme?.light,
       primary: lightColors.PRIMARY,
       secondary: lightColors.SECONDARY,
       accent: lightColors.ACCENT,
@@ -43,7 +42,6 @@ export default [
       }
     },
     dark: {
-      ...daisyuiTheme?.dark,
       primary: darkColors.PRIMARY,
       secondary: darkColors.SECONDARY,
       accent: darkColors.ACCENT,

@@ -7,7 +7,6 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 // Move to alias
 import colors from './config/tailwind/colors'
 import heights from './config/tailwind/heights'
-import themes from './config/tailwind/themes'
 
 export default {
   content: [
@@ -23,9 +22,5 @@ export default {
     },
     colors
   },
-  plugins: [tailwindForm, tailwindTypography, preline],
-  daisyui: {
-    logs: false,
-    themes
-  }
+  plugins: [tailwindForm, tailwindTypography, preline]
 } satisfies Config
