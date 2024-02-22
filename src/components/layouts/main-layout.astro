@@ -1,6 +1,6 @@
 ---
 // import Footer from '@organisms/footer.astro'
-import NewNavbar from '@organisms/new-navbar.astro'
+import Navbar from '@organisms/navbar.astro'
 
 import HtmlLayout from '@layouts/html-layout.astro'
 
@@ -21,7 +21,7 @@ void changeLanguage(locale)
 <HtmlLayout title={title ?? ''}>
   <div class="relative min-h-screen bg-americViolet-100">
     <!-- Navbar -->
-    <NewNavbar transition:name="navbar" transition:persist />
+    <Navbar transition:name="navbar" transition:persist />
     <!-- Content -->
     <!-- TODO: Temporaly disabled -->
     <!-- <main transition:animate="fade">
