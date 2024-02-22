@@ -1,5 +1,5 @@
 ---
-import i18next from 'i18next'
+import { IconLanguage } from '@tabler/icons-react'
 
 import { getLocale, toggleLanguage } from '@utils/lang-utils'
 
@@ -7,10 +7,8 @@ const pathname = Astro.url.pathname
 const language = getLocale(Astro.url)
 ---
 
-<a href={toggleLanguage({ pathname, language })}>
-  <div tab-index={0} class="avatar placeholder btn btn-circle btn-ghost">
-    <div class="w-12 rounded-full bg-transparent text-current">
-      <span>{i18next.language.toUpperCase()}</span>
-    </div>
-  </div>
+<a href={toggleLanguage({ pathname, language })} class="flex items-center justify-center">
+  <span class="flex h-full w-[38px] items-center justify-center rounded-lg">
+    <IconLanguage size={16} />
+  </span>
 </a>

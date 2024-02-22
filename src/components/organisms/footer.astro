@@ -6,7 +6,7 @@ import { localizePath, t } from '@utils/lang-utils'
 
 <div class="relative h-32 sm:h-24 md:h-14" />
 
-<footer class="absolute bottom-0 w-screen bg-base-300" transition:animate="none" transition:name="footer">
+<footer class="bg-base-300 absolute bottom-0 w-screen" transition:animate="none" transition:name="footer">
   <div class="container mx-auto">
     <div class="footer items-center gap-y-px p-4">
       <nav class="mb-4 flex grid-flow-col flex-wrap items-center gap-1 md:mb-0">
@@ -16,7 +16,7 @@ import { localizePath, t } from '@utils/lang-utils'
           <a
             href="https://santi020k.me"
             target="_blank"
-            class="transition-all hover:text-primary"
+            class="hover:text-primary transition-all"
           >
             @{t('common:generic.santi020k')}
           </a>
@@ -28,18 +28,18 @@ import { localizePath, t } from '@utils/lang-utils'
         |
         <a
           href={localizePath('/privacy-policy')}
-          class="transition-all hover:text-primary"
+          class="hover:text-primary transition-all"
         >
           {t('common:pages.privacy')}
         </a>
-        | <a href={localizePath('/terms')} class="transition-all hover:text-primary">{t('common:pages.terms')}</a>
+        | <a href={localizePath('/terms')} class="hover:text-primary transition-all">{t('common:pages.terms')}</a>
       </nav>
       <nav class="grid-flow-col gap-1 md:place-self-center md:justify-self-end">
         <a
           href="https://www.instagram.com/santi020k/"
           target="_blank"
           referrerpolicy="no-referrer"
-          class="no-underline transition-all hover:text-primary"
+          class="hover:text-primary no-underline transition-all"
           aria-label="Go to my instagram page"
         >
           <IconBrandInstagram />
@@ -48,7 +48,7 @@ import { localizePath, t } from '@utils/lang-utils'
           href="https://www.youtube.com/channel/UCqF4wgazBVcWtNrjSnHiItw"
           target="_blank"
           referrerpolicy="no-referrer"
-          class="no-underline transition-all hover:text-primary"
+          class="hover:text-primary no-underline transition-all"
           aria-label="Go to my youtube page"
         >
           <IconBrandYoutube />
@@ -57,7 +57,7 @@ import { localizePath, t } from '@utils/lang-utils'
           href="https://twitter.com/santi020k"
           target="_blank"
           referrerpolicy="no-referrer"
-          class="no-underline transition-all hover:text-primary"
+          class="hover:text-primary no-underline transition-all"
           aria-label="Go to my twitter page"
         >
           <IconBrandX />

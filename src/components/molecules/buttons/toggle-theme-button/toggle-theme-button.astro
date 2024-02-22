@@ -1,6 +1,5 @@
 ---
-import { IconMoon, IconSunHigh } from '@tabler/icons-react'
-
+import { IconSunHigh } from '@tabler/icons-react'
 ---
 
 <script>
@@ -50,21 +49,16 @@ import { IconMoon, IconSunHigh } from '@tabler/icons-react'
   themeLogic()
 </script>
 
-<label
-  for="toggle-theme-button"
+<div
   id="toggle-theme-button-label"
-  class="btn-primary btn btn-circle swap swap-rotate h-12 w-12"
+  class="btn-primary btn btn-circle swap swap-rotate flex h-full w-[38px] items-center justify-center"
   aria-label="light dark theme toggle"
 >
-  <input
-    type="checkbox"
-    id="toggle-theme-button"
-    class="hidden"
-  />
   <span class="swap-on fill-current">
     <IconSunHigh size={18} />
   </span>
-  <span class="swap-off fill-current">
+  <!-- TODO: Temporal commented -->
+  <!-- <span class="swap-off fill-current">
     <IconMoon size={18} />
-  </span>
-</label>
+  </span> -->
+</div>
