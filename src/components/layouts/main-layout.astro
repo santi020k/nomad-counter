@@ -1,5 +1,5 @@
 ---
-// import Footer from '@organisms/footer.astro'
+import Footer from '@organisms/footer.astro'
 import Navbar from '@organisms/navbar.astro'
 
 import HtmlLayout from '@layouts/html-layout.astro'
@@ -28,7 +28,6 @@ void changeLanguage(locale)
       <slot />
     </main> -->
     <!-- Footer -->
-    <!-- TODO: Temporaly disabled -->
-    <!-- <Footer transition:name="footer" transition:persist /> -->
+    <Footer transition:name="footer" transition:persist />
   </div>
 </HtmlLayout>

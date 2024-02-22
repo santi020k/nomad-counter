@@ -1,68 +1,151 @@
 ---
-import { IconBrandInstagram, IconBrandX, IconBrandYoutube, IconHeart } from '@tabler/icons-react'
+import {
+  IconBrandInstagram,
+  IconBrandX,
+  IconBrandYoutube
+} from '@tabler/icons-react'
 
-import { localizePath, t } from '@utils/lang-utils'
+import { localizePath, t } from '@utils/lang-utils';
 ---
 
-<div class="relative h-32 sm:h-24 md:h-14" />
-
-<footer class="bg-base-300 absolute bottom-0 w-screen" transition:animate="none" transition:name="footer">
-  <div class="container mx-auto">
-    <div class="footer items-center gap-y-px p-4">
-      <nav class="mb-4 flex grid-flow-col flex-wrap items-center gap-1 md:mb-0">
-        <p class="m-0"><span class="text-primary">N</span> <span class="text-secondary">C</span></p>
-        <p class="m-0 flex gap-1">
-          {t('common:generic.by')}
-          <a
-            href="https://santi020k.me"
-            target="_blank"
-            class="hover:text-primary transition-all"
-          >
-            @{t('common:generic.santi020k')}
-          </a>
-          {t('common:generic.with')}
+<footer
+  class="inline-flex w-full flex-col items-start justify-start gap-5 bg-gradient-to-r
+  from-violet-900 to-purple-400 p-16"
+>
+  <div class="text-3xl font-bold tracking-tight text-white">
+    {'Nomad Counter'}
+  </div>
+  <div
+    class="flex h-[754px] flex-col items-start justify-start gap-16 self-stretch"
+  >
+    <div
+      class="flex h-64 flex-col items-start justify-start gap-4 self-stretch"
+    >
+      <div class="text-xl font-bold tracking-tight text-white">
+        {'About'}
+      </div>
+      <div
+        class="self-stretch text-base font-normal leading-normal tracking-tight text-white"
+      >
+        <p>
+          {'This platform, created by Santi020k, is your gateway to the digital nomad lifestyle.'}
         </p>
-        <span class="text-red-600">
-          <IconHeart />
-        </span>
-        |
+        <p>
+          {'Learn how to navigate your days in diverse'}
+          {'countries and discover effective strategies to prevent tax implications'}
+          {'when surpassing 183 days in a single location.'}
+        </p>
+      </div>
+    </div>
+    <div
+      class="flex h-[98px] flex-col items-start justify-start gap-4 self-stretch"
+    >
+      <div class="text-xl font-bold tracking-tight text-white">
+        {'Explore'}
+      </div>
+      <div class="flex flex-col items-start justify-start gap-2.5">
+        <div class="inline-flex items-start justify-start">
+          <div class="flex items-center justify-start gap-2.5">
+            <div class="inline-flex flex-col items-start justify-start gap-0.5">
+              <div
+                class="text-center text-base font-semibold leading-normal tracking-tight text-white"
+              >
+                {'FAQ’s'}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inline-flex items-start justify-start">
+          <div class="flex items-center justify-start gap-2.5">
+            <div class="inline-flex flex-col items-start justify-start gap-0.5">
+              <div
+                class="text-center text-base font-semibold leading-normal tracking-tight text-white"
+              >
+                {'Start Counting'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex h-[98px] flex-col items-start justify-start gap-4 self-stretch"
+    >
+      <div class="text-xl font-bold tracking-tight text-white">
+        {'Legal'}
+      </div>
+      <div class="flex flex-col items-start justify-start gap-2.5">
         <a
           href={localizePath('/privacy-policy')}
-          class="hover:text-primary transition-all"
+          class="text-center text-base font-semibold leading-normal tracking-tight text-white
+          no-underline transition-all hover:text-violet-200"
         >
           {t('common:pages.privacy')}
         </a>
-        | <a href={localizePath('/terms')} class="hover:text-primary transition-all">{t('common:pages.terms')}</a>
-      </nav>
-      <nav class="grid-flow-col gap-1 md:place-self-center md:justify-self-end">
         <a
-          href="https://www.instagram.com/santi020k/"
-          target="_blank"
-          referrerpolicy="no-referrer"
-          class="hover:text-primary no-underline transition-all"
-          aria-label="Go to my instagram page"
-        >
-          <IconBrandInstagram />
+          href={localizePath('/terms')}
+          class="text-center text-base font-semibold leading-normal tracking-tight text-white
+          no-underline transition-all hover:text-violet-200">
+          {t('common:pages.terms')}
         </a>
-        <a
-          href="https://www.youtube.com/channel/UCqF4wgazBVcWtNrjSnHiItw"
-          target="_blank"
-          referrerpolicy="no-referrer"
-          class="hover:text-primary no-underline transition-all"
-          aria-label="Go to my youtube page"
-        >
-          <IconBrandYoutube />
-        </a>
-        <a
-          href="https://twitter.com/santi020k"
-          target="_blank"
-          referrerpolicy="no-referrer"
-          class="hover:text-primary no-underline transition-all"
-          aria-label="Go to my twitter page"
-        >
-          <IconBrandX />
-        </a>
-      </nav>
+      </div>
     </div>
+    <nav class="flex h-[110px] flex-col items-start justify-start gap-4 self-stretch">
+      <div class="text-xl font-bold tracking-tight text-white">
+        {'Developed By'}
+      </div>
+      <div class="flex h-[70px] flex-col items-start justify-start self-stretch">
+        <a
+          href="https://santi020k.me"
+          target="_blank"
+          class="self-stretch text-base font-normal leading-normal tracking-tight text-white
+          no-underline transition-all hover:text-violet-200"
+        >
+            @{t('common:generic.santi020k')}
+        </a>
+
+        <div class="inline-flex items-start justify-start gap-2.5 self-stretch">
+          <div class="flex size-[46px] items-center justify-center rounded-lg">
+            <div class="relative size-6">
+              <a
+                href="https://www.instagram.com/santi020k/"
+                target="_blank"
+                referrerpolicy="no-referrer"
+                class="text-white no-underline transition-all hover:text-violet-200"
+                aria-label="Go to my instagram page"
+              >
+                <IconBrandInstagram />
+              </a>
+            </div>
+          </div>
+          <div class="flex size-[46px] items-center justify-center rounded-lg">
+            <div class="relative size-6">
+              <a
+                href="https://www.youtube.com/channel/UCqF4wgazBVcWtNrjSnHiItw"
+                target="_blank"
+                referrerpolicy="no-referrer"
+                class="text-white no-underline transition-all hover:text-violet-200"
+                aria-label="Go to my youtube page"
+              >
+                <IconBrandYoutube />
+              </a>
+            </div>
+          </div>
+          <div class="flex size-[46px] items-center justify-center rounded-lg">
+            <div class="relative size-6">
+              <a
+                href="https://twitter.com/santi020k"
+                target="_blank"
+                referrerpolicy="no-referrer"
+                class="text-white no-underline transition-all hover:text-violet-200"
+                aria-label="Go to my twitter page"
+              >
+                <IconBrandX />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
   </div>
 </footer>

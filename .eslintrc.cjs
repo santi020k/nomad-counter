@@ -1,77 +1,129 @@
-const importRules = require("./config/eslint/import-rules.cjs");
-const reactRules = require("./config/eslint/react-rules.cjs");
+const importRules = require('./config/eslint/import-rules.cjs')
+const reactRules = require('./config/eslint/react-rules.cjs')
 
 module.exports = {
   env: {
     browser: true,
     es2023: true,
-    node: true,
+    node: true
   },
   extends: [
-    "eslint:recommended",
-    "plugin:astro/all",
-    "plugin:astro/jsx-a11y-strict",
-    "plugin:tailwindcss/recommended",
-    "plugin:i18next/recommended",
+    'eslint:recommended',
+    'plugin:astro/all',
+    'plugin:astro/jsx-a11y-strict',
+    'plugin:tailwindcss/recommended',
+    'plugin:i18next/recommended',
     'plugin:testing-library/react',
-    "plugin:vitest/all"
+    'plugin:vitest/all',
+    'plugin:@stylistic/all-extends'
   ],
-  ignorePatterns: ["*.md"],
-  plugins: ["simple-import-sort", "jsx-a11y", "unused-imports", "i18next", "vitest", "testing-library"],
+  ignorePatterns: ['*.md'],
+  plugins: [
+    'simple-import-sort',
+    'jsx-a11y',
+    'unused-imports',
+    'i18next',
+    'vitest',
+    'testing-library',
+    '@stylistic'
+  ],
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module'
   },
   rules: {
-    "tailwindcss/no-custom-classname": "off",
-    "astro/semi": "off",
-    "max-len": ["error", { code: 120 }],
-    "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": importRules,
-    "vitest/no-hooks": [
-      "error",
+    'tailwindcss/no-custom-classname': 'off',
+    'astro/semi': 'off',
+    'max-len': [
+      'error',
+      { code: 120 }
+    ],
+    'simple-import-sort/exports': 'error',
+    'simple-import-sort/imports': importRules,
+    'vitest/no-hooks': [
+      'error',
       {
-        "allow": ["afterEach", "afterAll", "beforeEach", "beforeAll"]
+        allow: [
+          'afterEach',
+          'afterAll',
+          'beforeEach',
+          'beforeAll'
+        ]
       }
     ],
-    "vitest/prefer-expect-assertions": "off",
-    "testing-library/no-manual-cleanup": "off"
+    'vitest/prefer-expect-assertions': 'off',
+    'testing-library/no-manual-cleanup': 'off',
+    '@stylistic/indent': [
+      'error',
+      2
+    ],
+    '@stylistic/quote-props': [
+      'error',
+      'as-needed'
+    ],
+    '@stylistic/quotes': [
+      'error',
+      'single'
+    ],
+    '@stylistic/semi': [
+      'error',
+      'never'
+    ],
+    '@stylistic/object-curly-spacing': [
+      'error',
+      'always'
+    ],
+    '@stylistic/member-delimiter-style': 'off'
   },
   overrides: [
     {
-      files: ["*.astro"],
-      extends: ["standard-with-typescript"],
-      parser: "astro-eslint-parser",
-      plugins: ["@typescript-eslint"],
+      files: ['*.astro'],
+      extends: ['standard-with-typescript'],
+      parser: 'astro-eslint-parser',
+      plugins: ['@typescript-eslint'],
       rules: {
-        "@typescript-eslint/strict-boolean-expressions": "off",
-      },
+        '@typescript-eslint/strict-boolean-expressions': 'off'
+      }
     },
     {
-      files: ["*.jsx", "*.tsx", "*.mjs", "*.mts", "*.js", "*.ts"],
-      extends: [
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "standard-with-typescript",
+      files: [
+        '*.jsx',
+        '*.tsx',
+        '*.mjs',
+        '*.mts',
+        '*.js',
+        '*.ts'
       ],
-      parser: "@typescript-eslint/parser",
-      plugins: ["react", "react-hooks", "@typescript-eslint"],
+      extends: [
+        'plugin:react/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'standard-with-typescript'
+      ],
+      parser: '@typescript-eslint/parser',
+      plugins: [
+        'react',
+        'react-hooks',
+        '@typescript-eslint'
+      ],
       rules: reactRules,
-      settings: { react: { version: "detect" } },
+      settings: { react: { version: 'detect' } }
     },
     {
-      files: ["*.md", "*.mdx"],
-      extends: ["plugin:mdx/recommended"],
+      files: [
+        '*.md',
+        '*.mdx'
+      ],
+      extends: ['plugin:mdx/recommended'],
       settings: {
-        "mdx/code-blocks": true,
-        "mdx/language-mapper": {},
+        'mdx/code-blocks': true,
+        'mdx/language-mapper': {}
       },
       rules: {
-        "max-len": "off",
-      },
+        'max-len': 'off'
+      }
     }
-  ],
-};
+  ]
+}
