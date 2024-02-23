@@ -19,41 +19,62 @@ const inputLabel = faker.lorem.word()
 const inputPlaceholder = 'Enter text'
 const inputName = 'test'
 
-describe('datepicker Tests', () => {
-  beforeEach(() => {
-    onChange.mockReset()
-    defaultProps = {
-      name: 'test',
-      onChange,
-      value: defaultValues
-    }
-  })
+describe(
+  'datepicker Tests',
+  () => {
+    beforeEach(() => {
+      onChange.mockReset()
+      defaultProps = {
+        name: 'test',
+        onChange,
+        value: defaultValues
+      }
+    })
 
-  afterEach(() => {
-    cleanup()
-  })
+    afterEach(() => {
+      cleanup()
+    })
 
-  it('datepicker renders with provided label', () => {
-    render(<Datepicker {...defaultProps} label={inputLabel} />)
-    assert.ok(screen.getByLabelText(inputLabel))
-  })
+    it(
+      'datepicker renders with provided label',
+      () => {
+        render(<Datepicker {...defaultProps} label={inputLabel} />)
+        assert.ok(screen.getByLabelText(inputLabel))
+      }
+    )
 
-  it('datepicker renders with name as label if no label is provided', () => {
-    render(<Datepicker {...defaultProps} />)
-    assert.ok(screen.getByLabelText(inputName))
-  })
+    it(
+      'datepicker renders with name as label if no label is provided',
+      () => {
+        render(<Datepicker {...defaultProps} />)
+        assert.ok(screen.getByLabelText(inputName))
+      }
+    )
 
-  it('datepicker changes value when a date is selected', async () => {
-    render(<Datepicker {...defaultProps} />)
-    const user = userEvent.setup()
-    const input: HTMLInputElement = screen.getByLabelText(inputName)
-    await user.type(input, inputValue)
-    assert.equal(input.value, inputValue)
-    expect(onChange).toHaveBeenCalledTimes(1)
-  })
+    it(
+      'datepicker changes value when a date is selected',
+      async () => {
+        render(<Datepicker {...defaultProps} />)
+        const user = userEvent.setup()
+        const input: HTMLInputElement = screen.getByLabelText(inputName)
+        await user.type(
+          input,
+          inputValue
+        )
+        assert.equal(
+          input.value,
+          inputValue
+        )
+        expect(onChange).toHaveBeenCalledTimes(1)
+      }
+    )
 
-  it('datepicker renders with provided placeholder', () => {
-    render(<Datepicker {...defaultProps} placeholder={inputPlaceholder} />)
-    assert.ok(screen.getByPlaceholderText(inputPlaceholder))
-  })
-})
+    it(
+      'datepicker renders with provided placeholder',
+      () => {
+        render(<Datepicker {...defaultProps} placeholder={inputPlaceholder} />)
+        assert.ok(screen.getByPlaceholderText(inputPlaceholder))
+      }
+    )
+  }
+)

@@ -7,7 +7,10 @@ const pathname = Astro.url.pathname
 const language = getLocale(Astro.url)
 ---
 
-<a href={toggleLanguage({ pathname, language })} class="flex items-center justify-center">
+<a href={toggleLanguage({
+  pathname,
+  language
+})} class="flex items-center justify-center">
   <span class="flex h-full w-[38px] items-center justify-center rounded-lg">
     <IconLanguage size={16} />
   </span>

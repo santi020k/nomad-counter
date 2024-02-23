@@ -16,7 +16,10 @@ const { modalId, btnClass, btnOpenText, title, btnCloseText, btnPrimaryOnClick, 
 const buttonEvent = `${modalId}.showModal()`
 ---
 
-<button class:list={['btn', btnClass]} onclick={buttonEvent}>{btnOpenText ?? 'Open'}</button>
+<button class:list={[
+  'btn',
+  btnClass
+]} onclick={buttonEvent}>{btnOpenText ?? 'Open'}</button>
 <dialog id={modalId} class="modal modal-bottom sm:modal-middle">
 
   <div class="modal-box">

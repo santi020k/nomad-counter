@@ -9,19 +9,25 @@ import { supabase } from '@libs/supabase/supabase'
 const TABLE_NAME = 'list-calculations'
 
 const ListCountingSection: FC = () => {
-  const [list, setList] = useState<ListCalculations[] | null>()
+  const [
+    list,
+    setList
+  ] = useState<ListCalculations[] | null>()
 
-  useEffect(() => {
-    const getData = async (): Promise<void> => {
-      try {
-        const { data } = await supabase.from(TABLE_NAME).select('*')
-        setList(data)
-      } catch (error) {
-        console.error(error)
+  useEffect(
+    () => {
+      const getData = async (): Promise<void> => {
+        try {
+          const { data } = await supabase.from(TABLE_NAME).select('*')
+          setList(data)
+        } catch (error) {
+          console.error(error)
+        }
       }
-    }
-    void getData()
-  }, [])
+      void getData()
+    },
+    []
+  )
 
   return (
     <div className="overflow-x-auto">

@@ -7,4 +7,7 @@ const supabaseAnonKey: string = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
 // TODO: Update supabase database ts structure:
 // https://supabase.com/docs/reference/javascript/initializing#generating-types
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient<Database>(
+  supabaseUrl,
+  supabaseAnonKey
+)

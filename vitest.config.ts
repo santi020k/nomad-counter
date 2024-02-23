@@ -7,7 +7,12 @@ export default getViteConfig({
     environment: 'jsdom',
     coverage: {
       include: ['src/**'],
-      exclude: ['config/**', 'src/env.d.ts', 'src/models/**', 'src/mocks/**']
+      exclude: [
+        'config/**',
+        'src/env.d.ts',
+        'src/models/**',
+        'src/mocks/**'
+      ]
     }
   }
 })

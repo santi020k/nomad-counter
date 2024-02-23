@@ -20,62 +20,89 @@ const logInUser = {
   ...parsedMockUser
 }
 
-describe('useAuthStore Tests', () => {
-  const { resetState, logIn, logOut, fetchSession } = useAuthStore.getState()
+describe(
+  'useAuthStore Tests',
+  () => {
+    const { resetState, logIn, logOut, fetchSession } = useAuthStore.getState()
 
-  afterEach(() => {
-    resetState()
-  })
-
-  it('logIn sets user data', () => {
-    act(() => {
-      logIn(parsedMockUser)
-    })
-
-    expect(logInUser).toStrictEqual(useAuthStore.getState().user)
-  })
-
-  it('resetState resets user data', () => {
-    act(() => {
-      logIn(parsedMockUser)
-    })
-
-    expect(useAuthStore.getState().user).not.toStrictEqual(initialUser)
-
-    act(() => {
+    afterEach(() => {
       resetState()
     })
 
-    expect(useAuthStore.getState().user).toStrictEqual(initialUser)
-  })
+    it(
+      'logIn sets user data',
+      () => {
+        act(() => {
+          logIn(parsedMockUser)
+        })
 
-  it('logOut resets user data', async () => {
-    await act(async () => {
-      await logOut()
-    })
+        expect(logInUser).toStrictEqual(useAuthStore.getState().user)
+      }
+    )
 
-    expect(useAuthStore.getState().user).toStrictEqual(initialUser)
-  })
+    it(
+      'resetState resets user data',
+      () => {
+        act(() => {
+          logIn(parsedMockUser)
+        })
 
-  it('logOut call supabase sign out', async () => {
-    const signOutSpy = vi.spyOn(supabase.auth, 'signOut')
+        expect(useAuthStore.getState().user).not.toStrictEqual(initialUser)
 
-    await act(async () => {
-      await logOut()
-    })
+        act(() => {
+          resetState()
+        })
 
-    expect(signOutSpy).toHaveBeenCalledTimes(1)
-  })
+        expect(useAuthStore.getState().user).toStrictEqual(initialUser)
+      }
+    )
 
-  it('fetchSession sets user data', async () => {
-    const getSessionSpy = vi.spyOn(supabase.auth, 'getSession')
+    it(
+      'logOut resets user data',
+      async () => {
+        await act(async () => {
+          await logOut()
+        })
 
-    getSessionSpy.mockResolvedValue({ data: { session: mockUser }, error: null })
+        expect(useAuthStore.getState().user).toStrictEqual(initialUser)
+      }
+    )
 
-    await act(async () => {
-      await fetchSession()
-    })
+    it(
+      'logOut call supabase sign out',
+      async () => {
+        const signOutSpy = vi.spyOn(
+          supabase.auth,
+          'signOut'
+        )
 
-    expect(useAuthStore.getState().user).toStrictEqual(logInUser)
-  })
-})
+        await act(async () => {
+          await logOut()
+        })
+
+        expect(signOutSpy).toHaveBeenCalledTimes(1)
+      }
+    )
+
+    it(
+      'fetchSession sets user data',
+      async () => {
+        const getSessionSpy = vi.spyOn(
+          supabase.auth,
+          'getSession'
+        )
+
+        getSessionSpy.mockResolvedValue({
+          data: { session: mockUser },
+          error: null
+        })
+
+        await act(async () => {
+          await fetchSession()
+        })
+
+        expect(useAuthStore.getState().user).toStrictEqual(logInUser)
+      }
+    )
+  }
+)

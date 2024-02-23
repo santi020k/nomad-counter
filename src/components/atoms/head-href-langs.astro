@@ -8,11 +8,14 @@ const currentUrl = Astro.url.href;
 ---
 
 {
-  supportedLanguages.map((supportedLanguage) => (
+  supportedLanguages.map(supportedLanguage => (
     <link
       rel="alternate"
       hreflang={supportedLanguage}
-      href={localizePath(currentUrl, supportedLanguage)}
+      href={localizePath(
+        currentUrl,
+        supportedLanguage
+      )}
     />
   ))
 }

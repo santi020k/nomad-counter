@@ -37,12 +37,15 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
     // defaultValues: { dates: { startDate: null, endDate: null } }
   })
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async data => {
     if (!data.dates?.endDate || !data.dates?.startDate) {
-      setError(InputsNames.dates, {
-        type: 'manual',
-        message: 'This field is required'
-      })
+      setError(
+        InputsNames.dates,
+        {
+          type: 'manual',
+          message: 'This field is required'
+        }
+      )
       return
     }
     const result = CountingFormSchema.safeParse(data)
@@ -58,13 +61,20 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
         ])
         .select()
       // TODO: Handle error
-      console.log('🚀 ~ file: form-counting-section.tsx:54 ~ data, error:', data, error)
+      console.log(
+        '🚀 ~ file: form-counting-section.tsx:54 ~ data, error:',
+        data,
+        error
+      )
     } else {
       result.error.issues.forEach(issue => {
-        setError(issue.path[0] as keyof Inputs, {
-          type: 'manual',
-          message: issue.message
-        })
+        setError(
+          issue.path[0] as keyof Inputs,
+          {
+            type: 'manual',
+            message: issue.message
+          }
+        )
       })
     }
   }
@@ -101,10 +111,15 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
               placeholder='Colombia'
               disabled={!user?.isSignIn || false}
               label={t?.country ?? InputsNames.country}
-              {...register(InputsNames.country, { required: true })}
+              {...register(
+                InputsNames.country,
+                { required: true }
+              )}
             />
             {/* eslint-disable-next-line i18next/no-literal-string */}
-            {errors.country ? <span>This field is required</span> : null}
+            {errors.country
+              ? <span>{`This field is required ${''}`}</span>
+              : null}
           </div>
 
           {/* Dates */}
@@ -124,14 +139,18 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
               )}
             />
             {/* eslint-disable-next-line i18next/no-literal-string */}
-            {errors.dates ? <span>This field is required</span> : null}
+            {errors.dates
+              ? <span>{`This field is required ${''}`}</span>
+              : null}
           </div>
         </div>
       </div>
 
       <div className="mt-14 flex items-center justify-end gap-x-6">
         <button type="submit" onClick={handleForm} className="btn-primary btn">
-          {user?.isSignIn ? t?.action : t?.need}
+          {user?.isSignIn
+            ? t?.action
+            : t?.need}
         </button>
       </div>
     </form>

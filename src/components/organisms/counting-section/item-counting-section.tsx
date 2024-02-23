@@ -23,7 +23,10 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
   }
 
   const countTotalDays = (arrival: string, departure: string): number => {
-    if (!isValidDates(arrival, departure)) return 0
+    if (!isValidDates(
+      arrival,
+      departure
+    )) return 0
     const arrivalDate = new Date(arrival)
     const departureDate = new Date(departure)
     const diffTime = Math.abs(departureDate.getTime() - arrivalDate.getTime())
@@ -33,7 +36,10 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
 
   const countLastYearDays = (arrival: string, departure: string): number => {
   // TODO: This is not working properly, fix it!
-    if (!isValidDates(arrival, departure)) return 0
+    if (!isValidDates(
+      arrival,
+      departure
+    )) return 0
     const arrivalDate = new Date(arrival)
     const departureDate = new Date(departure)
     const diffTime = Math.abs(departureDate.getTime() - arrivalDate.getTime())
@@ -42,7 +48,10 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
   }
 
   const isMoreThan183Days = (arrival: string, departure: string): boolean => {
-    const totalDays = countTotalDays(arrival, departure)
+    const totalDays = countTotalDays(
+      arrival,
+      departure
+    )
     if (!totalDays) return false
     return totalDays > 183
   }
@@ -64,11 +73,25 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
       {/* Departure */}
       <td>{formatDate(item.departure ?? '')}</td>
       {/* Total Days */}
-      <td>{countTotalDays(item.arrival ?? '', item.departure ?? '') || 'All'}</td>
+      <td>{countTotalDays(
+        item.arrival ?? '',
+        item.departure ?? ''
+      ) || 'All'}
+      </td>
       {/* Last Year Days */}
-      <td>{countLastYearDays(item.arrival ?? '', item.departure ?? '') || 'All'}</td>
+      <td>{countLastYearDays(
+        item.arrival ?? '',
+        item.departure ?? ''
+      ) || 'All'}
+      </td>
       {/* 183 Days? */}
-      <td>{isMoreThan183Days(item.arrival ?? '', item.departure ?? '') ? 'Si' : 'No'}</td>
+      <td>{isMoreThan183Days(
+        item.arrival ?? '',
+        item.departure ?? ''
+      )
+        ? 'Si'
+        : 'No'}
+      </td>
       {/* Residency */}
       <th>
         <label>

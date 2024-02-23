@@ -28,15 +28,29 @@ export const initialUser = UserDataSchema.parse({
 const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
 const TOAST_DURATION = 3000
 
-const useAuthStore = create<UserAuthState>((set) => ({
+const useAuthStore = create<UserAuthState>(set => ({
   user: initialUser,
-  resetState: () => { set({ user: initialUser }) },
-  logIn: (user) => { set({ user: { isSignIn: true, ...user } }) },
+  resetState: () => {
+    set({ user: initialUser })
+  },
+  logIn: user => {
+    set({
+      user: {
+        isSignIn: true,
+        ...user
+      }
+    })
+  },
   logOut: async () => {
     const { error } = await supabase.auth.signOut() ?? { error: undefined }
 
     if (!error) set({ user: initialUser })
-    if (error) toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
+    if (error) {
+      toastError({
+        text: ERROR_MESSAGE,
+        duration: TOAST_DURATION
+      })
+    }
   },
   fetchSession: async () => {
     try {
@@ -50,7 +64,10 @@ const useAuthStore = create<UserAuthState>((set) => ({
       if (parseAuthResult) set({ user: parseAuthResult })
     } catch (error) {
       console.error(error)
-      toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
+      toastError({
+        text: ERROR_MESSAGE,
+        duration: TOAST_DURATION
+      })
     }
   }
 }))

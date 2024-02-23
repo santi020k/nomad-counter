@@ -44,8 +44,14 @@
 // TODO: Temporal fix
 import { describe, expect, it } from 'vitest'
 
-describe('lang-utils', () => {
-  it('should pass', () => {
-    expect(true).toBeTruthy()
-  })
-})
+describe(
+  'lang-utils',
+  () => {
+    it(
+      'should pass',
+      () => {
+        expect(true).toBeTruthy()
+      }
+    )
+  }
+)

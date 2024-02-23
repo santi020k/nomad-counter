@@ -7,10 +7,15 @@ import { getLocale } from '@utils/lang-utils'
 
 const locale = getLocale(Astro.url)
 
-const entry = await getEntry('pages', `${locale}/terms`)
+const entry = await getEntry(
+  'pages',
+  `${locale}/terms`
+)
 const Content = await entry?.render().then(({ Content }) => Content)
 ---
 
 <MainLayout title={entry?.data?.title}>
-  {Content ? <Content /> : null}
+  {Content
+    ? <Content />
+    : null}
 </MainLayout>

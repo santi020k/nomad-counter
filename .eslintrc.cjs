@@ -84,6 +84,10 @@ module.exports = {
       'error',
       'as-needed'
     ],
+    '@stylistic/dot-location': [
+      'error',
+      'property'
+    ],
     '@stylistic/member-delimiter-style': 'off',
     '@stylistic/no-extra-parens': 'off'
   },

@@ -10,9 +10,15 @@ void i18next
   .init({
     fallbackLng: 'en',
     debug: false,
-    ns: ['common', 'home'],
+    ns: [
+      'common',
+      'home'
+    ],
     partialBundledLanguages: true,
-    supportedLngs: ['en', 'es'],
+    supportedLngs: [
+      'en',
+      'es'
+    ],
     initImmediate: true,
     load: 'languageOnly',
     backend: {
@@ -20,11 +26,14 @@ void i18next
         HttpApi,
         FsBackend
       ],
-      backendOptions: [{
-        loadPath: '/locales/{{lng}}/{{ns}}.json'
-      }, {
-        loadPath: './public/locales/{{lng}}/{{ns}}.json'
-      }]
+      backendOptions: [
+        {
+          loadPath: '/locales/{{lng}}/{{ns}}.json'
+        },
+        {
+          loadPath: './public/locales/{{lng}}/{{ns}}.json'
+        }
+      ]
     }
   })
 

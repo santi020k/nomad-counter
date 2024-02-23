@@ -11,7 +11,9 @@ const locales = {
   en: 'en',
   es: 'es'
 }
-const baseUrl = import.meta.env.DEV ? 'http://localhost:4321' : 'https://nomad.santi020k.me'
+const baseUrl = import.meta.env.DEV
+  ? 'http://localhost:4321'
+  : 'https://nomad.santi020k.me'
 
 export default defineConfig({
   integrations: [
@@ -21,14 +23,21 @@ export default defineConfig({
     i18n({
       locales,
       defaultLocale,
-      exclude: ['pages/api/**/*', 'pages/**/*.md', 'pages/**/*.mdx']
+      exclude: [
+        'pages/api/**/*',
+        'pages/**/*.md',
+        'pages/**/*.mdx'
+      ]
     }),
     sitemap({
       i18n: {
         locales,
         defaultLocale
       },
-      filter: filterSitemapByDefaultLocale({ defaultLocale, base: baseUrl })
+      filter: filterSitemapByDefaultLocale({
+        defaultLocale,
+        base: baseUrl
+      })
     })
   ],
   output: 'static',

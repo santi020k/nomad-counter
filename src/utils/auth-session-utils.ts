@@ -48,5 +48,10 @@ export const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   }) ?? { error: undefined }
-  if (error) toastError({ text: ERROR_MESSAGE, duration: TOAST_DURATION })
+  if (error) {
+    toastError({
+      text: ERROR_MESSAGE,
+      duration: TOAST_DURATION
+    })
+  }
 }
