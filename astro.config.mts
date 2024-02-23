@@ -5,7 +5,7 @@ import tailwind from '@astrojs/tailwind'
 import vercel from '@astrojs/vercel/static'
 import { defineConfig } from 'astro/config'
 import { filterSitemapByDefaultLocale, i18n } from 'astro-i18n-aut/integration'
-
+import metaTags from 'astro-meta-tags'
 const defaultLocale = 'en'
 const locales = {
   en: 'en',
@@ -15,6 +15,7 @@ const baseUrl = import.meta.env.DEV
   ? 'http://localhost:4321'
   : 'https://nomad.santi020k.me'
 
+// https://astro.build/config
 export default defineConfig({
   integrations: [
     tailwind(),
@@ -38,7 +39,8 @@ export default defineConfig({
         defaultLocale,
         base: baseUrl
       })
-    })
+    }),
+    metaTags()
   ],
   output: 'static',
   adapter: vercel({

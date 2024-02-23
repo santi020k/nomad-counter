@@ -32,6 +32,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "astro": "^4.4.2",
     "astro-i18n-aut": "^0.7.0",
+    "astro-meta-tags": "^0.2.1",
     "dayjs": "^1.11.10",
     "i18next": "23.10.0",
     "i18next-browser-languagedetector": "^7.2.0",

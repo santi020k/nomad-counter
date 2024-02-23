@@ -8,7 +8,7 @@ import { themes } from '@models/theme-model'
 
 interface Props {
   title: string
-  description: string
+  description?: string
   image?: string
 }
 
@@ -17,7 +17,9 @@ const canonicalURL = new URL(
   Astro.site
 )
 
-const { title, description, image = '/assets/screenshot.png' } = Astro.props;
+const { title, image = '/assets/screenshot.webp' } = Astro.props
+const description = `We've gathered insights from fellow digital nomads to help you
+track and compare your days spent in different countries. Embrace the freedom of the nomadic lifestyle.`
 ---
 
 <!-- Theme Script -->
@@ -97,6 +99,7 @@ const { title, description, image = '/assets/screenshot.png' } = Astro.props;
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
+<meta property="twitter:cretor" content="santi020k" />
 <meta property="twitter:image" content={new URL(
   image,
   Astro.url
