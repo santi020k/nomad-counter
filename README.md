@@ -110,11 +110,11 @@ To deploy this project run
 
 ## Screenshots
 
-![App Screenshot](./public/assets/screenshot.webp)
+![App Screenshot](./public/assets/full-page.webp)
 
 ## Tech Stack (Pending)
 
-**Client:** React, zustand, TailwindCSS
+**Client:** React, Zustand, TailwindCSS
 
 **Server:** Supabase
 
@@ -122,10 +122,12 @@ To deploy this project run
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| Primary | ![#471AA0](https://via.placeholder.com/10/471AA0?text=+) #471AA0 |
-| Secondary | ![#B579E6](https://via.placeholder.com/10/B579E6?text=+) #B579E6 |
-| Primary Dark | ![#b296d6](https://via.placeholder.com/10/b296d6?text=+) #b296d6 |
-| Secondary Dark | ![#e2c8f6](https://via.placeholder.com/10/e2c8f6?text=+) #e2c8f6 |
+| Primary | ![#471aa0](https://via.placeholder.com/10/471aa0?text=+) #471aa0 |
+| Secondary | ![#b579e6](https://via.placeholder.com/10/b579e6?text=+) #b579e6 |
+| Primary Dark | ![#5c469c](https://via.placeholder.com/10/5c469c?text=+) #5c469c |
+| Secondary Dark | ![#d4adfc](https://via.placeholder.com/10/e2c8f6?text=+) #d4adfc |
+
+## [Figma](https://www.figma.com/file/uRETHwczK1UPF3Cs5vnCs6/Nomad-Counter?type=design&node-id=1%3A2759&mode=design&t=MIeNu1oQzmUCCIE5-1)
 
 ## Features
 
@@ -146,7 +148,7 @@ If you have any feedback, please reach out to me at <info@santi020k.me>
 
 Hi, I'm Santiago Molina! 👋
 
-I'm a full stack developer...
+With over a decade of experience, I've played a pivotal role in various projects centered around ReactJS, NodeJS, and TypeScript. As a dedicated co-organizer of the React JS Colombia Meetup, I actively cultivate an environment of learning and collaboration within the tech community.
 
 ## Authors
 
