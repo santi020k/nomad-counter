@@ -1,4 +1,5 @@
 ---
+import SpeedInsights from '@vercel/speed-insights/astro'
 import { ViewTransitions } from 'astro:transitions'
 
 import HeadHrefLangs from '@atoms/head-href-langs.astro'
@@ -103,3 +104,6 @@ const { title, description, image = '/assets/screenshot.png' } = Astro.props;
 
 <!-- Sitemap -->
 <link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Vercel -->
+<SpeedInsights />
