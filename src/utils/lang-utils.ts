@@ -10,6 +10,12 @@ export const localizePath = (url: string, location?: string): string => getLocal
   location ?? i18next?.language
 )
 
+export const buildUrl = (url: string): string => (
+  i18next?.language === 'en'
+    ? `/${url}`
+    : `/es/${url}`
+)
+
 export const toggleLanguage = ({ pathname, language }: { pathname: string, language: string }): string => (
   localizePath(
     pathname,

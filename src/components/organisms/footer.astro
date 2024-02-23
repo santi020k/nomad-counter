@@ -5,7 +5,7 @@ import {
   IconBrandLinkedin
 } from '@tabler/icons-react'
 
-import { localizePath, t } from '@utils/lang-utils';
+import { buildUrl, localizePath, t } from '@utils/lang-utils';
 ---
 
 <!-- TODO: Refactor to smaller components -->
@@ -44,14 +44,14 @@ import { localizePath, t } from '@utils/lang-utils';
       </h4>
       <div class="flex flex-col items-start justify-start gap-2.5">
         <a
-          href="/#faqs"
+          href={buildUrl('#faqs')}
           class="text-left text-base font-semibold leading-normal tracking-tight
             text-white no-underline hover:text-violet-200"
         >
           {'FAQ’s'}
         </a>
         <a
-          href="/#calc"
+          href={buildUrl('#calc')}
           class="text-left text-base font-semibold leading-normal tracking-tight
             text-white no-underline hover:text-violet-200"
         >
@@ -100,7 +100,7 @@ import { localizePath, t } from '@utils/lang-utils';
         <div class="inline-flex items-start justify-start gap-2.5 self-stretch">
           <!-- Github -->
           <a
-            href="https://github.com/santi020k/"
+            href="https://github.com/santi020k/nomad-counter/"
             target="_blank"
             referrerpolicy="no-referrer"
             class="text-white no-underline transition-all hover:text-violet-200"
