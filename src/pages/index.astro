@@ -1,6 +1,7 @@
 ---
 import { t } from 'i18next'
 
+import Faqs from '@molecules/faqs.astro'
 import Hero from '@molecules/hero.astro'
 
 import CountingSection from '@organisms/counting-section/counting-section'
@@ -14,4 +15,5 @@ import MainLayout from '@layouts/main-layout.astro'
     'home:counting',
     { returnObjects: true }
   )} />
+  <Faqs />
 </MainLayout>
