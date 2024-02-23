@@ -19,7 +19,7 @@
 
 ## Demo ([Production Website](https://nomad.santi020k.me/))
 
-![App Screenshot](./public/assets/screenshot.png)
+![App Screenshot](./public/assets/screenshot.webp)
 
 ## Description
 
@@ -110,7 +110,7 @@ To deploy this project run
 
 ## Screenshots
 
-![App Screenshot](./public/assets/screenshot.png)
+![App Screenshot](./public/assets/screenshot.webp)
 
 ## Tech Stack (Pending)
 
