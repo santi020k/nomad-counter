@@ -1,5 +1,5 @@
 {
-    "name": "Nomad Counter",
+    "name": "NC",
     "short_name": "NC",
     "start_url": "/",
     "icons": [
@@ -27,6 +27,6 @@
         }
     ],
     "theme_color": "#f3e8fb",
-    "background_color": "#f3e8fb",
+    "background_color": "#ffffff",
     "display": "standalone"
 }

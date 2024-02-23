@@ -15,7 +15,7 @@
 <!-- TODO: add vitest badge and others -->
 
 <!-- Coming soon -->
-![Logo](./public/assets/logo.webp)
+![Logo](./public/assets/logo.svg)
 
 ## Demo ([Production Website](https://nomad.santi020k.me/))
 
