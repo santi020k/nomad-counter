@@ -7,26 +7,22 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export type Ref = HTMLInputElement
 
-const Input = forwardRef<Ref, InputProps>(({ name, label, className, placeholder, ...restProps }, ref) => (
-  <>
-    <label htmlFor={name} className="mb-2 block text-sm font-medium leading-6">
-      {label ?? name}
-    </label>
-    <input
-      type="text"
-      id={name}
-      className={[
-        'block w-full rounded-lg border focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600',
-        'dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 ',
-        'dark:focus:ring-blue-500',
-        className
-      ].join(' ')}
-      placeholder={placeholder ?? name}
-      name={name}
-      ref={ref}
-      {...restProps}
-    />
-  </>
+const Input = forwardRef<Ref, InputProps>(({ name, className, placeholder, id, ...restProps }, ref) => (
+  <input
+    type="text"
+    className={[
+      'block w-full rounded-lg border-gray-200 px-4 py-3 text-sm focus:border-blue-500',
+      'focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700',
+      'dark:bg-slate-900 dark:text-gray-400 dark:focus:ring-gray-600',
+      className
+    ].join(' ')}
+    placeholder={placeholder ?? name}
+    name={name}
+    ref={ref}
+    data-testid={id}
+    id={id}
+    {...restProps}
+  />
 ))
 
 Input.displayName = 'Input'

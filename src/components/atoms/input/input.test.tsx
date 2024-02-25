@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { assert, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Input, { type InputProps } from './input'
 
@@ -10,9 +10,9 @@ const onChange = vi.fn()
 
 // Fake
 const inputValue = faker.lorem.word()
-const inputLabel = faker.lorem.word()
 const inputPlaceholder = 'Enter text'
-const inputName = 'test'
+const inputName = 'testName'
+const inputId = 'testId'
 
 describe(
   'input Tests',
@@ -21,32 +21,21 @@ describe(
       onChange.mockReset()
       defaultProps = {
         name: inputName,
+        id: inputId,
         onChange
       }
     })
 
-    it(
-      'input renders with provided label',
-      () => {
-        render(<Input {...defaultProps} label={inputLabel} />)
-        assert.ok(screen.getByLabelText(inputLabel))
-      }
-    )
-
-    it(
-      'input renders with name as label if no label is provided',
-      () => {
-        render(<Input {...defaultProps} />)
-        assert.ok(screen.getByLabelText(inputName))
-      }
-    )
+    afterEach(() => {
+      cleanup()
+    })
 
     it(
       'input changes value when text is entered',
       async () => {
         render(<Input {...defaultProps} />)
         const user = userEvent.setup()
-        const input: HTMLInputElement = screen.getByLabelText(inputName)
+        const input: HTMLInputElement = screen.getByTestId(inputId)
         await user.type(
           input,
           inputValue
@@ -63,7 +52,7 @@ describe(
       async () => {
         render(<Input {...defaultProps} />)
         const user = userEvent.setup()
-        const input: HTMLInputElement = screen.getByLabelText(inputName)
+        const input: HTMLInputElement = screen.getByTestId(inputId)
         await user.type(
           input,
           inputValue
