@@ -67,6 +67,12 @@ Go to the project directory
   cd nomad-counter
 ```
 
+Copy .env and add your own variables
+
+```bash
+  cp .env.local.example .env.local
+```
+
 Install dependencies
 
 ```bash
