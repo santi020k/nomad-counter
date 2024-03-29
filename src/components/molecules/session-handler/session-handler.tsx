@@ -15,25 +15,22 @@ interface SessionHandlerProps {
 const SessionHandler: FC<SessionHandlerProps> = ({ logoutText }) => {
   const { user, fetchSession, logIn, logOut } = useAuthStore(state => state)
 
-  useEffect(
-    () => {
-      void fetchSession()
+  useEffect(() => {
+    void fetchSession()
 
-      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-        if (session) {
-          const parseAuthResponse = parseAuthSession(session)
-          if (parseAuthResponse) logIn(parseAuthResponse)
-        }
-      }) ?? {}
-
-      const { subscription } = data ?? {}
-
-      return () => {
-        subscription?.unsubscribe()
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        const parseAuthResponse = parseAuthSession(session)
+        if (parseAuthResponse) logIn(parseAuthResponse)
       }
-    },
-    []
-  )
+    }) ?? {}
+
+    const { subscription } = data ?? {}
+
+    return () => {
+      subscription?.unsubscribe()
+    }
+  }, [])
 
   const handleSession = (): void => {
     if (!user?.isSignIn) {

@@ -7,7 +7,8 @@
     "actionRight": "Descarga la Aplicación y Sigue Tu Viaje"
   },
   "counting": {
-    "title": "Explora tu Historial de Viajes y Suma Cada Día",
+    "title": "Explora tu Historial de Viajes y Suma",
+    "every": "Cada Dìa",
     "subtitle": "Contando tus Días",
     "description": "Descubre cuántos días has pasado en cada país con Nomad Counter, una aplicación sencilla que te ayuda a llevar un registro detallado de tus aventuras. Organiza tu historial de viajes y observa fácilmente la duración de tus estancias en diferentes destinos",
     "country": "País",
@@ -15,7 +16,7 @@
     "departure": "Salida",
     "days": "Días",
     "total": "Total",
-    "action": "Comienza a Contar Ahora",
-    "need": "Click aquí para iniciar sesión primero"
+    "action": "Contar Ahora",
+    "need": "iniciar sesión"
   }
 }

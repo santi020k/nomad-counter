@@ -8,10 +8,7 @@ const language = getLocale(Astro.url)
 ---
 
 <a
-  href={toggleLanguage({
-    pathname,
-    language
-  })}
+  href={toggleLanguage({ pathname, language })}
   aria-label="Change theme"
   class="flex items-center justify-center"
 >

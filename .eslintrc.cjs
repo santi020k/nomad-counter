@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const importRules = require('./config/eslint/import-rules.cjs')
 const reactRules = require('./config/eslint/react-rules.cjs')
 
@@ -15,6 +16,9 @@ module.exports = {
     'plugin:i18next/recommended',
     'plugin:testing-library/react',
     'plugin:vitest/all',
+    'plugin:react-hooks/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:@typescript-eslint/recommended',
     'plugin:@stylistic/all-extends'
   ],
   ignorePatterns: ['*.md'],
@@ -25,7 +29,8 @@ module.exports = {
     'i18next',
     'vitest',
     'testing-library',
-    '@stylistic'
+    '@stylistic',
+    '@typescript-eslint'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -56,6 +61,14 @@ module.exports = {
     ],
     'vitest/prefer-expect-assertions': 'off',
     'testing-library/no-manual-cleanup': 'off',
+    'react/jsx-max-depth': [
+      'warn',
+      { max: 7 }
+    ],
+    'react/prop-types': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'testing-library/prefer-screen-queries': 'off',
+    'react-hooks/exhaustive-deps': 'off',
     '@stylistic/indent': [
       'error',
       2
@@ -89,7 +102,17 @@ module.exports = {
       'property'
     ],
     '@stylistic/member-delimiter-style': 'off',
-    '@stylistic/no-extra-parens': 'off'
+    '@stylistic/no-extra-parens': 'off',
+    '@stylistic/function-call-argument-newline': [
+      'error',
+      'never'
+    ],
+    '@stylistic/object-property-newline': [
+      'error',
+      { allowAllPropertiesOnSameLine: true }
+    ],
+    indent: 'off',
+    '@typescript-eslint/indent': 'off'
   },
   overrides: [
     {
@@ -135,7 +158,8 @@ module.exports = {
         'mdx/language-mapper': {}
       },
       rules: {
-        'max-len': 'off'
+        'max-len': 'off',
+        'react/react-in-jsx-scope': 'off'
       }
     }
   ]

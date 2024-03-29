@@ -14,59 +14,38 @@ const inputPlaceholder = 'Enter text'
 const inputName = 'testName'
 const inputId = 'testId'
 
-describe(
-  'input Tests',
-  () => {
-    beforeEach(() => {
-      onChange.mockReset()
-      defaultProps = {
-        name: inputName,
-        id: inputId,
-        onChange
-      }
-    })
+describe('input Tests', () => {
+  beforeEach(() => {
+    onChange.mockReset()
+    defaultProps = {
+      name: inputName,
+      id: inputId,
+      onChange
+    }
+  })
 
-    afterEach(() => {
-      cleanup()
-    })
+  afterEach(() => {
+    cleanup()
+  })
 
-    it(
-      'input changes value when text is entered',
-      async () => {
-        render(<Input {...defaultProps} />)
-        const user = userEvent.setup()
-        const input: HTMLInputElement = screen.getByTestId(inputId)
-        await user.type(
-          input,
-          inputValue
-        )
-        assert.equal(
-          input.value,
-          inputValue
-        )
-      }
-    )
+  it('input changes value when text is entered', async () => {
+    render(<Input {...defaultProps} />)
+    const user = userEvent.setup()
+    const input: HTMLInputElement = screen.getByTestId(inputId)
+    await user.type(input, inputValue)
+    assert.equal(input.value, inputValue)
+  })
 
-    it(
-      'input calls onChange when text is entered',
-      async () => {
-        render(<Input {...defaultProps} />)
-        const user = userEvent.setup()
-        const input: HTMLInputElement = screen.getByTestId(inputId)
-        await user.type(
-          input,
-          inputValue
-        )
-        expect(onChange).toHaveBeenCalledTimes(inputValue.length)
-      }
-    )
+  it('input calls onChange when text is entered', async () => {
+    render(<Input {...defaultProps} />)
+    const user = userEvent.setup()
+    const input: HTMLInputElement = screen.getByTestId(inputId)
+    await user.type(input, inputValue)
+    expect(onChange).toHaveBeenCalledTimes(inputValue.length)
+  })
 
-    it(
-      'input renders with provided placeholder',
-      () => {
-        render(<Input {...defaultProps} placeholder={inputPlaceholder} />)
-        assert.ok(screen.getByPlaceholderText(inputPlaceholder))
-      }
-    )
-  }
-)
+  it('input renders with provided placeholder', () => {
+    render(<Input {...defaultProps} placeholder={inputPlaceholder} />)
+    assert.ok(screen.getByPlaceholderText(inputPlaceholder))
+  })
+})

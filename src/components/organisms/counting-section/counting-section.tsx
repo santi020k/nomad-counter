@@ -8,7 +8,10 @@ interface CountingSectionProps {
 }
 
 const CountingSection: FC<CountingSectionProps> = ({ t }) => (
-  <section id="calc" className="container mx-auto flex flex-col flex-wrap items-center justify-center py-40">
+  <section
+    id="calc"
+    className="container mx-auto flex min-h-screen flex-col flex-wrap items-center justify-center py-40"
+  >
     <FormCountingSection t={t} />
     {/* <ListCountingSection /> */}
   </section>

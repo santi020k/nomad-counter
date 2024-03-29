@@ -7,7 +7,8 @@
     "actionRight": "Download the App and Chart Your Journey"
   },
   "counting": {
-    "title": "Explore Your Travel History and Tally Up Every Day",
+    "title": "Explore Your Travel History and Tally Up",
+    "every": "Every Day",
     "subtitle": "Counting Your Days",
     "description": "Discover how many days you've spent in each country with Nomad Counter, a simple application to keep a detailed record of your adventures. Organize your travel history and easily track the duration of your stays in different destinations.",
     "country": "Country",
@@ -15,7 +16,7 @@
     "departure": "Departure",
     "days": "Days",
     "total": "Total",
-    "action": "Start Counting Now",
-    "need": "Click here to log in first"
+    "action": "Start Counting",
+    "need": "log in"
   }
 }

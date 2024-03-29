@@ -7,10 +7,7 @@ import { getLocale } from '@utils/lang-utils'
 
 const locale = getLocale(Astro.url)
 
-const entry = await getEntry(
-  'pages',
-  `${locale}/privacy-policy`
-)
+const entry = await getEntry('pages', `${locale}/privacy-policy`)
 const Content = await entry?.render().then(({ Content }) => Content)
 ---
 
