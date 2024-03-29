@@ -5,7 +5,10 @@ module.exports = [
       // Packages `react` related packages come first.
       ['^react'],
       // Libs Packages
-      ['^@?\\w', '^(@|components)(/.*|$)'],
+      [
+        '^@?\\w',
+        '^(@|components)(/.*|$)'
+      ],
       // I18n
       ['^(@i18n)'],
       // Themes
@@ -24,9 +27,16 @@ module.exports = [
       // Side effect imports.
       ['^\\u0000'],
       // Parent imports. Put `..` last.
-      ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+      [
+        '^\\.\\.(?!/?$)',
+        '^\\.\\./?$'
+      ],
       // Other relative imports. Put same-folder imports and `.` last.
-      ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+      [
+        '^\\./(?=.*/)(?!/?$)',
+        '^\\.(?!/?$)',
+        '^\\./?$'
+      ],
       // Style imports.
       ['^.+\\.?(css)$']
     ]

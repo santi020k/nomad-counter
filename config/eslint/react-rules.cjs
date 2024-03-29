@@ -6,8 +6,16 @@ module.exports = {
   'react/no-danger-with-children': 'error',
   'arrow-body-style': 'error',
   'react/no-unstable-nested-components': 'error',
-  'react/self-closing-comp': ['error', { component: true, html: true }],
-  'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
+  'react/self-closing-comp': [
+    'error',
+    { component: true,
+      html: true }
+  ],
+  'react/jsx-curly-brace-presence': [
+    'error',
+    { props: 'never',
+      children: 'never' }
+  ],
   'react/jsx-curly-newline': 'error',
   'react/destructuring-assignment': 'error',
   'react/jsx-pascal-case': 'error',
@@ -21,7 +29,10 @@ module.exports = {
   'react/jsx-no-leaked-render': 'error',
   'react/jsx-handler-names': 'error',
   'react/jsx-fragments': 'error',
-  'react/jsx-max-depth': ['error', { max: 5 }],
+  'react/jsx-max-depth': [
+    'error',
+    { max: 5 }
+  ],
   'react/no-deprecated': 'error',
   'react/no-multi-comp': 'error',
   'react/no-unescaped-entities': 'error',
