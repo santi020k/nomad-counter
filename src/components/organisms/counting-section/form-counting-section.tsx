@@ -85,12 +85,12 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   return (
     <form className="w-full max-w-4xl p-4">
       {/* New */}
-      <div className="inline-flex max-w-[400px] flex-col items-center justify-center gap-8 p-4">
-        <div className="flex h-[344px] flex-col items-center justify-center gap-6 self-stretch">
+      <div className="inline-flex flex-col items-center justify-center gap-8 p-4">
+        <div className="flex flex-col items-center justify-center gap-6">
           <div className="text-sm font-semibold leading-tight tracking-tight text-gray-600">
             # {t.subtitle}
           </div>
-          <div className="self-stretch text-center">
+          <div className="max-w-[614px] self-stretch text-center">
             <span className="text-4xl font-bold tracking-tight text-black">
               {t.title}&nbsp;
             </span>
@@ -98,17 +98,23 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
               {t.every}
             </span>
           </div>
-          <div className="self-stretch text-center text-base font-normal leading-normal tracking-tight text-gray-500">
+          <div
+            className=
+              "max-w-[700px] self-stretch text-center text-base font-normal leading-normal tracking-tight text-gray-500"
+          >
             {t.description}
           </div>
         </div>
         <div
           className="
-            flex flex-col items-end justify-end gap-2.5 self-stretch
-            rounded-lg border border-gray-300 bg-white p-4 shadow"
+            flex flex-col items-end justify-end gap-2.5 self-stretch rounded-lg border border-gray-300 bg-white
+            p-4 shadow-xl lg:flex-row lg:items-center"
         >
-          <div className="flex h-[124px] shrink grow basis-0 flex-col items-start justify-start">
-            <div className="inline-flex shrink grow basis-0 flex-col items-start justify-start">
+          <div
+            className=
+              "flex w-full shrink grow flex-col items-start justify-start lg:flex-row lg:items-center lg:gap-4"
+          >
+            <div className="flex h-[62px] w-full shrink grow flex-col items-start justify-center">
               <Controller
                 control={control}
                 name={InputsNames.country}
@@ -122,11 +128,12 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
                     options={Object.values(countries).map(country => country.name)}
                     isError={Boolean(errors.country)}
                     message={`This field is required ${''}`}
+                    className='w-full'
                   />
                 )}
               />
             </div>
-            <div className="inline-flex shrink grow basis-0 flex-col items-start justify-start">
+            <div className="flex h-[62px] w-full shrink grow flex-col items-start justify-center">
               <Controller
                 control={control}
                 name={InputsNames.dates}
@@ -138,7 +145,7 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
                     label=""
                     onChange={onChange}
                     value={value}
-                    className="shrink grow basis-0 text-[15px] font-medium tracking-tight text-gray-500"
+                    className="shrink grow text-[15px] font-medium tracking-tight text-gray-500"
                   />
                 )}
               />
@@ -151,9 +158,12 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
             <button
               onClick={handleForm}
               type="submit"
-              className="flex items-center justify-center gap-2.5 rounded-lg bg-violet-900 px-5 py-[22px]"
+              className="flex items-center justify-center gap-2.5 rounded-lg bg-violet-900 px-[20px] py-[22px]"
             >
-              <span className="text-center text-[15px] font-semibold tracking-tight text-white">
+              <span
+                className="
+                  whitespace-nowrap text-center text-[15px] font-semibold leading-normal tracking-tight text-white"
+              >
                 {user?.isSignIn
                   ? t?.action
                   : t?.need}

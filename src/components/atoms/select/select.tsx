@@ -22,9 +22,9 @@ const Select: FC<SelectProps<Value>> = ({
   onChange, options, isSuccess, isError, message, label, className, name, ...selectProps
 }) => {
   const selectClasses = `
-    py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500
+    py-3 px-4 pe-9 block w-full border-0 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500
     disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400
-    dark:focus:ring-gray-600
+    dark:focus:ring-gray-600 cursor-pointer
   `
   const errorClasses = isError && 'border-red-500 focus:border-red-500 focus:ring-red-500'
   const successClasses = isSuccess && 'border-green-500 focus:border-teal-500 focus:ring-teal-500'
@@ -34,7 +34,7 @@ const Select: FC<SelectProps<Value>> = ({
   }
 
   return (
-    <div className="cursor-pointer">
+    <div className="w-full">
       {Boolean(label) && (
         <label
           htmlFor={name}
@@ -43,12 +43,12 @@ const Select: FC<SelectProps<Value>> = ({
           {label}
         </label>
       )}
-      <div className="relative cursor-pointer">
+      <div>
         <select
           id={name}
           name={name}
           className={
-            twMerge(selectClasses, className, errorClasses, successClasses, 'cursor-pointer')
+            twMerge(selectClasses, className, errorClasses, successClasses)
           }
           onChange={handleChange}
           {...selectProps}

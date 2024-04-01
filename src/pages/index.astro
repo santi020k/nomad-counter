@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets'
 import { t } from 'i18next'
 
 import Faqs from '@molecules/faqs.astro'
@@ -7,10 +8,15 @@ import Hero from '@molecules/hero.astro'
 import CountingSection from '@organisms/counting-section/counting-section'
 
 import MainLayout from '@layouts/main-layout.astro'
+
+import tableEmptyState from '../../public/assets/empty/table-empty-state.webp'
 ---
 
 <MainLayout title={t('home:title')}>
   <Hero />
-  <CountingSection client:only="react" t={t('home:counting', { returnObjects: true })} />
+  <CountingSection client:only="react" t={t('home:counting', { returnObjects: true })}>
+    <Image src={tableEmptyState} alt="Empty State" class="m-0 rounded-xl shadow-xl" />
+  </CountingSection>
   <Faqs />
+  <div class="h-[355px]" />
 </MainLayout>

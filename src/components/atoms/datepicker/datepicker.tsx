@@ -24,7 +24,7 @@ const Datepicker: FC<DatepickerProps> = ({ label, name, className, ...datepicker
         pr-14
         w-full
         rounded-lg
-        border
+        border-0
         focus:border-blue-500
         focus:ring-blue-500
         dark:border-gray-600
