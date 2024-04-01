@@ -2,8 +2,10 @@ import { type FC, memo, type MouseEvent } from 'react'
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
 import type { DateValueType } from 'react-tailwindcss-datepicker'
 
+import { countries } from 'countries-list'
+
 import Datepicker from '@atoms/datepicker/datepicker'
-import Input from '@atoms/input/input'
+import Select from '@atoms/select/select'
 
 import { supabase } from '@libs/supabase/supabase'
 
@@ -29,7 +31,7 @@ enum InputsNames {
 
 const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   const { user } = useAuthStore(state => state)
-  const { register, handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
+  const { handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
     // TODO: In future versions, this will be the default behavior setting in user account.
     // defaultValues: { dates: { startDate: null, endDate: null } }
   })
@@ -106,24 +108,22 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
             rounded-lg border border-gray-300 bg-white p-4 shadow"
         >
           <div className="flex h-[124px] shrink grow basis-0 flex-col items-start justify-start">
-            <div
-              className="
-                inline-flex shrink grow basis-0 flex-col items-start justify-start
-                border-r border-gray-300"
-            >
-              <Input
-                className="
-                  shrink grow basis-0 text-sm font-medium text-gray-500 disabled:cursor-not-allowed disabled:opacity-50
-                "
-                required
-                placeholder="Colombia"
-                disabled={!user?.isSignIn || false}
-                label={t?.country ?? InputsNames.country}
-                {...register(InputsNames.country, { required: true })}
+            <div className="inline-flex shrink grow basis-0 flex-col items-start justify-start">
+              <Controller
+                control={control}
+                name={InputsNames.country}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, name } }) => (
+                  <Select
+                    onChange={onChange}
+                    value={value ?? ''}
+                    name={name}
+                    options={Object.values(countries).map(country => country.name)}
+                    isError={Boolean(errors.country)}
+                    message={`This field is required ${''}`}
+                  />
+                )}
               />
-              {errors.country
-                ? <span>{`This field is required ${''}`}</span>
-                : null}
             </div>
             <div className="inline-flex shrink grow basis-0 flex-col items-start justify-start">
               <Controller

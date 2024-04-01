@@ -1,83 +1,72 @@
 /* eslint-disable i18next/no-literal-string */
-import { type FC } from 'react'
+import { type ChangeEvent, type FC, type SelectHTMLAttributes } from 'react'
 
-// TODO: basic react component for select element
-export const Select: FC = () => (
-  <div>
-    <div>
-      <label htmlFor="select-1" className="mb-2 block text-sm font-medium dark:text-white">Label</label>
-      <div className="relative">
-        <select
-          id="select-1"
-          className={`
-            block w-full rounded-lg border-red-500 px-4 py-3 pe-16 text-sm focus:border-red-500 focus:ring-red-500
-            disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
-            dark:focus:ring-gray-600
-          `}
-        >
-          <option selected>Open this select menu</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-        </select>
-        <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-8">
-          {/* TODO: change to icon */}
-          <svg
-            className="size-4 shrink-0 text-red-500"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" x2="12" y1="8" y2="12"/>
-            <line x1="12" x2="12.01" y1="16" y2="16"/>
-          </svg>
-        </div>
-      </div>
-      <p className="mt-2 text-sm text-red-600">Please select a valid state.</p>
-    </div>
+import { twMerge } from 'tailwind-merge'
 
-    <div>
-      <label htmlFor="select-2" className="mb-2 block text-sm font-medium dark:text-white">Label</label>
-      <div className="relative">
-        <select
-          id="select-2"
-          className={`
-            block w-full rounded-lg border-teal-500 px-4 py-3 pe-16 text-sm focus:border-teal-500 focus:ring-teal-500
-            disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400
-            dark:focus:ring-gray-600
-          `}
+type Value = string | number
+
+type HTMLSelect = Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange'>
+
+interface SelectProps<Value> extends HTMLSelect {
+  onChange: (newValue?: Value) => void
+  options: readonly Value[]
+  name: string
+  isError?: boolean
+  isSuccess?: boolean
+  message?: string
+  label?: string
+  className?: string
+}
+
+const Select: FC<SelectProps<Value>> = ({
+  onChange, options, isSuccess, isError, message, label, className, name, ...selectProps
+}) => {
+  const selectClasses = `
+    py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500
+    disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400
+    dark:focus:ring-gray-600
+  `
+  const errorClasses = isError && 'border-red-500 focus:border-red-500 focus:ring-red-500'
+  const successClasses = isSuccess && 'border-green-500 focus:border-teal-500 focus:ring-teal-500'
+
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    onChange(options[event.target.selectedIndex])
+  }
+
+  return (
+    <div className="cursor-pointer">
+      {Boolean(label) && (
+        <label
+          htmlFor={name}
+          className="mb-2 block text-sm font-medium dark:text-white"
         >
-          <option>Open this select menu</option>
-          <option selected>1</option>
-          <option>2</option>
-          <option>3</option>
+          {label}
+        </label>
+      )}
+      <div className="relative cursor-pointer">
+        <select
+          id={name}
+          name={name}
+          className={
+            twMerge(selectClasses, className, errorClasses, successClasses, 'cursor-pointer')
+          }
+          onChange={handleChange}
+          {...selectProps}
+        >
+          {options.map(value => (
+            <option value={value} key={value}>
+              {value}
+            </option>
+          ))}
         </select>
-        <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-8">
-          {/* TODO: Change Icon */}
-          <svg
-            className="size-4 shrink-0 text-teal-500"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
       </div>
-      <p className="mt-2 text-sm text-teal-600">Looks good!</p>
+      {Boolean(isError ?? isSuccess) && (
+        <p className={twMerge('mt-2 text-sm', isError && 'text-red-600', isSuccess && 'text-teal-600')}>
+          {message}
+        </p>
+      )}
     </div>
-  </div>
-)
+  )
+}
+
+export default Select
