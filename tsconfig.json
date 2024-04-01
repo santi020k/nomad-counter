@@ -20,6 +20,7 @@
       "@i18n": ["./i18n"],
       "@themes": ["./config/tailwind/themes"],
       "@mocks/*": ["src/mocks/*"],
-    }
+    },
+    "types": ["@testing-library/jest-dom"]
   }
 }

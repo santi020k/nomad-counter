@@ -115,6 +115,7 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
                 rules={{ required: true }}
                 render={({ field: { onChange, value, name } }) => (
                   <Select
+                    disabled={!user?.isSignIn}
                     onChange={onChange}
                     value={value ?? ''}
                     name={name}
@@ -132,7 +133,7 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
                 rules={{ required: true }}
                 render={({ field: { onChange, value, name } }) => (
                   <Datepicker
-                    disabled={!user?.isSignIn || false}
+                    disabled={!user?.isSignIn}
                     name={name}
                     label=""
                     onChange={onChange}

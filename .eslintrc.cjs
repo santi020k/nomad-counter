@@ -30,8 +30,7 @@ module.exports = {
     'vitest',
     'testing-library',
     '@stylistic',
-    '@typescript-eslint',
-    '@kalimahapps/eslint-plugin-tailwind'
+    '@typescript-eslint'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -41,9 +40,9 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    'tailwindcss/no-custom-classname': 'off',
-    'astro/semi': 'off',
-    'max-len': 'off',
+    'tailwindcss/no-custom-classname': 0,
+    'astro/semi': 0,
+    'max-len': 0,
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': importRules,
     'vitest/no-hooks': [
@@ -51,13 +50,13 @@ module.exports = {
         allow: ['afterEach', 'afterAll', 'beforeEach', 'beforeAll']
       }
     ],
-    'vitest/prefer-expect-assertions': 'off',
-    'testing-library/no-manual-cleanup': 'off',
+    'vitest/prefer-expect-assertions': 0,
+    'testing-library/no-manual-cleanup': 0,
     'react/jsx-max-depth': ['warn', { max: 7 }],
-    'react/prop-types': 'off',
+    'react/prop-types': 0,
     'unused-imports/no-unused-imports': 'error',
-    'testing-library/prefer-screen-queries': 'off',
-    'react-hooks/exhaustive-deps': 'off',
+    'testing-library/prefer-screen-queries': 0,
+    'react-hooks/exhaustive-deps': 0,
     '@stylistic/indent': ['error', 2],
     '@stylistic/quote-props': ['error', 'as-needed'],
     '@stylistic/quotes': ['error', 'single'],
@@ -66,8 +65,8 @@ module.exports = {
     '@stylistic/padded-blocks': ['error', 'never'],
     '@stylistic/arrow-parens': ['error', 'as-needed'],
     '@stylistic/dot-location': ['error', 'property'],
-    '@stylistic/member-delimiter-style': 'off',
-    '@stylistic/no-extra-parens': 'off',
+    '@stylistic/member-delimiter-style': 0,
+    '@stylistic/no-extra-parens': 0,
     '@stylistic/function-call-argument-newline': ['error', 'never'],
     '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
     '@stylistic/max-len': [
@@ -79,8 +78,8 @@ module.exports = {
     ],
     '@stylistic/max-statements-per-line': ['error', { max: 1 }],
     '@stylistic/array-element-newline': ['error', 'consistent'],
-    '@stylistic/no-extra-semi': 'off',
-    '@stylistic/no-multi-spaces': 'off',
+    '@stylistic/no-extra-semi': 0,
+    '@stylistic/no-multi-spaces': 0,
     '@stylistic/padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: '*', next: '*' },
@@ -90,8 +89,9 @@ module.exports = {
       { blankLine: 'always', prev: 'block-like', next: 'const' },
       { blankLine: 'always', prev: 'const', next: 'block-like' }
     ],
-    indent: 'off',
-    '@typescript-eslint/indent': 'off'
+    '@stylistic/function-paren-newline': ['error', 'consistent'],
+    indent: 0,
+    '@typescript-eslint/indent': 0
   },
   overrides: [
     {
@@ -100,7 +100,7 @@ module.exports = {
       parser: 'astro-eslint-parser',
       plugins: ['@typescript-eslint'],
       rules: {
-        '@typescript-eslint/strict-boolean-expressions': 'off'
+        '@typescript-eslint/strict-boolean-expressions': 0
       }
     }, {
       files: ['*.jsx', '*.tsx', '*.mjs', '*.mts', '*.js', '*.ts'],
@@ -117,8 +117,8 @@ module.exports = {
         'mdx/language-mapper': {}
       },
       rules: {
-        'max-len': 'off',
-        'react/react-in-jsx-scope': 'off'
+        'max-len': 0,
+        'react/react-in-jsx-scope': 0
       }
     }
   ]
