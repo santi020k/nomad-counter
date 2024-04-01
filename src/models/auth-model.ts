@@ -11,6 +11,7 @@ export const DataSchema = z.object({
   provider_id: z.string().optional(),
   sub: z.string().optional()
 }).optional()
+
 export type Data = z.infer<typeof DataSchema>
 
 export const IdentitySchema = z.object({
@@ -22,12 +23,14 @@ export const IdentitySchema = z.object({
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional()
 }).optional()
+
 export type Identity = z.infer<typeof IdentitySchema>
 
 export const AppMetadataSchema = z.object({
   provider: z.string(),
   providers: z.array(z.string())
 }).optional()
+
 export type AppMetadata = z.infer<typeof AppMetadataSchema>
 
 export const UserSchema = z.object({
@@ -45,6 +48,7 @@ export const UserSchema = z.object({
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional()
 }).optional()
+
 export type User = z.infer<typeof UserSchema>
 
 export const UserAuthSchema = z.object({
@@ -57,6 +61,7 @@ export const UserAuthSchema = z.object({
   token_type: z.string().optional(),
   user: UserSchema
 })
+
 export type UserAuth = z.infer<typeof UserAuthSchema>
 
 export const UserDataSchema = z.object({
@@ -67,4 +72,5 @@ export const UserDataSchema = z.object({
   shortName: z.string()?.optional(),
   initialLetter: z.string()?.optional()
 })
+
 export type UserData = z.infer<typeof UserDataSchema>

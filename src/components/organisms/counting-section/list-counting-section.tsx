@@ -18,11 +18,13 @@ const ListCountingSection: FC = () => {
     const getData = async (): Promise<void> => {
       try {
         const { data } = await supabase.from(TABLE_NAME).select('*')
+
         setList(data)
       } catch (error) {
         console.error(error)
       }
     }
+
     void getData()
   }, [])
 

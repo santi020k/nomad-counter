@@ -27,7 +27,6 @@ export const initialUser = UserDataSchema.parse({
 
 const ERROR_MESSAGE = i18next.t('common:messages.error') ?? ''
 const TOAST_DURATION = 3000
-
 const useAuthStore = create<UserAuthState>(set => ({
   user: initialUser,
   resetState: () => {
@@ -45,6 +44,7 @@ const useAuthStore = create<UserAuthState>(set => ({
     const { error } = await supabase.auth.signOut() ?? { error: undefined }
 
     if (!error) set({ user: initialUser })
+
     if (error) {
       toastError({
         text: ERROR_MESSAGE,
@@ -64,6 +64,7 @@ const useAuthStore = create<UserAuthState>(set => ({
       if (parseAuthResult) set({ user: parseAuthResult })
     } catch (error) {
       console.error(error)
+
       toastError({
         text: ERROR_MESSAGE,
         duration: TOAST_DURATION

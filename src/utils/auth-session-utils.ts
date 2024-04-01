@@ -19,7 +19,6 @@ export const parseAuthSession = (session: Session | undefined): UserData | undef
     const { user_metadata: userMetadata } = user ?? {}
     const splitNames = userMetadata?.name?.split(' ')
     const shortName = `${splitNames?.[0]?.[0] ?? ''}${splitNames?.[1]?.[0] ?? ''}`
-
     const userDataSchema = UserDataSchema.safeParse({
       isSignIn: true,
       name: userMetadata?.name,
@@ -48,6 +47,7 @@ export const handleGoogleSignIn = async (): Promise<void> => {
       }
     }
   }) ?? { error: undefined }
+
   if (error) {
     toastError({
       text: ERROR_MESSAGE,

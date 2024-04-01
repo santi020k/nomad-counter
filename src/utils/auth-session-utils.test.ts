@@ -9,6 +9,7 @@ import { handleGoogleSignIn, parseAuthSession } from '@utils/auth-session-utils'
 import { mockUser, parsedMockUser } from '@mocks/user.mock'
 
 vi.mock('@libs/supabase/supabase')
+
 vi.mock('@libs/toast-alerts/toast-alert')
 
 describe('auth-session-utils', () => {
@@ -18,17 +19,21 @@ describe('auth-session-utils', () => {
 
   it('parseAuthSession returns user data', () => {
     const result = parseAuthSession(mockUser)
+
     expect(result).toStrictEqual(parsedMockUser)
   })
 
   it('parseAuthSession returns undefined for invalid session', () => {
     const result = parseAuthSession(undefined)
+
     expect(result).toBeUndefined()
   })
 
   it('handleGoogleSignIn calls supabase.auth.signInWithOAuth', async () => {
     const signInWithOAuthSpy = vi.spyOn(supabase.auth, 'signInWithOAuth')
+
     await handleGoogleSignIn()
+
     expect(signInWithOAuthSpy).toHaveBeenCalledTimes(1)
   })
 
@@ -40,11 +45,14 @@ describe('auth-session-utils', () => {
       provider: 'google' as Provider,
       url: null
     }
+
     signInWithOAuthSpy.mockResolvedValue({
       data,
       error
     })
+
     await handleGoogleSignIn()
+
     expect(toastErrorSpy).toHaveBeenCalledTimes(1)
   })
 })

@@ -12,7 +12,9 @@ describe('toast-alert', () => {
 
   it('toastAlert calls Toastify with correct parameters', () => {
     const params = { text: 'Test Alert' }
+
     toastAlert(params)
+
     expect(toastify).toHaveBeenCalledWith(expect.objectContaining({
       ...params,
       gravity: 'bottom',
@@ -24,7 +26,9 @@ describe('toast-alert', () => {
 
   it('toastSuccess calls toastAlert with correct parameters', () => {
     const params = { text: 'Test Success' }
+
     toastSuccess(params)
+
     expect(toastify).toHaveBeenCalledWith(expect.objectContaining({
       ...params,
       className: 'alert alert-success'
@@ -33,7 +37,9 @@ describe('toast-alert', () => {
 
   it('toastError calls toastAlert with correct parameters', () => {
     const params = { text: 'Test Error' }
+
     toastError(params)
+
     expect(toastify).toHaveBeenCalledWith(expect.objectContaining({
       ...params,
       className: 'alert alert-error'

@@ -30,7 +30,8 @@ module.exports = {
     'vitest',
     'testing-library',
     '@stylistic',
-    '@typescript-eslint'
+    '@typescript-eslint',
+    '@kalimahapps/eslint-plugin-tailwind'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -42,74 +43,52 @@ module.exports = {
   rules: {
     'tailwindcss/no-custom-classname': 'off',
     'astro/semi': 'off',
-    'max-len': [
-      'error',
-      { code: 120 }
-    ],
+    'max-len': 'off',
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': importRules,
     'vitest/no-hooks': [
-      'error',
-      {
-        allow: [
-          'afterEach',
-          'afterAll',
-          'beforeEach',
-          'beforeAll'
-        ]
+      'error', {
+        allow: ['afterEach', 'afterAll', 'beforeEach', 'beforeAll']
       }
     ],
     'vitest/prefer-expect-assertions': 'off',
     'testing-library/no-manual-cleanup': 'off',
-    'react/jsx-max-depth': [
-      'warn',
-      { max: 7 }
-    ],
+    'react/jsx-max-depth': ['warn', { max: 7 }],
     'react/prop-types': 'off',
     'unused-imports/no-unused-imports': 'error',
     'testing-library/prefer-screen-queries': 'off',
     'react-hooks/exhaustive-deps': 'off',
-    '@stylistic/indent': [
-      'error',
-      2
-    ],
-    '@stylistic/quote-props': [
-      'error',
-      'as-needed'
-    ],
-    '@stylistic/quotes': [
-      'error',
-      'single'
-    ],
-    '@stylistic/semi': [
-      'error',
-      'never'
-    ],
-    '@stylistic/object-curly-spacing': [
-      'error',
-      'always'
-    ],
-    '@stylistic/padded-blocks': [
-      'error',
-      'never'
-    ],
-    '@stylistic/arrow-parens': [
-      'error',
-      'as-needed'
-    ],
-    '@stylistic/dot-location': [
-      'error',
-      'property'
-    ],
+    '@stylistic/indent': ['error', 2],
+    '@stylistic/quote-props': ['error', 'as-needed'],
+    '@stylistic/quotes': ['error', 'single'],
+    '@stylistic/semi': ['error', 'never'],
+    '@stylistic/object-curly-spacing': ['error', 'always'],
+    '@stylistic/padded-blocks': ['error', 'never'],
+    '@stylistic/arrow-parens': ['error', 'as-needed'],
+    '@stylistic/dot-location': ['error', 'property'],
     '@stylistic/member-delimiter-style': 'off',
     '@stylistic/no-extra-parens': 'off',
-    '@stylistic/function-call-argument-newline': [
-      'error',
-      'never'
+    '@stylistic/function-call-argument-newline': ['error', 'never'],
+    '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
+    '@stylistic/max-len': [
+      'error', {
+        code: 120,
+        tabWidth: 2,
+        comments: 200
+      }
     ],
-    '@stylistic/object-property-newline': [
+    '@stylistic/max-statements-per-line': ['error', { max: 1 }],
+    '@stylistic/array-element-newline': ['error', 'consistent'],
+    '@stylistic/no-extra-semi': 'off',
+    '@stylistic/no-multi-spaces': 'off',
+    '@stylistic/padding-line-between-statements': [
       'error',
-      { allowAllPropertiesOnSameLine: true }
+      { blankLine: 'always', prev: '*', next: '*' },
+      { blankLine: 'any', prev: 'import', next: 'import' },
+      { blankLine: 'never', prev: 'const', next: 'const' },
+      { blankLine: 'never', prev: 'let', next: 'let' },
+      { blankLine: 'always', prev: 'block-like', next: 'const' },
+      { blankLine: 'always', prev: 'const', next: 'block-like' }
     ],
     indent: 'off',
     '@typescript-eslint/indent': 'off'
@@ -123,35 +102,15 @@ module.exports = {
       rules: {
         '@typescript-eslint/strict-boolean-expressions': 'off'
       }
-    },
-    {
-      files: [
-        '*.jsx',
-        '*.tsx',
-        '*.mjs',
-        '*.mts',
-        '*.js',
-        '*.ts'
-      ],
-      extends: [
-        'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'standard-with-typescript'
-      ],
+    }, {
+      files: ['*.jsx', '*.tsx', '*.mjs', '*.mts', '*.js', '*.ts'],
+      extends: ['plugin:react/recommended', 'plugin:@typescript-eslint/recommended', 'standard-with-typescript'],
       parser: '@typescript-eslint/parser',
-      plugins: [
-        'react',
-        'react-hooks',
-        '@typescript-eslint'
-      ],
+      plugins: ['react', 'react-hooks', '@typescript-eslint'],
       rules: reactRules,
       settings: { react: { version: 'detect' } }
-    },
-    {
-      files: [
-        '*.md',
-        '*.mdx'
-      ],
+    }, {
+      files: ['*.md', '*.mdx'],
       extends: ['plugin:mdx/recommended'],
       settings: {
         'mdx/code-blocks': true,

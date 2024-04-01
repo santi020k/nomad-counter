@@ -16,19 +16,25 @@ describe('sessionHandler Tests', () => {
 
   afterEach(() => {
     resetState()
+
     cleanup()
   })
 
   it('sessionHandler calls fetchSession on mount', () => {
     const fetchSession = vi.spyOn(useAuthStore.getState(), 'fetchSession')
+
     render(<SessionHandler />)
+
     expect(fetchSession).toHaveBeenCalledTimes(1)
   })
 
   it('sessionHandler calls handleGoogleSignIn when button is clicked', () => {
     const handleGoogleSignInSpy = vi.spyOn(authSession, 'handleGoogleSignIn')
+
     render(<SessionHandler />)
+
     fireEvent.click(screen.getByRole('button'))
+
     expect(handleGoogleSignInSpy).toHaveBeenCalledTimes(1)
   })
 

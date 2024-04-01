@@ -6,7 +6,6 @@ import MainLayout from '@layouts/main-layout.astro'
 import { getLocale } from '@utils/lang-utils'
 
 const locale = getLocale(Astro.url)
-
 const entry = await getEntry('pages', `${locale}/privacy-policy`)
 const Content = await entry?.render().then(({ Content }) => Content)
 ---

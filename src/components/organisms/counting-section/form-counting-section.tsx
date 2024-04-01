@@ -29,7 +29,6 @@ enum InputsNames {
 
 const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
   const { user } = useAuthStore(state => state)
-
   const { register, handleSubmit, control, setError, formState: { errors } } = useForm<Inputs>({
     // TODO: In future versions, this will be the default behavior setting in user account.
     // defaultValues: { dates: { startDate: null, endDate: null } }
@@ -41,9 +40,12 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
         type: 'manual',
         message: 'This field is required'
       })
+
       return
     }
+
     const result = CountingFormSchema.safeParse(data)
+
     if (result.success) {
       const { data, error } = await supabase
         .from('list-calculations')
@@ -55,6 +57,7 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
           }
         ])
         .select()
+
       // TODO: Handle error
       console.log('🚀 ~ file: form-counting-section.tsx:54 ~ data, error:', data, error)
     } else {
@@ -69,6 +72,7 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
 
   const handleForm = (event: MouseEvent<HTMLElement>): void => {
     event.preventDefault()
+
     if (user?.isSignIn) {
       void handleSubmit(onSubmit)()
     } else {
@@ -98,10 +102,10 @@ const FormCountingSection: FC<FormCountingSectionProps> = ({ t }) => {
         </div>
         <div
           className="
-            inline-flex items-end justify-end gap-2.5 self-stretch rounded-lg border
-            border-gray-300 bg-white p-4 shadow"
+            flex flex-col items-end justify-end gap-2.5 self-stretch
+            rounded-lg border border-gray-300 bg-white p-4 shadow"
         >
-          <div className="flex h-[124px] shrink grow basis-0 items-start justify-start">
+          <div className="flex h-[124px] shrink grow basis-0 flex-col items-start justify-start">
             <div
               className="
                 inline-flex shrink grow basis-0 flex-col items-start justify-start
