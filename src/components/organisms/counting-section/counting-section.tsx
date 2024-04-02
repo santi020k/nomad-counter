@@ -1,7 +1,7 @@
 import { type FC, memo, type ReactNode } from 'react'
 
 import FormCountingSection from '@organisms/counting-section/form-counting-section'
-import ListCountingSection from '@organisms/counting-section/list-counting-section'
+import TableCountingSection from '@organisms/counting-section/table-counting-section'
 
 import useAuthStore from '@store/use-auth-store'
 
@@ -21,9 +21,8 @@ const CountingSection: FC<CountingSectionProps> = ({ t, children }) => {
       <FormCountingSection t={t} />
 
       {user?.isSignIn
-        ? <ListCountingSection />
+        ? <TableCountingSection />
         : children }
-      {/* <ListCountingSection /> */}
     </section>
   )
 }

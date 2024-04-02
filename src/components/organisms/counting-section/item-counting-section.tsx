@@ -9,10 +9,9 @@ interface Item extends Omit<ListCalculations, 'created_at' | 'updated_at'> {
 
 interface ItemCountingSectionProps {
   item: Item
-  index: number
 }
 
-const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
+const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item }) => {
   const isValidDate = (date: string): boolean => {
     const newDate = new Date(date)
 
@@ -66,31 +65,67 @@ const ItemCountingSection: FC<ItemCountingSectionProps> = ({ item, index }) => {
 
   return (
     <tr>
-      {/* # */}
-      <th>{index}</th>
+      {/* TODO: Future work */}
+      {/* <td className="py-3 ps-4">
+        <div className="flex h-5 items-center">
+          <input
+            id="hs-table-checkbox-1"
+            type="checkbox"
+            className="
+              rounded border-gray-200 text-blue-600 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800
+              dark:checked:border-blue-500 dark:checked:bg-blue-500 dark:focus:ring-offset-gray-800"
+          />
+          <label htmlFor="hs-table-checkbox-1" className="sr-only">Checkbox</label>
+        </div>
+      </td> */}
       {/* Country */}
-      <td>{item.country}</td>
-      {/* Arrival */}
-      <td>{formatDate(item.arrival ?? '')}</td>
-      {/* Departure */}
-      <td>{formatDate(item.departure ?? '')}</td>
-      {/* Total Days */}
-      <td>{countTotalDays(item.arrival ?? '', item.departure ?? '') || 'All'}
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+        {item.country}
       </td>
-      {/* Last Year Days */}
-      <td>{countLastYearDays(item.arrival ?? '', item.departure ?? '') || 'All'}
+      {/* Arrival */}
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+        {formatDate(item.arrival ?? '')}
+      </td>
+      {/* Departure */}
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+        {formatDate(item.departure ?? '')}
+      </td>
+      {/* Total Days */}
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+        {countTotalDays(item.arrival ?? '', item.departure ?? '') || 'All'}
+      </td>
+      {/* Calendar Days */}
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+        {countLastYearDays(item.arrival ?? '', item.departure ?? '') || 'All'}
       </td>
       {/* 183 Days? */}
-      <td>{isMoreThan183Days(item.arrival ?? '', item.departure ?? '')
-        ? 'Si'
-        : 'No'}
+      <td className="whitespace-nowrap px-6 py-4 text-end text-sm font-medium">
+        <button
+          type="button"
+          className="
+            inline-flex items-center gap-x-2 rounded-lg border border-transparent text-sm font-semibold text-blue-600
+            hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500
+            dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        >
+          {isMoreThan183Days(item.arrival ?? '', item.departure ?? '')
+            ? 'Si'
+            : 'No'}
+        </button>
       </td>
       {/* Residency */}
-      <th>
-        <label>
-          <input type="checkbox" className="checkbox" disabled checked={item.isResidency} />
-        </label>
-      </th>
+      <td className="whitespace-nowrap px-6 py-4 text-end text-sm font-medium">
+        <button
+          type="button"
+          className="
+            inline-flex items-center gap-x-2 rounded-lg border border-transparent text-sm font-semibold text-blue-600
+            hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500
+            dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        >
+          {isMoreThan183Days(item.arrival ?? '', item.departure ?? '')
+            ? 'Si'
+            : 'No'}
+        </button>
+      </td>
     </tr>
   )
 }
