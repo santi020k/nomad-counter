@@ -75,7 +75,6 @@ const state: State = {
 }
 
 const countryCombos = new Map<string, CountryComboState>()
-
 const $ = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector)
 const $$ = <T extends HTMLElement>(selector: string) => [...document.querySelectorAll<T>(selector)]
 
@@ -95,6 +94,7 @@ const readLocal = <T>(key: string, fallback: T): T => {
 
 const saveLocal = () => {
   localStorage.setItem(tripsKey, JSON.stringify(state.trips))
+
   localStorage.setItem(countriesKey, JSON.stringify(state.countries))
 }
 
@@ -119,13 +119,14 @@ const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
 }
 
 const countryOptions = () => countries.map(([code, name]) => `<option value="${code}" data-name="${name}">${name}</option>`).join('')
+
 const countryComboOptions = (): CountryComboOption[] => countries.map(([code, name]) => ({
   code,
   flag: countryCodeToFlagEmoji(code),
   name
 }))
-const normalizeCountryQuery = (value: string) => value.trim().toLowerCase()
 
+const normalizeCountryQuery = (value: string) => value.trim().toLowerCase()
 const optionIdFor = (selectId: string, code: string) => `${selectId}-opt-${code.toLowerCase()}`
 
 const setComboExpanded = (combo: CountryComboState, expanded: boolean) => {
@@ -137,6 +138,7 @@ const moveComboActiveTo = (combo: CountryComboState, index: number) => {
 
   if (optionEls.length === 0) {
     combo.input.setAttribute('aria-activedescendant', '')
+
     return
   }
 
@@ -147,7 +149,9 @@ const moveComboActiveTo = (combo: CountryComboState, index: number) => {
 
     if (active) {
       el.dataset.active = 'true'
+
       combo.input.setAttribute('aria-activedescendant', el.id)
+
       el.scrollIntoView({ block: 'nearest' })
     } else {
       delete el.dataset.active
@@ -157,9 +161,8 @@ const moveComboActiveTo = (combo: CountryComboState, index: number) => {
 
 const renderCountryComboOptions = (combo: CountryComboState, query = '') => {
   const normalized = normalizeCountryQuery(query)
-  const startsWithMatches = combo.options.filter(option =>
-    normalizeCountryQuery(option.name).startsWith(normalized) || normalizeCountryQuery(option.code).startsWith(normalized)
-  )
+  const startsWithMatches = combo.options.filter(option => normalizeCountryQuery(option.name).startsWith(normalized) || normalizeCountryQuery(option.code).startsWith(normalized))
+
   const partialMatches = combo.options.filter(option => {
     const matchesName = normalizeCountryQuery(option.name).includes(normalized)
     const matchesCode = normalizeCountryQuery(option.code).includes(normalized)
@@ -172,7 +175,9 @@ const renderCountryComboOptions = (combo: CountryComboState, query = '') => {
 
   if (combo.visibleOptions.length === 0) {
     combo.list.innerHTML = '<div class="combo-empty" aria-live="polite">No matching country.</div>'
+
     combo.input.setAttribute('aria-activedescendant', '')
+
     return
   }
 
@@ -202,23 +207,30 @@ const renderCountryComboOptions = (combo: CountryComboState, query = '') => {
 const updateCountryComboBadge = (combo: CountryComboState, option: CountryComboOption | undefined) => {
   if (!option) {
     combo.selectedFlag.textContent = '🌍'
+
     combo.selectedCodeText.textContent = '--'
+
     return
   }
 
   combo.selectedFlag.textContent = option.flag
+
   combo.selectedCodeText.textContent = option.code
 }
 
 const openCountryCombo = (combo: CountryComboState) => {
   combo.isOpen = true
+
   combo.root.dataset.open = 'true'
+
   setComboExpanded(combo, true)
 }
 
 const closeCountryCombo = (combo: CountryComboState) => {
   combo.isOpen = false
+
   delete combo.root.dataset.open
+
   setComboExpanded(combo, false)
 }
 
@@ -230,6 +242,7 @@ const syncCountryComboFromSelect = (selectId: string) => {
   }
 
   combo.selectedCode = combo.select.value || combo.options[0]?.code || ''
+
   const active = combo.options.find(option => option.code === combo.selectedCode)
 
   if (active) {
@@ -237,12 +250,15 @@ const syncCountryComboFromSelect = (selectId: string) => {
   }
 
   updateCountryComboBadge(combo, active)
+
   renderCountryComboOptions(combo, '')
 }
 
 const selectCountryFromCombo = (combo: CountryComboState, code: string) => {
   combo.selectedCode = code
+
   combo.select.value = code
+
   const active = combo.options.find(option => option.code === code)
 
   if (active) {
@@ -250,7 +266,9 @@ const selectCountryFromCombo = (combo: CountryComboState, code: string) => {
   }
 
   updateCountryComboBadge(combo, active)
+
   renderCountryComboOptions(combo, '')
+
   combo.select.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
@@ -288,12 +306,16 @@ const initCountryComboboxes = () => {
     }
 
     countryCombos.set(selectId, combo)
+
     syncCountryComboFromSelect(selectId)
 
     input.addEventListener('focus', () => {
       closeAllCountryCombos()
+
       openCountryCombo(combo)
+
       input.select()
+
       renderCountryComboOptions(combo, '')
     })
 
@@ -302,6 +324,7 @@ const initCountryComboboxes = () => {
 
       if (!combo.isOpen) {
         closeAllCountryCombos()
+
         openCountryCombo(combo)
       }
 
@@ -311,6 +334,7 @@ const initCountryComboboxes = () => {
     input.addEventListener('input', () => {
       if (!combo.isOpen) {
         closeAllCountryCombos()
+
         openCountryCombo(combo)
       }
 
@@ -327,8 +351,11 @@ const initCountryComboboxes = () => {
 
         if (!combo.isOpen) {
           closeAllCountryCombos()
+
           openCountryCombo(combo)
+
           renderCountryComboOptions(combo, '')
+
           return
         }
 
@@ -340,8 +367,11 @@ const initCountryComboboxes = () => {
 
         if (!combo.isOpen) {
           closeAllCountryCombos()
+
           openCountryCombo(combo)
+
           renderCountryComboOptions(combo, '')
+
           return
         }
 
@@ -354,6 +384,7 @@ const initCountryComboboxes = () => {
         }
 
         event.preventDefault()
+
         const activeEl = optionEls.find(el => el.dataset.active === 'true') || optionEls[0]
         const selectedCode = activeEl?.dataset.countryCode
 
@@ -370,13 +401,16 @@ const initCountryComboboxes = () => {
         }
 
         event.preventDefault()
+
         syncCountryComboFromSelect(selectId)
+
         closeCountryCombo(combo)
       }
     })
 
     list.addEventListener('mousedown', event => {
       event.preventDefault()
+
       const target = (event.target as HTMLElement).closest<HTMLElement>('[data-country-code]')
       const selectedCode = target?.dataset.countryCode
 
@@ -385,19 +419,25 @@ const initCountryComboboxes = () => {
       }
 
       selectCountryFromCombo(combo, selectedCode)
+
       closeCountryCombo(combo)
+
       input.focus()
     })
 
     toggle?.addEventListener('click', () => {
       if (combo.isOpen) {
         closeCountryCombo(combo)
+
         return
       }
 
       closeAllCountryCombos()
+
       openCountryCombo(combo)
+
       renderCountryComboOptions(combo, '')
+
       input.focus()
     })
 
@@ -408,6 +448,7 @@ const initCountryComboboxes = () => {
         }
 
         syncCountryComboFromSelect(selectId)
+
         closeCountryCombo(combo)
       }, 0)
     })
@@ -468,12 +509,18 @@ const maskEmailForDisplay = (email: string): string => {
 
 const leaveLoginCodeWaitState = (form: HTMLFormElement, options: { clearEmail: boolean, clearStatus?: boolean }) => {
   form.dataset.codeRequested = 'false'
+
   form.dataset.loginStep = 'email'
+
   delete form.dataset.pendingEmail
+
   $('#login-pending-banner')?.setAttribute('hidden', '')
+
   $('#login-change-email')?.setAttribute('hidden', '')
+
   $('#code-field')?.setAttribute('hidden', '')
-  const emailInput = $('#login-email') as HTMLInputElement | null
+
+  const emailInput = $('#login-email')
 
   if (emailInput) {
     emailInput.readOnly = false
@@ -483,10 +530,11 @@ const leaveLoginCodeWaitState = (form: HTMLFormElement, options: { clearEmail: b
     }
   }
 
-  const codeInput = $('#login-code') as HTMLInputElement | null
+  const codeInput = $('#login-code')
 
   if (codeInput) {
     codeInput.value = ''
+
     codeInput.required = false
   }
 
@@ -534,9 +582,9 @@ const setHomeCountryFormStatus = (message: string, tone: 'ok' | 'error' = 'ok') 
 }
 
 const getTripFormEls = () => ({
-  open: $('#trip-open-ended') as HTMLInputElement | null,
-  exit: $('#trip-exit') as HTMLInputElement | null,
-  entry: $('#trip-entry') as HTMLInputElement | null
+  open: $('#trip-open-ended'),
+  exit: $('#trip-exit'),
+  entry: $('#trip-entry')
 })
 
 const syncExitMinFromEntry = () => {
@@ -568,15 +616,20 @@ const applyOpenEndedUi = (checked: boolean) => {
     }
 
     exit.value = ''
+
     exit.disabled = true
+
     exit.removeAttribute('required')
   } else {
     exit.disabled = false
+
     exit.setAttribute('required', '')
+
     const last = exit.dataset.lastExit
 
     if (last) {
       exit.value = last
+
       delete exit.dataset.lastExit
     }
   }
@@ -640,11 +693,13 @@ const summarizeLocal = () => {
 
   for (const trip of state.trips) {
     countryNames.set(trip.countryCode, trip.countryName)
+
     counts.set(trip.countryCode, (counts.get(trip.countryCode) ?? 0) + overlapDays(trip, window.startDate, window.endDate))
   }
 
   for (const country of state.countries) {
     countryNames.set(country.countryCode, country.countryName)
+
     counts.set(country.countryCode, counts.get(country.countryCode) ?? 0)
   }
 
@@ -673,6 +728,7 @@ const summarizeLocal = () => {
 
 const renderAuth = () => {
   document.body.dataset.authenticated = String(state.authenticated)
+
   const syncState = $('#sync-state')
 
   if (syncState) {
@@ -681,7 +737,7 @@ const renderAuth = () => {
       : 'Guest mode. Your data stays in this browser until you save it to an account.'
   }
 
-  const form = $('#login-form') as HTMLFormElement | null
+  const form = $('#login-form')
   const title = $('#login-card-title')
   const sub = $('#login-card-sub')
   const emailField = $('#login-email-field')
@@ -701,10 +757,15 @@ const renderAuth = () => {
     }
 
     emailField?.setAttribute('hidden', '')
+
     codeField?.setAttribute('hidden', '')
+
     pending?.setAttribute('hidden', '')
+
     changeEmail?.setAttribute('hidden', '')
+
     primary?.setAttribute('hidden', '')
+
     signOutBtn?.removeAttribute('hidden')
   } else {
     if (title) {
@@ -716,9 +777,13 @@ const renderAuth = () => {
     }
 
     emailField?.removeAttribute('hidden')
+
     pending?.setAttribute('hidden', '')
+
     changeEmail?.setAttribute('hidden', '')
+
     primary?.removeAttribute('hidden')
+
     signOutBtn?.setAttribute('hidden', '')
 
     if (primary) {
@@ -727,7 +792,9 @@ const renderAuth = () => {
 
     if (form?.dataset.codeRequested === 'true') {
       codeField?.removeAttribute('hidden')
+
       pending?.removeAttribute('hidden')
+
       changeEmail?.removeAttribute('hidden')
     } else {
       codeField?.setAttribute('hidden', '')
@@ -736,7 +803,9 @@ const renderAuth = () => {
 }
 
 const summaryEmptyStateMarkup = '<li class="summary-list-empty"><p class="muted empty-state">Add a trip to see your residency exposure by country.</p></li>'
-const summaryDonutRadius = 15.5
+/** Summary ring: viewBox 0–100, radius in user units */
+const summaryDonutRadius = 36.5
+const summaryDonutStroke = 7
 const summaryDonutCircumference = 2 * Math.PI * summaryDonutRadius
 
 const summaryProgressPercent = (country: CountrySummary) => {
@@ -766,6 +835,7 @@ const summaryLevelLabel = (level: ExposureLevel) => {
 const renderCountryCard = (country: CountrySummary) => {
   const progress = summaryProgressPercent(country)
   const dashOffset = summaryDonutCircumference * (1 - progress / 100)
+  const donutGradId = `cc-donut-grad-${country.countryCode.toLowerCase()}`
   const flag = countryCodeToFlagEmoji(country.countryCode)
   const levelLabel = summaryLevelLabel(country.exposureLevel)
   const status = summaryStatusText(country)
@@ -787,34 +857,47 @@ const renderCountryCard = (country: CountrySummary) => {
         </div>
       </div>
       <div class="cc-count-row">
-        <svg class="cc-donut" width="44" height="44" viewBox="0 0 40 40" aria-hidden="true">
-          <circle
-            class="cc-donut-track"
-            cx="20"
-            cy="20"
-            r="${String(summaryDonutRadius)}"
-            fill="none"
-            stroke-width="3.25"
-          />
-          <circle
-            class="cc-donut-arc"
-            cx="20"
-            cy="20"
-            r="${String(summaryDonutRadius)}"
-            fill="none"
-            stroke-width="3.25"
-            stroke-linecap="round"
-            stroke-dasharray="${String(summaryDonutCircumference)}"
-            stroke-dashoffset="${String(dashOffset)}"
-            transform="rotate(-90 20 20)"
-          />
-        </svg>
+        <div class="cc-donut-wrap" aria-hidden="true">
+          <svg class="cc-donut" viewBox="0 0 100 100" role="presentation">
+            <defs>
+              <linearGradient id="${donutGradId}" x1="8%" y1="12%" x2="92%" y2="88%">
+                <stop offset="0%" class="cc-donut-grad-start" />
+                <stop offset="52%" class="cc-donut-grad-mid" />
+                <stop offset="100%" class="cc-donut-grad-end" />
+              </linearGradient>
+            </defs>
+            <circle class="cc-donut-face" cx="50" cy="50" r="47" />
+            <circle class="cc-donut-rim" cx="50" cy="50" r="46" fill="none" />
+            <circle
+              class="cc-donut-track"
+              cx="50"
+              cy="50"
+              r="${String(summaryDonutRadius)}"
+              fill="none"
+              stroke-width="${String(summaryDonutStroke)}"
+            />
+            <circle
+              class="cc-donut-arc"
+              cx="50"
+              cy="50"
+              r="${String(summaryDonutRadius)}"
+              fill="none"
+              stroke="url(#${donutGradId})"
+              stroke-width="${String(summaryDonutStroke)}"
+              stroke-linecap="round"
+              stroke-dasharray="${String(summaryDonutCircumference)}"
+              stroke-dashoffset="${String(dashOffset)}"
+              transform="rotate(-90 50 50)"
+            />
+            <text class="cc-donut-pct" x="50" y="50" text-anchor="middle" dominant-baseline="central">${String(progress)}%</text>
+          </svg>
+        </div>
         <div class="cc-count-block">
           <p class="cc-count" aria-hidden="true">
             <span class="cc-count-value">${String(country.daysPresent)}</span>
             <span class="cc-count-suffix">/ ${String(country.thresholdDays)}</span>
           </p>
-          <p class="cc-pct">${String(progress)}% of threshold</p>
+          <p class="cc-pct">Days in window vs threshold</p>
         </div>
       </div>
       <div
@@ -879,8 +962,8 @@ const renderTrips = () => {
               <time class="date-pill" datetime="${escapeHtml(trip.entryDate)}">${formatDisplayDate(trip.entryDate)}</time>
               <span class="trip-dates-arrow">→</span>
               ${trip.exitDate
-            ? `<time class="date-pill" datetime="${escapeHtml(trip.exitDate)}">${exitLabel}</time>`
-            : `<span class="date-pill date-pill--open" role="text">${exitLabel}</span>`}
+                ? `<time class="date-pill" datetime="${escapeHtml(trip.exitDate)}">${exitLabel}</time>`
+                : `<span class="date-pill date-pill--open" role="text">${exitLabel}</span>`}
             </div>
             ${note ? `<p class="trip-note">${escapeHtml(note)}</p>` : ''}
           </div>
@@ -936,14 +1019,19 @@ const renderHomeCountries = () => {
 
 const renderAll = () => {
   summarizeLocal()
+
   renderAuth()
+
   renderSummary()
+
   renderTrips()
+
   renderHomeCountries()
 }
 
 const refreshRemote = async () => {
   const mode = currentWindow().mode
+
   const [tripsResponse, countriesResponse, summaryResponse] = await Promise.all([
     request<{ trips: Trip[] }>('/api/trips'),
     request<{ countries: HomeCountry[] }>('/api/home-countries'),
@@ -951,15 +1039,30 @@ const refreshRemote = async () => {
   ])
 
   state.trips = tripsResponse.trips
+
   state.countries = countriesResponse.countries
+
   state.summary = summaryResponse.countries
+
   state.windowLabel = `${summaryResponse.window.startDate} to ${summaryResponse.window.endDate}`
+
   saveLocal()
+
   renderAuth()
+
   renderSummary()
+
   renderTrips()
+
   renderHomeCountries()
 }
+
+const tripSyncKey = (trip: {
+  countryCode: string
+  entryDate: string
+  exitDate: string | null
+  note: string | null
+}) => `${trip.countryCode}|${trip.entryDate}|${trip.exitDate ?? ''}|${(trip.note?.trim() ?? '')}`
 
 const syncLocalToAccount = async () => {
   for (const country of state.countries) {
@@ -974,7 +1077,16 @@ const syncLocalToAccount = async () => {
     })
   }
 
+  const { trips: existingRemote } = await request<{ trips: Trip[] }>('/api/trips')
+  const alreadySynced = new Set(existingRemote.map(trip => tripSyncKey(trip)))
+
   for (const trip of state.trips) {
+    const key = tripSyncKey(trip)
+
+    if (alreadySynced.has(key)) {
+      continue
+    }
+
     await request('/api/trips', {
       method: 'POST',
       body: JSON.stringify({
@@ -985,6 +1097,8 @@ const syncLocalToAccount = async () => {
         note: trip.note
       })
     })
+
+    alreadySynced.add(key)
   }
 
   await refreshRemote()
@@ -993,6 +1107,7 @@ const syncLocalToAccount = async () => {
 const requestCode = async (form: HTMLFormElement) => {
   const data = new FormData(form)
   const email = formString(data, 'email')
+
   setLoginStatus('Sending code…', 'info')
 
   const response = await request<{ devCode?: string }>('/api/auth/request-code', {
@@ -1001,10 +1116,15 @@ const requestCode = async (form: HTMLFormElement) => {
   })
 
   form.dataset.codeRequested = 'true'
+
   form.dataset.loginStep = 'code'
+
   form.dataset.pendingEmail = email
+
   $('#code-field')?.removeAttribute('hidden')
+
   $('#login-pending-banner')?.removeAttribute('hidden')
+
   $('#login-change-email')?.removeAttribute('hidden')
 
   const masked = $('#login-email-masked')
@@ -1013,7 +1133,7 @@ const requestCode = async (form: HTMLFormElement) => {
     masked.textContent = maskEmailForDisplay(email)
   }
 
-  const emailInput = $('#login-email') as HTMLInputElement | null
+  const emailInput = $('#login-email')
 
   if (emailInput) {
     emailInput.readOnly = true
@@ -1024,6 +1144,7 @@ const requestCode = async (form: HTMLFormElement) => {
 
   if (codeInput instanceof HTMLInputElement) {
     codeInput.required = true
+
     codeInput.focus()
   }
 
@@ -1044,6 +1165,7 @@ const requestCode = async (form: HTMLFormElement) => {
 
 const verifyCode = async (form: HTMLFormElement) => {
   const data = new FormData(form)
+
   setLoginStatus('Verifying code…', 'info')
 
   const response = await request<{ user: { email: string } }>('/api/auth/verify-code', {
@@ -1055,16 +1177,23 @@ const verifyCode = async (form: HTMLFormElement) => {
   })
 
   state.authenticated = true
+
   state.userEmail = response.user.email
+
   setLoginStatus('Saving trips and settings to your account…', 'info')
+
   await syncLocalToAccount()
+
   leaveLoginCodeWaitState(form, { clearEmail: false, clearStatus: false })
+
   setLoginStatus('Signed in. Your counter is synced.', 'success')
+
   $('#trip-form')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 }
 
 const addTrip = async (form: HTMLFormElement) => {
   setTripFormStatus('', 'ok')
+
   const data = new FormData(form)
   const select = form.elements.namedItem('countryCode') as HTMLSelectElement
   const openEnded = data.get('openEnded') === 'on'
@@ -1074,6 +1203,7 @@ const addTrip = async (form: HTMLFormElement) => {
 
   if (!validated.ok) {
     setTripFormStatus(validated.error, 'error')
+
     return
   }
 
@@ -1099,16 +1229,22 @@ const addTrip = async (form: HTMLFormElement) => {
         note: trip.note
       })
     })
+
     await refreshRemote()
   } else {
     state.trips.push(trip)
+
     saveLocal()
+
     renderAll()
   }
 
   form.reset()
+
   syncCountryComboFromSelect('trip-country')
+
   applyOpenEndedUi(false)
+
   syncExitMinFromEntry()
 
   if (validated.hint) {
@@ -1118,8 +1254,10 @@ const addTrip = async (form: HTMLFormElement) => {
 
 const addHomeCountry = async (form: HTMLFormElement) => {
   setHomeCountryFormStatus('', 'ok')
+
   const data = new FormData(form)
   const select = form.elements.namedItem('countryCode') as HTMLSelectElement
+
   const country: HomeCountry = {
     id: `local_${crypto.randomUUID()}`,
     countryCode: formString(data, 'countryCode'),
@@ -1130,15 +1268,20 @@ const addHomeCountry = async (form: HTMLFormElement) => {
 
   if (state.authenticated) {
     await request('/api/home-countries', { method: 'POST', body: JSON.stringify(country) })
+
     await refreshRemote()
   } else {
     state.countries = state.countries.filter(item => item.countryCode !== country.countryCode)
+
     state.countries.push(country)
+
     saveLocal()
+
     renderAll()
   }
 
   form.reset()
+
   syncCountryComboFromSelect('home-country')
 }
 
@@ -1147,12 +1290,16 @@ const exportCsv = () => {
     ['countryCode', 'countryName', 'entryDate', 'exitDate', 'note'],
     ...state.trips.map(trip => [trip.countryCode, trip.countryName, trip.entryDate, trip.exitDate ?? '', trip.note ?? ''])
   ]
+
   const csv = rows.map(row => row.map(cell => `"${String(cell).replaceAll('"', '""')}"`).join(',')).join('\n')
   const link = document.createElement('a')
 
   link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }))
+
   link.download = 'nomad-counter-trips.csv'
+
   link.click()
+
   URL.revokeObjectURL(link.href)
 }
 
@@ -1169,12 +1316,14 @@ const importCsv = async (file: File) => {
 
     if (!countryCode || !countryName || !entryDate.trim()) {
       skipped++
+
       continue
     }
 
     const entryTrim = entryDate.trim()
     const exitTrim = exitDate.trim()
     const openEnded = exitTrim.length === 0
+
     const rowValidation = validateTripForm({
       entryDate: entryTrim,
       exitDate: exitTrim,
@@ -1183,6 +1332,7 @@ const importCsv = async (file: File) => {
 
     if (!rowValidation.ok) {
       skipped++
+
       continue
     }
 
@@ -1194,6 +1344,7 @@ const importCsv = async (file: File) => {
       exitDate: rowValidation.exitDate,
       note: note || null
     })
+
     imported++
   }
 
@@ -1218,11 +1369,13 @@ const boot = async () => {
   $$('#trip-country, #home-country').forEach(select => {
     select.innerHTML = countryOptions()
   })
+
   initCountryComboboxes()
 
   wireTripFormDates()
 
   state.trips = readLocal<Trip[]>(tripsKey, [])
+
   state.countries = readLocal<HomeCountry[]>(countriesKey, [])
 
   $('#login-form')?.addEventListener('submit', event => {
@@ -1247,40 +1400,48 @@ const boot = async () => {
       }
 
       state.authenticated = false
+
       state.userEmail = null
-      const form = $('#login-form') as HTMLFormElement | null
+
+      const form = $('#login-form')
 
       if (form) {
         leaveLoginCodeWaitState(form, { clearEmail: true })
       }
 
       setLoginStatus('', 'info')
+
       renderAll()
     })()
   })
 
   $('#login-change-email')?.addEventListener('click', () => {
-    const form = $('#login-form') as HTMLFormElement | null
+    const form = $('#login-form')
 
     if (!form) {
       return
     }
 
     leaveLoginCodeWaitState(form, { clearEmail: false })
+
     $('#login-card-sub')!.textContent = 'Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.'
-    const emailInput = $('#login-email') as HTMLInputElement | null
+
+    const emailInput = $('#login-email')
 
     emailInput?.focus()
+
     emailInput?.select()
   })
 
   $('#trip-form')?.addEventListener('submit', event => {
     event.preventDefault()
+
     void addTrip(event.currentTarget as HTMLFormElement).catch(error => setTripFormStatus(error.message, 'error'))
   })
 
   $('#home-country-form')?.addEventListener('submit', event => {
     event.preventDefault()
+
     void addHomeCountry(event.currentTarget as HTMLFormElement).catch(error => setHomeCountryFormStatus(error.message, 'error'))
   })
 
@@ -1293,6 +1454,7 @@ const boot = async () => {
   })
 
   $('#export-csv')?.addEventListener('click', exportCsv)
+
   $('#import-csv')?.addEventListener('change', event => {
     const file = (event.currentTarget as HTMLInputElement).files?.[0]
 
@@ -1302,16 +1464,18 @@ const boot = async () => {
   })
 
   document.addEventListener('click', event => {
-    const target = event.target as HTMLElement
-    const tripId = target.dataset.deleteTrip
-    const countryId = target.dataset.deleteCountry
+    const el = (event.target as HTMLElement).closest<HTMLElement>('[data-delete-trip], [data-delete-country]')
+    const tripId = el?.dataset.deleteTrip
+    const countryId = el?.dataset.deleteCountry
 
     if (tripId) {
       if (state.authenticated && !tripId.startsWith('local_')) {
         void request(`/api/trips/${tripId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setTripFormStatus(error.message, 'error'))
       } else {
         state.trips = state.trips.filter(trip => trip.id !== tripId)
+
         saveLocal()
+
         renderAll()
       }
     }
@@ -1321,7 +1485,9 @@ const boot = async () => {
         void request(`/api/home-countries/${countryId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setHomeCountryFormStatus(error.message, 'error'))
       } else {
         state.countries = state.countries.filter(country => country.id !== countryId)
+
         saveLocal()
+
         renderAll()
       }
     }
@@ -1331,19 +1497,25 @@ const boot = async () => {
     const response = await request<{ user: { email: string } }>('/api/auth/me')
 
     state.authenticated = true
+
     state.userEmail = response.user.email
+
     await refreshRemote()
   } catch {
     state.authenticated = false
+
     state.userEmail = null
+
     renderAll()
   }
 
   const revealElement = (el: HTMLElement) => {
     if (el.hasAttribute('data-stagger')) {
       const step = Number(el.dataset.stagger) || 60
+
       ;(Array.from(el.children) as HTMLElement[]).forEach((child, i) => {
         child.style.transitionDelay = `${i * step}ms`
+
         child.classList.add('is-visible')
       })
     } else {
@@ -1358,8 +1530,7 @@ const boot = async () => {
       for (const entry of entries) {
         if (entry.isIntersecting) revealElement(entry.target as HTMLElement)
       }
-    },
-    { threshold: 0, rootMargin: '0px 0px -80px 0px' }
+    }, { threshold: 0, rootMargin: '0px 0px -80px 0px' }
   )
 
   const observeAll = () => {
@@ -1369,7 +1540,10 @@ const boot = async () => {
   // Double-rAF: first frame sets data-scroll-reveal="ready" so CSS hides
   // elements; second frame observes so IO and CSS transitions fire correctly.
   document.documentElement.setAttribute('data-scroll-reveal', 'ready')
-  requestAnimationFrame(() => { requestAnimationFrame(observeAll) })
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(observeAll)
+  })
 }
 
 void boot()

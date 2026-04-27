@@ -73,10 +73,13 @@ auth.post('/request-code', zValidator('json', emailSchema), async c => {
     createdAt: timestamp
   })
 
+  const devExpose =
+    c.env.NOMAD_DEV_EXPOSE_LOGIN_CODE === 'true'
+
   return c.json({
     ok: true,
     delivery: status,
-    devCode: status === 'skipped' ? code : undefined
+    devCode: status === 'skipped' && devExpose ? code : undefined
   })
 })
 
