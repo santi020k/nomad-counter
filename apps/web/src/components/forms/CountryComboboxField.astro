@@ -32,6 +32,10 @@ const fieldClasses = ['field', className].filter(Boolean).join(' ')
     data-combo-for={selectId}
     data-combo-label={comboLabel}
   >
+    <span class="combo-selected" aria-hidden="true">
+      <span class="combo-selected-flag">🌍</span>
+      <span class="combo-selected-code">--</span>
+    </span>
     <input
       id={searchId}
       class="combo-input"
@@ -45,7 +49,7 @@ const fieldClasses = ['field', className].filter(Boolean).join(' ')
       placeholder={placeholder}
     />
     <button class="combo-toggle" type="button" aria-label="Toggle country list" tabindex="-1">
-      <span aria-hidden="true">▾</span>
+      <span aria-hidden="true">⌄</span>
     </button>
     <div id={listboxId} class="combo-list" role="listbox" aria-label={`${comboLabel} options`}></div>
     <select id={selectId} name={selectName} class="combo-native" aria-hidden="true" tabindex="-1"></select>

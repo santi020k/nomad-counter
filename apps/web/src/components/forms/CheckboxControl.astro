@@ -1,16 +1,16 @@
 ---
 interface Props extends astroHTML.JSX.InputHTMLAttributes {
   id: string
+  inputName: string
   label: string
-  name: string
   class?: string
 }
 
 const {
   class: className = '',
   id,
+  inputName,
   label,
-  name,
   type: _type,
   ...rest
 } = Astro.props as Props
@@ -19,6 +19,6 @@ const classes = ['check', className].filter(Boolean).join(' ')
 ---
 
 <label class={classes}>
-  <input id={id} name={name} type="checkbox" {...rest} />
+  <input id={id} name={inputName} type="checkbox" {...rest} />
   <span>{label}</span>
 </label>

@@ -59,6 +59,8 @@ interface CountryComboState {
   options: CountryComboOption[]
   root: HTMLElement
   selectedCode: string
+  selectedCodeText: HTMLElement
+  selectedFlag: HTMLElement
   select: HTMLSelectElement
   visibleOptions: CountryComboOption[]
 }
@@ -122,6 +124,7 @@ const countryComboOptions = (): CountryComboOption[] => countries.map(([code, na
   flag: countryCodeToFlagEmoji(code),
   name
 }))
+const normalizeCountryQuery = (value: string) => value.trim().toLowerCase()
 
 const optionIdFor = (selectId: string, code: string) => `${selectId}-opt-${code.toLowerCase()}`
 
@@ -153,11 +156,19 @@ const moveComboActiveTo = (combo: CountryComboState, index: number) => {
 }
 
 const renderCountryComboOptions = (combo: CountryComboState, query = '') => {
-  const normalized = query.trim().toLowerCase()
-
-  combo.visibleOptions = combo.options.filter(option =>
-    option.name.toLowerCase().includes(normalized) || option.code.toLowerCase().includes(normalized)
+  const normalized = normalizeCountryQuery(query)
+  const startsWithMatches = combo.options.filter(option =>
+    normalizeCountryQuery(option.name).startsWith(normalized) || normalizeCountryQuery(option.code).startsWith(normalized)
   )
+  const partialMatches = combo.options.filter(option => {
+    const matchesName = normalizeCountryQuery(option.name).includes(normalized)
+    const matchesCode = normalizeCountryQuery(option.code).includes(normalized)
+    const alreadyMatched = normalizeCountryQuery(option.name).startsWith(normalized) || normalizeCountryQuery(option.code).startsWith(normalized)
+
+    return !alreadyMatched && (matchesName || matchesCode)
+  })
+
+  combo.visibleOptions = normalized ? [...startsWithMatches, ...partialMatches] : combo.options
 
   if (combo.visibleOptions.length === 0) {
     combo.list.innerHTML = '<div class="combo-empty" aria-live="polite">No matching country.</div>'
@@ -179,12 +190,24 @@ const renderCountryComboOptions = (combo: CountryComboState, query = '') => {
       <span class="combo-option-flag" aria-hidden="true">${option.flag}</span>
       <span class="combo-option-label">${escapeHtml(option.name)}</span>
       <span class="combo-option-code">${escapeHtml(option.code)}</span>
+      <span class="combo-option-check" aria-hidden="true">${selected ? '✓' : ''}</span>
     </button>`
   }).join('')
 
   const selectedIndex = combo.visibleOptions.findIndex(option => option.code === combo.selectedCode)
 
   moveComboActiveTo(combo, selectedIndex >= 0 ? selectedIndex : 0)
+}
+
+const updateCountryComboBadge = (combo: CountryComboState, option: CountryComboOption | undefined) => {
+  if (!option) {
+    combo.selectedFlag.textContent = '🌍'
+    combo.selectedCodeText.textContent = '--'
+    return
+  }
+
+  combo.selectedFlag.textContent = option.flag
+  combo.selectedCodeText.textContent = option.code
 }
 
 const openCountryCombo = (combo: CountryComboState) => {
@@ -213,7 +236,8 @@ const syncCountryComboFromSelect = (selectId: string) => {
     combo.input.value = active.name
   }
 
-  renderCountryComboOptions(combo, combo.input.value)
+  updateCountryComboBadge(combo, active)
+  renderCountryComboOptions(combo, '')
 }
 
 const selectCountryFromCombo = (combo: CountryComboState, code: string) => {
@@ -225,7 +249,8 @@ const selectCountryFromCombo = (combo: CountryComboState, code: string) => {
     combo.input.value = active.name
   }
 
-  renderCountryComboOptions(combo, combo.input.value)
+  updateCountryComboBadge(combo, active)
+  renderCountryComboOptions(combo, '')
   combo.select.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
@@ -241,9 +266,11 @@ const initCountryComboboxes = () => {
     const select = selectId ? document.getElementById(selectId) as HTMLSelectElement | null : null
     const input = root.querySelector<HTMLInputElement>('.combo-input')
     const list = root.querySelector<HTMLElement>('.combo-list')
+    const selectedFlag = root.querySelector<HTMLElement>('.combo-selected-flag')
+    const selectedCodeText = root.querySelector<HTMLElement>('.combo-selected-code')
     const toggle = root.querySelector<HTMLButtonElement>('.combo-toggle')
 
-    if (!selectId || !select || !input || !list) {
+    if (!selectId || !select || !input || !list || !selectedFlag || !selectedCodeText) {
       return
     }
 
@@ -254,6 +281,8 @@ const initCountryComboboxes = () => {
       options: countryComboOptions(),
       root,
       selectedCode: select.value,
+      selectedCodeText,
+      selectedFlag,
       select,
       visibleOptions: []
     }
@@ -264,16 +293,19 @@ const initCountryComboboxes = () => {
     input.addEventListener('focus', () => {
       closeAllCountryCombos()
       openCountryCombo(combo)
-      renderCountryComboOptions(combo, input.value)
+      input.select()
+      renderCountryComboOptions(combo, '')
     })
 
     input.addEventListener('click', () => {
+      input.select()
+
       if (!combo.isOpen) {
         closeAllCountryCombos()
         openCountryCombo(combo)
       }
 
-      renderCountryComboOptions(combo, input.value)
+      renderCountryComboOptions(combo, '')
     })
 
     input.addEventListener('input', () => {
@@ -296,7 +328,7 @@ const initCountryComboboxes = () => {
         if (!combo.isOpen) {
           closeAllCountryCombos()
           openCountryCombo(combo)
-          renderCountryComboOptions(combo, input.value)
+          renderCountryComboOptions(combo, '')
           return
         }
 
@@ -309,7 +341,7 @@ const initCountryComboboxes = () => {
         if (!combo.isOpen) {
           closeAllCountryCombos()
           openCountryCombo(combo)
-          renderCountryComboOptions(combo, input.value)
+          renderCountryComboOptions(combo, '')
           return
         }
 
@@ -365,8 +397,19 @@ const initCountryComboboxes = () => {
 
       closeAllCountryCombos()
       openCountryCombo(combo)
-      renderCountryComboOptions(combo, input.value)
+      renderCountryComboOptions(combo, '')
       input.focus()
+    })
+
+    input.addEventListener('blur', () => {
+      window.setTimeout(() => {
+        if (document.activeElement === input) {
+          return
+        }
+
+        syncCountryComboFromSelect(selectId)
+        closeCountryCombo(combo)
+      }, 0)
     })
 
     select.addEventListener('change', () => syncCountryComboFromSelect(selectId))
