@@ -2,9 +2,8 @@
 import SiteFooter from '@/components/SiteFooter.astro'
 import '@/styles/global.css'
 
-const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
 const title = 'Nomad Counter'
-const description = 'Track travel days, compare residency thresholds, and avoid surprise 183-day tax exposure as a digital nomad.'
+const description = 'Track travel days, compare residency thresholds, and spot 183-day exposure early with a private, guest-first counter.'
 const siteUrl = 'https://nomad.santi020k.com/'
 const websiteJsonLd = {
   '@context': 'https://schema.org',
@@ -14,6 +13,13 @@ const websiteJsonLd = {
   operatingSystem: 'Web',
   url: siteUrl,
   description,
+  featureList: [
+    'Inclusive calendar-day counting',
+    'Configurable country thresholds',
+    'Guest-first local trip tracking',
+    'Optional email-code account sync'
+  ],
+  isAccessibleForFree: true,
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -77,12 +83,26 @@ const websiteJsonLd = {
           <p class="eyebrow">Counting your days</p>
           <h1>Know your days before they count against you.</h1>
           <p>
-            Explore your travel history, tally every day, and see when a country is getting close to a residency threshold.
+            Log stays by country, count inclusive calendar days, and see when a common residency threshold deserves a closer look.
           </p>
           <div class="hero-actions">
             <a class="btn" href="#counter">Start counting</a>
             <a class="btn secondary" href="#faq">How it works</a>
           </div>
+          <dl class="hero-facts" aria-label="Nomad Counter highlights">
+            <div>
+              <dt>Default threshold</dt>
+              <dd>183 days</dd>
+            </div>
+            <div>
+              <dt>Counting rule</dt>
+              <dd>Entry and exit count</dd>
+            </div>
+            <div>
+              <dt>Privacy model</dt>
+              <dd>Local until sync</dd>
+            </div>
+          </dl>
         </div>
         <form id="login-form" class="card login-card" aria-label="Sign in">
           <p id="sync-state" class="sync-state">Guest mode. Your data stays in this browser until you save it to an account.</p>
@@ -112,15 +132,18 @@ const websiteJsonLd = {
               </div>
               <label class="field compact">
                 <span>Window</span>
-                <select id="window-mode">
+                <select id="window-mode" aria-describedby="window-help">
                   <option value="calendar-year">Calendar year</option>
                   <option value="rolling-365">Rolling 365 days</option>
                 </select>
+                <small id="window-help">Choose the date range used for exposure counts.</small>
               </label>
             </div>
-            <div id="summary-list" class="summary-list"></div>
+            <div id="summary-list" class="summary-list">
+              <p class="muted empty-state">Add a trip to see your residency exposure by country.</p>
+            </div>
             <p class="rule">
-              Counting rule: any calendar day with presence in a country counts as one full day. Entry and exit dates are inclusive.
+              Counting rule: any calendar day with presence in a country counts as one full day. Entry and exit dates are inclusive. This is a tracking aid, not tax advice.
             </p>
           </section>
 
@@ -138,7 +161,9 @@ const websiteJsonLd = {
                 </label>
               </div>
             </div>
-            <div id="trip-list" class="list"></div>
+            <div id="trip-list" class="list">
+              <p class="muted empty-state">No trips yet. Add your first stay or import a CSV.</p>
+            </div>
           </section>
         </div>
 
@@ -161,11 +186,12 @@ const websiteJsonLd = {
             </div>
             <label class="check">
               <input name="openEnded" type="checkbox" />
-              Currently there
+              <span>Currently there</span>
             </label>
             <label class="field">
               <span>Note</span>
-              <textarea name="note" rows="3" placeholder="Optional"></textarea>
+              <textarea name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help"></textarea>
+              <small id="trip-note-help">Avoid sensitive tax, immigration, or identity details.</small>
             </label>
             <button class="btn" type="submit">Add trip</button>
           </form>
@@ -179,15 +205,21 @@ const websiteJsonLd = {
             <div class="grid-fit">
               <label class="field">
                 <span>Threshold</span>
-                <input name="thresholdDays" type="number" min="1" max="366" value="183" required />
+                <input name="thresholdDays" type="number" min="1" max="366" value="183" required aria-describedby="threshold-help" />
               </label>
               <label class="field">
                 <span>Warning</span>
-                <input name="warningDays" type="number" min="0" max="90" value="14" required />
+                <input name="warningDays" type="number" min="0" max="90" value="14" required aria-describedby="warning-help" />
               </label>
             </div>
+            <p class="form-help">
+              <span id="threshold-help">Threshold is the day limit you want to watch.</span>
+              <span id="warning-help">Warning is how many days before the threshold should feel close.</span>
+            </p>
             <button class="btn secondary" type="submit">Track country</button>
-            <div id="home-country-list" class="list tight"></div>
+            <div id="home-country-list" class="list tight">
+              <p class="muted empty-state">Track a country to customize its threshold and warning range.</p>
+            </div>
           </form>
         </div>
       </section>
@@ -204,6 +236,10 @@ const websiteJsonLd = {
         <article>
           <strong>Guest-first privacy</strong>
           <p>Try the full workflow locally. Email sign-in exists only to save your trip log to your account.</p>
+        </article>
+        <article>
+          <strong>Cautious by design</strong>
+          <p>Use the count as a planning signal, then confirm your situation with a qualified advisor.</p>
         </article>
       </section>
 
@@ -392,6 +428,38 @@ const websiteJsonLd = {
     margin-top: 28px;
   }
 
+  .hero-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 660px;
+    margin: 28px 0 0;
+  }
+
+  .hero-facts div {
+    border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--line));
+    border-radius: var(--radius);
+    padding: 12px;
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .hero-facts dt {
+    margin: 0 0 4px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .hero-facts dd {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
   /* ── Login card ─────────────────────────── */
   .login-card,
   .panel {
@@ -489,6 +557,19 @@ const websiteJsonLd = {
 
   .compact {
     min-width: 190px;
+  }
+
+  .field small,
+  .form-help {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .form-help {
+    display: grid;
+    gap: 4px;
+    margin: -4px 0 0;
   }
 
   /* ── Country summary cards ──────────────── */
@@ -762,7 +843,7 @@ const websiteJsonLd = {
 
   .marketing-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
     margin-top: 28px;
   }
@@ -806,6 +887,11 @@ const websiteJsonLd = {
   .marketing-grid article:nth-child(3)::before {
     background: linear-gradient(135deg, var(--success), var(--sky));
     box-shadow: 0 4px 12px color-mix(in srgb, var(--success) 30%, transparent);
+  }
+
+  .marketing-grid article:nth-child(4)::before {
+    background: linear-gradient(135deg, var(--warn), var(--success));
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--warn) 24%, transparent);
   }
 
   .marketing-grid strong {
@@ -920,7 +1006,7 @@ const websiteJsonLd = {
     }
 
     .marketing-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -941,6 +1027,11 @@ const websiteJsonLd = {
 
     .nav-sep {
       display: none;
+    }
+
+    .hero-facts,
+    .marketing-grid {
+      grid-template-columns: 1fr;
     }
   }
 

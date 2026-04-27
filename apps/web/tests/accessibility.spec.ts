@@ -1,12 +1,20 @@
-import AxeBuilder from '@axe-core/playwright'
+import { expectNoUnexpectedAccessibilityViolations } from './helpers/accessibility'
+
 import { expect, test } from '@playwright/test'
 
-test('homepage has no unexpected accessibility violations', async ({ page }) => {
-  await page.goto('/')
+const pages = [
+  { name: 'homepage', path: '/' },
+  { name: 'stats page', path: '/stats/' },
+  { name: 'privacy page', path: '/privacy/' },
+  { name: 'terms page', path: '/terms/' }
+]
 
-  await expect(page.locator('#main-content')).toBeVisible()
+for (const pageUnderTest of pages) {
+  test(`${pageUnderTest.name} has no unexpected accessibility violations`, async ({ page }) => {
+    await page.goto(pageUnderTest.path)
 
-  const results = await new AxeBuilder({ page }).analyze()
+    await expect(page.locator('#main-content')).toBeVisible()
 
-  expect(results.violations).toEqual([])
-})
+    await expectNoUnexpectedAccessibilityViolations(page)
+  })
+}
