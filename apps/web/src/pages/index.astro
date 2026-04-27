@@ -201,8 +201,31 @@ const websiteJsonLd = {
               Add trip
             </h2>
             <div class="field">
-              <label for="trip-country">Country</label>
-              <select id="trip-country" name="countryCode"></select>
+              <label for="trip-country-search">Country</label>
+              <div
+                class="combo country-combo"
+                data-combo-root
+                data-combo-for="trip-country"
+                data-combo-label="Trip country"
+              >
+                <input
+                  id="trip-country-search"
+                  class="combo-input"
+                  type="text"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="trip-country-listbox"
+                  aria-activedescendant=""
+                  autocomplete="off"
+                  placeholder="Search country"
+                />
+                <button class="combo-toggle" type="button" aria-label="Toggle country list" tabindex="-1">
+                  <span aria-hidden="true">▾</span>
+                </button>
+                <div id="trip-country-listbox" class="combo-list" role="listbox" aria-label="Trip country options"></div>
+                <select id="trip-country" name="countryCode" class="combo-native" aria-hidden="true" tabindex="-1"></select>
+              </div>
             </div>
             <div class="grid-fit">
               <div class="field">
@@ -236,8 +259,31 @@ const websiteJsonLd = {
               Tracked country
             </h2>
             <div class="field">
-              <label for="home-country">Country</label>
-              <select id="home-country" name="countryCode"></select>
+              <label for="home-country-search">Country</label>
+              <div
+                class="combo country-combo"
+                data-combo-root
+                data-combo-for="home-country"
+                data-combo-label="Tracked country"
+              >
+                <input
+                  id="home-country-search"
+                  class="combo-input"
+                  type="text"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="home-country-listbox"
+                  aria-activedescendant=""
+                  autocomplete="off"
+                  placeholder="Search country"
+                />
+                <button class="combo-toggle" type="button" aria-label="Toggle country list" tabindex="-1">
+                  <span aria-hidden="true">▾</span>
+                </button>
+                <div id="home-country-listbox" class="combo-list" role="listbox" aria-label="Tracked country options"></div>
+                <select id="home-country" name="countryCode" class="combo-native" aria-hidden="true" tabindex="-1"></select>
+              </div>
             </div>
             <div class="grid-fit">
               <div class="field">
@@ -363,6 +409,18 @@ const websiteJsonLd = {
   .nav-link:hover {
     color: var(--text);
     background: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+
+  .nav-link:focus-visible,
+  .btn-text:focus-visible,
+  .icon-button:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .nav-link:focus-visible {
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 11%, transparent);
   }
 
   .nav-sep {
@@ -673,6 +731,11 @@ const websiteJsonLd = {
     color: var(--accent);
   }
 
+  .btn-text:focus-visible {
+    color: var(--text);
+    border-radius: 6px;
+  }
+
   #login-form[data-login-step="code"] {
     border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
     box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
@@ -710,6 +773,17 @@ const websiteJsonLd = {
     line-height: 1.45;
   }
 
+  #trip-exit:disabled {
+    color: color-mix(in srgb, var(--muted) 86%, var(--text));
+    border-color: color-mix(in srgb, var(--line) 70%, var(--text));
+    background: color-mix(in srgb, var(--line) 44%, var(--surface));
+  }
+
+  #trip-exit:disabled + #trip-exit-help {
+    color: color-mix(in srgb, var(--muted) 72%, var(--text));
+    border-left-color: color-mix(in srgb, var(--line) 78%, var(--text));
+  }
+
   /* ── App grid ───────────────────────────── */
   .app-grid {
     display: grid;
@@ -734,11 +808,16 @@ const websiteJsonLd = {
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     background: var(--surface);
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
   .panel:hover {
     box-shadow: var(--shadow-sm);
+  }
+
+  .panel:focus-within {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+    box-shadow: var(--shadow-sm), var(--focus-ring);
   }
 
   .panel-heading {
@@ -1022,7 +1101,7 @@ const websiteJsonLd = {
     border-radius: 4px;
     padding: 2px 6px;
     background: color-mix(in srgb, var(--accent) 8%, transparent);
-    color: var(--accent);
+    color: color-mix(in srgb, var(--accent) 90%, var(--text));
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.04em;
@@ -1052,17 +1131,17 @@ const websiteJsonLd = {
 
   .cc-status {
     margin: 0;
-    color: var(--muted);
+    color: color-mix(in srgb, var(--muted) 82%, var(--text));
     font-size: 0.82rem;
     font-weight: 600;
   }
 
   [data-level="warning"] .cc-status {
-    color: var(--warn);
+    color: color-mix(in srgb, var(--warn) 62%, var(--text));
   }
 
   [data-level="exceeded"] .cc-status {
-    color: var(--danger);
+    color: color-mix(in srgb, var(--danger) 80%, var(--text));
   }
 
   /* ── Progress meter ─────────────────────── */
@@ -1130,7 +1209,7 @@ const websiteJsonLd = {
     border-radius: var(--radius);
     padding: 12px 14px;
     background: var(--surface-strong);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   }
 
   .row-trip,
@@ -1217,6 +1296,12 @@ const websiteJsonLd = {
     box-shadow: var(--shadow-sm);
   }
 
+  .row:focus-within {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+    box-shadow: var(--shadow-sm), var(--focus-ring);
+    background: color-mix(in srgb, var(--accent) 2.5%, var(--surface-strong));
+  }
+
   .row-info {
     display: grid;
     gap: 3px;
@@ -1270,13 +1355,19 @@ const websiteJsonLd = {
     color: var(--muted);
     font-size: 1.2rem;
     line-height: 1;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   }
 
   .icon-button:hover {
     border-color: color-mix(in srgb, var(--danger) 50%, var(--line));
     color: var(--danger);
     background: color-mix(in srgb, var(--danger) 6%, transparent);
+  }
+
+  .icon-button:focus-visible {
+    border-color: color-mix(in srgb, var(--danger) 46%, var(--line));
+    color: color-mix(in srgb, var(--danger) 88%, var(--text));
+    background: color-mix(in srgb, var(--danger) 8%, transparent);
   }
 
   /* ── Form panel ─────────────────────────── */
@@ -1303,7 +1394,18 @@ const websiteJsonLd = {
   .check:has(input:focus-visible) {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    box-shadow: var(--focus-ring);
+  }
+
+  #trip-form-status,
+  #home-country-form-status {
+    min-height: 1.3rem;
+  }
+
+  #trip-form-status:empty,
+  #home-country-form-status:empty {
+    display: block;
+    visibility: hidden;
   }
 
   .check:has(input:checked) {
@@ -1468,6 +1570,17 @@ const websiteJsonLd = {
   }
 
   /* ── Responsive ─────────────────────────── */
+  @media (max-width: 1080px) {
+    .app-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
+    }
+
+    .inline-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
   @media (max-width: 840px) {
     .hero,
     .app-grid {
@@ -1509,6 +1622,27 @@ const websiteJsonLd = {
     .hero-facts,
     .marketing-grid {
       grid-template-columns: 1fr;
+    }
+
+    .inline-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    .inline-actions > .btn,
+    .inline-actions > label.btn,
+    .form-panel > .btn,
+    .form-panel > .btn.secondary {
+      width: 100%;
+    }
+
+    .row-body {
+      align-items: flex-start;
+    }
+
+    .row-meta {
+      align-self: flex-start;
     }
   }
 
