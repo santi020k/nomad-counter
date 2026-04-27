@@ -1,0 +1,31 @@
+/* ── Progress meter (summary cards are client-rendered) ─────────────────────── */
+  .summary-panel :global(.meter) {
+    position: relative;
+    overflow: hidden;
+    height: 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--line) 78%, transparent);
+  }
+
+  .summary-panel :global(.meter i) {
+    display: block;
+    height: 100%;
+    width: var(--w, 0%);
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
+    animation: meter-grow 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .summary-panel :global([data-level="warning"] .meter i) {
+    background: linear-gradient(90deg, var(--warn), color-mix(in srgb, var(--warn) 60%, var(--accent-soft)));
+  }
+
+  .summary-panel :global([data-level="exceeded"] .meter i) {
+    background: linear-gradient(90deg, var(--danger), color-mix(in srgb, var(--danger) 70%, var(--accent-soft)));
+  }
+
+  @keyframes meter-grow {
+    from { clip-path: inset(0 100% 0 0 round 999px); }
+    to { clip-path: inset(0 0% 0 0 round 999px); }
+  }
