@@ -1,0 +1,190 @@
+.panel {
+  background:
+    linear-gradient(168deg, color-mix(in srgb, var(--accent) 3.5%, transparent), transparent 42%),
+    var(--surface);
+}
+
+.heading {
+  align-items: flex-start;
+  padding: 18px 18px 16px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+}
+
+.titleStack {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.titleBlock {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.titleBlock h2 {
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.lede {
+  margin: 2px 0 0;
+  max-width: 42ch;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.actions {
+  flex-shrink: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0 18px 18px;
+}
+
+.list:has(.item) {
+  gap: 12px;
+}
+
+.emptyItem {
+  grid-column: 1 / -1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-height: 3.25rem;
+}
+
+/* ── Trip item internals ─── */
+
+.tripTitle {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.tripFlag {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.tripDates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.datePill {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0;
+  padding-right: 11px;
+  border-radius: 10px;
+  overflow: hidden;
+  vertical-align: middle;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 3%, transparent), transparent 38%),
+    color-mix(in srgb, var(--accent) 11%, var(--surface-strong));
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  box-shadow: inset 0 1px 1px color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+.datePillOpen {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 3%, transparent), transparent 38%),
+    color-mix(in srgb, var(--success) 12%, var(--surface-strong));
+  border-color: color-mix(in srgb, var(--success) 38%, var(--line));
+  color: color-mix(in srgb, var(--success) 92%, var(--text));
+}
+
+.datePillAccent {
+  flex-shrink: 0;
+  width: 4px;
+  align-self: stretch;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 82%, transparent),
+    color-mix(in srgb, var(--accent-soft) 55%, transparent)
+  );
+}
+
+.datePillOpen .datePillAccent {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--success) 75%, transparent),
+    color-mix(in srgb, var(--sky) 48%, transparent)
+  );
+}
+
+.datePillText {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 0 5px 8px;
+}
+
+.datesArrow {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.note {
+  margin: 0;
+  max-width: 52ch;
+  color: color-mix(in srgb, var(--muted) 82%, var(--text));
+  font-size: 0.8rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.tripDays {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
+  border-radius: 6px;
+  padding: 2px 8px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 520px) {
+  .item .row-body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .item .row-meta {
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 12px;
+    border-top: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  }
+}

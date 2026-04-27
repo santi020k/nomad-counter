@@ -2,6 +2,7 @@
 
 import astroConfig from '@santi020k/eslint-config-astro'
 import { eslintConfig, playwright } from '@santi020k/eslint-config-basic'
+import reactConfig from '@santi020k/eslint-config-react'
 
 export default [
   {
@@ -11,7 +12,8 @@ export default [
   ...eslintConfig({
     typescript: true,
     frameworks: {
-      astro: astroConfig
+      astro: astroConfig,
+      react: reactConfig
     }
   }),
   {

@@ -1,5 +1,4 @@
 ---
-import ConfirmActionDialog from '@/components/home/ConfirmActionDialog.astro'
 import CounterWorkspace from '@/components/home/CounterWorkspace.astro'
 import FaqSection from '@/components/home/FaqSection.astro'
 import HeroSection from '@/components/home/HeroSection.astro'
@@ -43,7 +42,7 @@ const websiteJsonLd = {
     <SEO />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
   </head>
-  <body data-authenticated="false">
+  <body>
     <a class="skip-link" href="#main-content">Skip to counter</a>
     <MainNav />
 
@@ -54,11 +53,6 @@ const websiteJsonLd = {
       <FaqSection />
     </main>
 
-    <ConfirmActionDialog />
     <SiteFooter />
-
-    <script>
-      import '@/lib/app'
-    </script>
   </body>
 </html>

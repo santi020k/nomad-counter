@@ -1,0 +1,20 @@
+.section {
+  margin-top: 36px;
+}
+
+.dashboard,
+.sidebar {
+  display: grid;
+  gap: 18px;
+}
+
+.importStatus {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}

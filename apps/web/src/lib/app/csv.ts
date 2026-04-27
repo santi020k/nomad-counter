@@ -1,12 +1,14 @@
 import { validateTripForm } from '../tripForm'
+import { summarizeLocal } from './dateMath'
 import { saveLocalState } from './localStore'
-import { setTripFormStatus } from './formStatus'
-import type { State } from './types'
+import { getSnapshot, setState } from '../store'
+import type { Trip } from './types'
 
-export const exportCsv = (state: State) => {
+export const exportCsv = (): void => {
+  const { trips } = getSnapshot()
   const rows = [
     ['countryCode', 'countryName', 'entryDate', 'exitDate', 'note'],
-    ...state.trips.map(trip => [trip.countryCode, trip.countryName, trip.entryDate, trip.exitDate ?? '', trip.note ?? ''])
+    ...trips.map(trip => [trip.countryCode, trip.countryName, trip.entryDate, trip.exitDate ?? '', trip.note ?? ''])
   ]
 
   const csv = rows.map(row => row.map(cell => `"${cell.replaceAll('"', '""')}"`).join(',')).join('\n')
@@ -19,12 +21,13 @@ export const exportCsv = (state: State) => {
 }
 
 export const importCsv = async (
-  state: State,
   file: File,
-  options: { renderAll: () => void, syncLocalToAccount: () => Promise<void> }
-) => {
+  options: { syncLocalToAccount: () => Promise<void> }
+): Promise<string> => {
+  const { trips: existingTrips, countries, authenticated, windowMode } = getSnapshot()
   const text = await file.text()
   const [, ...lines] = text.trim().split(/\r?\n/)
+  const newTrips: Trip[] = [...existingTrips]
   let imported = 0
   let skipped = 0
 
@@ -35,7 +38,6 @@ export const importCsv = async (
 
     if (!countryCode || !countryName || !entryDate.trim()) {
       skipped++
-
       continue
     }
 
@@ -49,11 +51,10 @@ export const importCsv = async (
 
     if (!rowValidation.ok) {
       skipped++
-
       continue
     }
 
-    state.trips.push({
+    newTrips.push({
       id: `local_${crypto.randomUUID()}`,
       countryCode,
       countryName,
@@ -65,19 +66,23 @@ export const importCsv = async (
     imported++
   }
 
-  saveLocalState(state.trips, state.countries)
+  setState(prev => ({ ...prev, trips: newTrips }))
+  saveLocalState(newTrips, countries)
 
-  if (state.authenticated) {
+  if (authenticated) {
     await options.syncLocalToAccount()
   } else {
-    options.renderAll()
+    const local = summarizeLocal(newTrips, countries, windowMode)
+    setState(prev => ({ ...prev, summary: local.summary, windowLabel: local.windowLabel }))
   }
 
   if (imported === 0 && skipped > 0) {
-    setTripFormStatus('No valid trips imported. Check dates (exit on or after entry) and required columns.', 'error')
-  } else if (skipped > 0) {
-    setTripFormStatus(`Imported ${String(imported)} trip(s). Skipped ${String(skipped)} invalid row(s).`, 'ok')
-  } else if (imported > 0) {
-    setTripFormStatus(`Imported ${String(imported)} trip(s).`, 'ok')
+    return 'error:No valid trips imported. Check dates (exit on or after entry) and required columns.'
   }
+
+  if (skipped > 0) {
+    return `ok:Imported ${String(imported)} trip(s). Skipped ${String(skipped)} invalid row(s).`
+  }
+
+  return `ok:Imported ${String(imported)} trip(s).`
 }

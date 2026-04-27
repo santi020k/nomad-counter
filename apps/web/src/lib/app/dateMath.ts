@@ -1,13 +1,10 @@
 import { endOfYear, format, parseISO, startOfYear, subDays } from 'date-fns'
 
-import { $ } from './dom'
 import type { CountrySummary, ExposureLevel, HomeCountry, Trip } from './types'
 
 import { formatIsoDisplayDate, inclusiveCalendarDays, todayIsoDate } from '../isoDate'
 
-export const currentWindow = () => {
-  const windowMode = $<HTMLSelectElement>('#window-mode')
-  const mode = windowMode instanceof HTMLSelectElement ? windowMode.value : 'calendar-year'
+export const currentWindow = (mode: string = 'calendar-year') => {
   const today = todayIsoDate()
   const todayDate = parseISO(today)
   const startDate = mode === 'rolling-365' ? subDays(todayDate, 364) : startOfYear(todayDate)
@@ -36,11 +33,11 @@ const overlapDays = (trip: Trip, startDate: string, endDate: string) => {
   return start > end ? 0 : inclusiveDays(start, end)
 }
 
-export const summarizeLocal = (trips: Trip[], countries: HomeCountry[]): {
+export const summarizeLocal = (trips: Trip[], countries: HomeCountry[], windowMode?: string): {
   summary: CountrySummary[]
   windowLabel: string
 } => {
-  const window = currentWindow()
+  const window = currentWindow(windowMode)
   const thresholds = new Map(countries.map(country => [country.countryCode, country]))
   const countryNames = new Map<string, string>()
   const counts = new Map<string, number>()

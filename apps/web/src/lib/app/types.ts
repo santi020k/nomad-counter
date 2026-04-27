@@ -34,6 +34,7 @@ export interface State {
   summary: CountrySummary[]
   userEmail: null | string
   windowLabel: string
+  windowMode: 'calendar-year' | 'rolling-365'
 }
 
 export type PendingConfirmAction =

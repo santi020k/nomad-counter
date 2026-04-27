@@ -1,0 +1,76 @@
+.panel {
+  display: grid;
+  gap: 14px;
+}
+
+.formTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.formIcon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+}
+
+.status {
+  min-height: 1.3rem;
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--accent);
+}
+
+.status[data-tone="error"] {
+  color: var(--danger);
+}
+
+.list {
+  margin-top: 8px;
+}
+
+.trackedRow {
+  padding: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.trackedMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 999px;
+  padding: 0 9px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: color-mix(in srgb, var(--accent) 92%, var(--text));
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.pillWarn {
+  border-color: color-mix(in srgb, var(--warn) 36%, var(--line));
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+  color: color-mix(in srgb, var(--warn) 74%, var(--text));
+}
