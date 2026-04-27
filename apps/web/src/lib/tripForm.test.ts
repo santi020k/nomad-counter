@@ -4,7 +4,7 @@ import { countryCodeToFlagEmoji, escapeHtml, validateTripForm } from './tripForm
 
 describe('escapeHtml', () => {
   it('escapes HTML special characters', () => {
-    expect(escapeHtml(`a<b>"c"`)).toBe('a&lt;b&gt;&quot;c&quot;')
+    expect(escapeHtml('a<b>"c"')).toBe('a&lt;b&gt;&quot;c&quot;')
   })
 })
 

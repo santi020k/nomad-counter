@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-
 import sharp from 'sharp'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
@@ -13,29 +12,34 @@ const darkLogo = path.join(brandDir, 'logo-dark.svg')
 const wallpaper = path.join(brandDir, 'wallpapers/wallpaper-3-desktop.webp')
 
 await fs.mkdir(publicDir, { recursive: true })
+
 await fs.copyFile(mark, path.join(publicDir, 'favicon.svg'))
+
 await fs.copyFile(lightLogo, path.join(publicDir, 'logo.svg'))
+
 await fs.copyFile(darkLogo, path.join(publicDir, 'logo-dark.svg'))
 
 const png = async (file, size) => sharp(mark).resize(size, size).png().toFile(path.join(publicDir, file))
 
-const escapeXml = (unsafe) => {
-  return unsafe.replace(/[<>&"']/g, (c) => {
-    switch (c) {
-      case '<': return '&lt;'
-      case '>': return '&gt;'
-      case '&': return '&amp;'
-      case '"': return '&quot;'
-      case "'": return '&apos;'
-      default: return c
-    }
-  })
-}
+const escapeXml = unsafe => unsafe.replace(/[<>&"']/g, c => {
+  switch (c) {
+    case '<': return '&lt;'
+
+    case '>': return '&gt;'
+
+    case '&': return '&amp;'
+
+    case '"': return '&quot;'
+
+    case '\'': return '&apos;'
+
+    default: return c
+  }
+})
 
 const generateOgImage = async (filename, title, subtitle) => {
   const safeTitle = escapeXml(title)
   const safeSubtitle = escapeXml(subtitle)
-
   const titleFontSize = title.length > 35 ? 42 : 48
 
   return sharp(wallpaper)

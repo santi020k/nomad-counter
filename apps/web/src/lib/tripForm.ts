@@ -2,12 +2,11 @@ import { format, isValid, parseISO } from 'date-fns'
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 
-export const escapeHtml = (s: string): string =>
-  s
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
+export const escapeHtml = (s: string): string => s
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
 
 /** Regional-indicator pair for ISO 3166-1 alpha-2 (e.g. AR → 🇦🇷). */
 export const countryCodeToFlagEmoji = (code: string): string => {

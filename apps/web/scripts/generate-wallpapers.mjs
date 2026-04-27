@@ -1,6 +1,6 @@
 import { mkdir } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
@@ -138,10 +138,15 @@ const main = async () => {
   await mkdir(wallpapersDir, { recursive: true })
 
   await writeWebp('wallpaper-1-desktop.webp', renderDesktop1(), 3840, 2160)
+
   await writeWebp('wallpaper-1-mobile.webp', renderMobile1(), 1170, 2532)
+
   await writeWebp('wallpaper-2-desktop.webp', renderDesktop2(), 3840, 2160)
+
   await writeWebp('wallpaper-2-mobile.webp', renderMobile2(), 1170, 2532)
+
   await writeWebp('wallpaper-3-desktop.webp', renderDesktop3(), 3840, 2160)
+
   await writeWebp('wallpaper-3-mobile.webp', renderMobile3(), 1170, 2532)
 
   // also overwrite the default wallpaper.webp with desktop 2

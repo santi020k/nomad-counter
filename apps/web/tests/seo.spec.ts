@@ -8,8 +8,7 @@ test('homepage exposes canonical and indexable metadata', async ({ page }) => {
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', siteUrl)
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow')
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-    'content',
-    'Track travel days, compare residency thresholds, and spot 183-day exposure early with a private, guest-first counter.'
+    'content', 'Track travel days, compare residency thresholds, and spot 183-day exposure early with a private, guest-first counter.'
   )
 })
 

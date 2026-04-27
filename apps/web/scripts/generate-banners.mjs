@@ -1,11 +1,10 @@
 import { mkdir } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
 const bannersDir = path.join(root, 'assets/brand/banners')
-
 const WIDTH = 1584
 const HEIGHT = 396
 
@@ -142,9 +141,13 @@ const main = async () => {
   await mkdir(bannersDir, { recursive: true })
 
   await writeWebp('banner-1.webp', renderBanner1())
+
   await writeWebp('banner-2.webp', renderBanner2())
+
   await writeWebp('banner-3.webp', renderBanner3())
+
   await writeWebp('banner-4.webp', renderBanner4())
+
   await writeWebp('banner-5.webp', renderBanner5())
 
   console.log('Successfully generated 5 new brand banners in assets/brand/banners.')

@@ -30,7 +30,13 @@ import TextareaControl from '@/components/forms/TextareaControl.astro'
     <div class="grid-fit trip-form-date-grid">
       <FormField forId="trip-entry" label="Entry date">
         <DateShell>
-          <InputControl id="trip-entry" name="entryDate" type="date" required class="ui-input--date" />
+          <InputControl
+            id="trip-entry"
+            name="entryDate"
+            type="date"
+            required
+            class="ui-input--date"
+          />
         </DateShell>
       </FormField>
       <FormField
