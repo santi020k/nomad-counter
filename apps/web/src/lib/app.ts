@@ -735,7 +735,7 @@ const renderAuth = () => {
   }
 }
 
-const summaryEmptyStateMarkup = '<p class="muted empty-state">Add a trip to see your residency exposure by country.</p>'
+const summaryEmptyStateMarkup = '<li class="summary-list-empty"><p class="muted empty-state">Add a trip to see your residency exposure by country.</p></li>'
 const summaryDonutRadius = 15.5
 const summaryDonutCircumference = 2 * Math.PI * summaryDonutRadius
 
@@ -767,16 +767,23 @@ const renderCountryCard = (country: CountrySummary) => {
   const progress = summaryProgressPercent(country)
   const dashOffset = summaryDonutCircumference * (1 - progress / 100)
   const flag = countryCodeToFlagEmoji(country.countryCode)
+  const levelLabel = summaryLevelLabel(country.exposureLevel)
+  const status = summaryStatusText(country)
+  const ariaValueText = `${String(country.daysPresent)} of ${String(country.thresholdDays)} days. ${status}`
 
-  return `<article class="country-card" data-level="${country.exposureLevel}">
+  return `<li class="summary-list-item">
+    <article class="country-card" data-level="${country.exposureLevel}">
       <div class="cc-top">
         <div class="cc-flag-wrap" aria-hidden="true"><span class="cc-flag">${flag}</span></div>
         <div class="cc-main">
           <div class="cc-header">
-            <strong>${escapeHtml(country.countryName)}</strong>
-            <span class="cc-code">${escapeHtml(country.countryCode)}</span>
+            <div class="cc-name-row">
+              <h3 class="cc-title">${escapeHtml(country.countryName)}</h3>
+              <span class="cc-code">${escapeHtml(country.countryCode)}</span>
+            </div>
+            <span class="cc-level-pill">${levelLabel}</span>
           </div>
-          <p class="cc-threshold">Threshold ${country.thresholdDays} days</p>
+          <p class="cc-threshold"><span class="cc-threshold-label">Residency threshold</span> <span class="cc-threshold-value">${String(country.thresholdDays)} days</span></p>
         </div>
       </div>
       <div class="cc-count-row">
@@ -802,20 +809,27 @@ const renderCountryCard = (country: CountrySummary) => {
             transform="rotate(-90 20 20)"
           />
         </svg>
-        <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
-        <span class="cc-level-pill">${summaryLevelLabel(country.exposureLevel)}</span>
+        <div class="cc-count-block">
+          <p class="cc-count" aria-hidden="true">
+            <span class="cc-count-value">${String(country.daysPresent)}</span>
+            <span class="cc-count-suffix">/ ${String(country.thresholdDays)}</span>
+          </p>
+          <p class="cc-pct">${String(progress)}% of threshold</p>
+        </div>
       </div>
       <div
         class="meter"
         role="progressbar"
-        aria-valuenow="${country.daysPresent}"
+        aria-valuenow="${String(country.daysPresent)}"
         aria-valuemin="0"
-        aria-valuemax="${country.thresholdDays}"
+        aria-valuemax="${String(country.thresholdDays)}"
+        aria-valuetext="${escapeHtml(ariaValueText)}"
       >
-        <i style="--w:${progress}%"></i>
+        <i style="--w:${String(progress)}%"></i>
       </div>
-      <p class="cc-status">${summaryStatusText(country)}</p>
-    </article>`
+      <p class="cc-status">${escapeHtml(status)}</p>
+    </article>
+  </li>`
 }
 
 const renderSummary = () => {

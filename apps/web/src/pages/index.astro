@@ -170,12 +170,7 @@ const websiteJsonLd = {
                 <small id="window-help">Choose the date range used for exposure counts.</small>
               </div>
             </div>
-            <ul
-              id="summary-list"
-              class="summary-list"
-              role="list"
-              aria-labelledby="summary-panel-heading"
-            >
+            <ul id="summary-list" class="summary-list" aria-labelledby="summary-panel-heading">
               <li class="summary-list-empty">
                 <p class="muted empty-state">Add a trip to see your residency exposure by country.</p>
               </li>
@@ -212,12 +207,15 @@ const websiteJsonLd = {
 
         <div class="sidebar">
           <form id="trip-form" class="panel form-panel" novalidate>
-            <h2 class="form-panel-title">
-              <span class="form-panel-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
+            <div class="form-panel-heading">
+              <span class="form-panel-icon form-panel-icon--route" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3" /><path d="M12 21.7V14" /><path d="M5 10a7 7 0 0 1 14 0c0 5-7 9-7 9s-7-4-7-9" /></svg>
               </span>
-              Add trip
-            </h2>
+              <div class="form-panel-heading-text">
+                <p class="eyebrow">New stay</p>
+                <h2 class="form-panel-heading-title">Add trip</h2>
+              </div>
+            </div>
             <CountryComboboxField
               fieldLabel="Country"
               comboLabel="Trip country"
@@ -226,25 +224,38 @@ const websiteJsonLd = {
               selectId="trip-country"
               selectName="countryCode"
             />
-            <div class="grid-fit">
-              <FormField forId="trip-entry" label="Entry date">
-                <InputControl id="trip-entry" name="entryDate" type="date" required />
-              </FormField>
-              <FormField
-                forId="trip-exit"
-                label="Exit date"
-                hint="Required for completed stays. Disabled while “Currently there” is checked."
-                hintId="trip-exit-help"
-              >
-                <InputControl id="trip-exit" name="exitDate" type="date" required aria-describedby="trip-exit-help" />
-              </FormField>
-            </div>
-            <CheckboxControl id="trip-open-ended" inputName="openEnded" label="Currently there" />
-            <p id="trip-form-status" class="form-status" role="status" aria-live="polite"></p>
+            <fieldset class="trip-form-dates-block">
+              <legend class="sr-only">Stay dates</legend>
+              <div class="grid-fit trip-form-date-grid">
+                <FormField forId="trip-entry" label="Entry date">
+                  <InputControl id="trip-entry" name="entryDate" type="date" required />
+                </FormField>
+                <FormField
+                  forId="trip-exit"
+                  label="Exit date"
+                  hint="Required for completed stays. Disabled while “Currently there” is checked."
+                  hintId="trip-exit-help"
+                >
+                  <InputControl id="trip-exit" name="exitDate" type="date" required aria-describedby="trip-exit-help" />
+                </FormField>
+              </div>
+              <CheckboxControl
+                id="trip-open-ended"
+                inputName="openEnded"
+                label="Currently there"
+                aria-describedby="trip-open-ended-help"
+              />
+              <p id="trip-open-ended-help" class="trip-open-ended-hint">
+                When checked, exit date is optional until the stay ends.
+              </p>
+            </fieldset>
             <FormField forId="trip-note" label="Note" hint="Avoid sensitive tax, immigration, or identity details." hintId="trip-note-help">
               <TextareaControl id="trip-note" name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help" />
             </FormField>
-            <button class="btn" type="submit">Add trip</button>
+            <div class="form-panel-footer">
+              <p id="trip-form-status" class="form-status" role="status" aria-live="polite"></p>
+              <button class="btn" type="submit">Add trip</button>
+            </div>
           </form>
 
           <form id="home-country-form" class="panel form-panel">
@@ -919,6 +930,69 @@ const websiteJsonLd = {
     letter-spacing: -0.02em;
   }
 
+  .form-panel-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  }
+
+  .form-panel-heading-text {
+    min-width: 0;
+  }
+
+  .form-panel-heading .eyebrow {
+    margin-bottom: 6px;
+  }
+
+  .form-panel-heading-title {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .form-panel-heading .form-panel-icon {
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .trip-form-dates-block {
+    margin: 0;
+    padding: 0;
+    border: none;
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .trip-form-date-grid {
+    gap: 12px;
+  }
+
+  .trip-open-ended-hint {
+    margin: -4px 0 0;
+    padding-left: 10px;
+    border-left: 2px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+    font-size: 0.76rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .form-panel-footer {
+    display: grid;
+    gap: 12px;
+    padding-top: 6px;
+    margin-top: 2px;
+    border-top: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  }
+
+  #trip-form .form-panel-footer .btn {
+    width: 100%;
+  }
+
   .form-panel-icon {
     display: grid;
     place-items: center;
@@ -980,6 +1054,22 @@ const websiteJsonLd = {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
     gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .summary-list-item {
+    min-width: 0;
+  }
+
+  .summary-list-empty {
+    grid-column: 1 / -1;
+    list-style: none;
+  }
+
+  .summary-list-empty .empty-state {
+    width: 100%;
   }
 
   .country-card {
@@ -1072,14 +1162,25 @@ const websiteJsonLd = {
 
   .cc-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
   }
 
-  .cc-header strong {
+  .cc-name-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 8px;
+    min-width: 0;
+  }
+
+  .cc-title {
+    margin: 0;
     font-size: 0.96rem;
     font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
     color: var(--text);
   }
 
@@ -1096,20 +1197,40 @@ const websiteJsonLd = {
   }
 
   .cc-threshold {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 6px;
     margin: 0;
     color: color-mix(in srgb, var(--muted) 88%, var(--text));
     font-size: 0.78rem;
     line-height: 1.35;
   }
 
+  .cc-threshold-label {
+    font-weight: 600;
+  }
+
+  .cc-threshold-value {
+    font-weight: 700;
+    color: color-mix(in srgb, var(--muted) 55%, var(--text));
+  }
+
   .cc-count-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 10px;
+    gap: 12px;
+    padding: 8px 12px;
     border-radius: var(--radius);
     border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
     background: color-mix(in srgb, var(--surface) 65%, transparent);
+  }
+
+  .cc-count-block {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 2px;
   }
 
   .cc-donut {
@@ -1138,28 +1259,39 @@ const websiteJsonLd = {
     align-items: baseline;
     gap: 6px;
     margin: 0;
-    flex: 1;
-    min-width: 0;
+    font-variant-numeric: tabular-nums;
   }
 
-  .cc-count b {
+  .cc-count-value {
     font-size: 2.25rem;
     line-height: 1;
     font-weight: 800;
     color: var(--text);
   }
 
-  .cc-count span {
+  .cc-count-suffix {
     color: var(--muted);
     font-size: 0.84rem;
+    font-weight: 600;
+  }
+
+  .cc-pct {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
   }
 
   .cc-level-pill {
+    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    align-self: flex-start;
+    margin-top: 1px;
     white-space: nowrap;
-    padding: 3px 8px;
+    padding: 4px 9px;
     border-radius: 999px;
     border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
     background: color-mix(in srgb, var(--accent) 8%, transparent);
@@ -1720,7 +1852,8 @@ const websiteJsonLd = {
     .inline-actions > .btn,
     .inline-actions > label.btn,
     .form-panel > .btn,
-    .form-panel > .btn.secondary {
+    .form-panel > .btn.secondary,
+    .form-panel-footer .btn {
       width: 100%;
     }
 
@@ -1737,7 +1870,7 @@ const websiteJsonLd = {
       padding: 6px 8px;
     }
 
-    .cc-count b {
+    .cc-count-value {
       font-size: 2rem;
     }
 
