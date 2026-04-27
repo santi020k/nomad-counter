@@ -5,6 +5,6 @@ test('home page exposes the counter UI', async ({ page }) => {
 
   await expect(page).toHaveTitle('Nomad Counter')
   await expect(page.getByRole('heading', { name: 'Know your days before they count against you.' })).toBeVisible()
-  await expect(page.getByRole('form', { name: 'Sign in' })).toBeVisible()
+  await expect(page.getByRole('form', { name: 'Save to your account' })).toBeVisible()
   await expect(page.getByText('Counting rule:')).toBeAttached()
 })

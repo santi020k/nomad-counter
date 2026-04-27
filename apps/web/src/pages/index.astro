@@ -82,20 +82,57 @@ const websiteJsonLd = {
             </div>
           </dl>
         </div>
-        <form id="login-form" class="card login-card" aria-label="Sign in">
+        <form id="login-form" class="card login-card" aria-labelledby="login-card-title" data-login-step="email">
           <p id="sync-state" class="sync-state">Guest mode. Your data stays in this browser until you save it to an account.</p>
-          <h2>Save to your account</h2>
-          <p class="muted">Use the counter now. Enter your email only when you want to sync trips across devices.</p>
-          <div class="field">
+          <div class="login-card-head">
+            <span class="login-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
+            </span>
+            <div>
+              <h2 id="login-card-title">Save to your account</h2>
+              <p id="login-card-sub" class="muted login-card-sub">Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.</p>
+            </div>
+          </div>
+
+          <div id="login-pending-banner" class="login-pending-banner" hidden>
+            <span class="login-pending-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 7-4-14-2 7H2" /></svg>
+            </span>
+            <div>
+              <p class="login-pending-title">Check your inbox</p>
+              <p class="login-pending-text">We sent a 6-digit code to <strong id="login-email-masked"></strong></p>
+            </div>
+          </div>
+
+          <div class="field" id="login-email-field">
             <label for="login-email">Email</label>
             <input id="login-email" name="email" type="email" autocomplete="email" required />
           </div>
-          <div id="code-field" class="field" hidden>
-            <label for="login-code">Email code</label>
-            <input id="login-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" />
+          <div id="code-field" class="field field-code" hidden>
+            <label for="login-code">6-digit code</label>
+            <input
+              id="login-code"
+              name="code"
+              class="input-code"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              pattern="[0-9]{6}"
+              maxlength="6"
+              placeholder="000000"
+              spellcheck="false"
+              aria-describedby="login-code-help"
+            />
+            <p id="login-code-help" class="field-hint">Codes expire after a short time. Check spam if you do not see it.</p>
           </div>
-          <button class="btn" type="submit">Email me a code</button>
-          <p id="status" role="status" aria-live="polite"></p>
+
+          <p id="status" class="login-status" role="status" aria-live="polite"></p>
+
+          <div class="login-actions">
+            <button type="submit" class="btn" id="login-primary-btn">Email me a code</button>
+            <button type="button" class="btn-text" id="login-change-email" hidden>← Use a different email</button>
+            <button type="button" class="btn secondary" id="login-sign-out" hidden>Sign out</button>
+          </div>
         </form>
       </section>
 
@@ -103,10 +140,15 @@ const websiteJsonLd = {
         <div class="dashboard">
           <section class="panel summary-panel">
             <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Exposure</p>
-                <h2>Country day counts</h2>
-                <p id="window-label" class="muted" style="margin:4px 0 0; font-size:0.82rem;">Current calendar year</p>
+              <div class="panel-title-stack">
+                <span class="panel-icon panel-icon--chart" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18" /><path d="M7 16l4-4 4 4 6-7" /></svg>
+                </span>
+                <div>
+                  <p class="eyebrow">Exposure</p>
+                  <h2>Country day counts</h2>
+                  <p id="window-label" class="muted" style="margin:4px 0 0; font-size:0.82rem;">Current calendar year</p>
+                </div>
               </div>
               <div class="field compact">
                 <label for="window-mode">Window</label>
@@ -127,9 +169,14 @@ const websiteJsonLd = {
 
           <section class="panel">
             <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Trips</p>
-                <h2>Travel log</h2>
+              <div class="panel-title-stack">
+                <span class="panel-icon panel-icon--route" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3" /><path d="M12 21.7V14" /><path d="M5 10a7 7 0 0 1 14 0c0 5-7 9-7 9s-7-4-7-9" /></svg>
+                </span>
+                <div>
+                  <p class="eyebrow">Trips</p>
+                  <h2>Travel log</h2>
+                </div>
               </div>
               <div class="inline-actions">
                 <button id="export-csv" class="btn secondary" type="button">Export CSV</button>
@@ -147,7 +194,12 @@ const websiteJsonLd = {
 
         <div class="sidebar">
           <form id="trip-form" class="panel form-panel" novalidate>
-            <h2>Add trip</h2>
+            <h2 class="form-panel-title">
+              <span class="form-panel-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
+              </span>
+              Add trip
+            </h2>
             <div class="field">
               <label for="trip-country">Country</label>
               <select id="trip-country" name="countryCode"></select>
@@ -177,7 +229,12 @@ const websiteJsonLd = {
           </form>
 
           <form id="home-country-form" class="panel form-panel">
-            <h2>Tracked country</h2>
+            <h2 class="form-panel-title">
+              <span class="form-panel-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" /></svg>
+              </span>
+              Tracked country
+            </h2>
             <div class="field">
               <label for="home-country">Country</label>
               <select id="home-country" name="countryCode"></select>
@@ -475,16 +532,155 @@ const websiteJsonLd = {
     line-height: 1.5;
   }
 
-  #status {
-    min-height: 20px;
+  .login-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .login-card-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    color: var(--accent);
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      color-mix(in srgb, var(--accent) 6%, transparent)
+    );
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .login-card-icon svg {
+    display: block;
+  }
+
+  .login-card-sub {
+    margin: 6px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .login-pending-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0;
+    padding: 14px 14px 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--success) 35%, var(--line));
+    background: linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--success) 12%, transparent),
+      color-mix(in srgb, var(--accent) 6%, transparent)
+    );
+    animation: login-banner-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes login-banner-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .login-pending-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-top: 2px;
+    border-radius: 10px;
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 14%, transparent);
+  }
+
+  .login-pending-title {
+    margin: 0 0 4px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--success) 85%, var(--text));
+  }
+
+  .login-pending-text {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .login-pending-text strong {
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  .login-status {
+    min-height: 22px;
     margin: 0;
     color: var(--accent);
     font-size: 0.88rem;
     font-weight: 600;
+    line-height: 1.45;
   }
 
-  #status[data-tone="error"] {
+  .login-status[data-tone="error"] {
     color: var(--danger);
+  }
+
+  .login-status[data-tone="success"] {
+    color: var(--success);
+  }
+
+  .login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  #login-sign-out.secondary {
+    width: 100%;
+  }
+
+  .btn-text {
+    align-self: flex-start;
+    padding: 6px 4px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .btn-text:hover {
+    color: var(--accent);
+  }
+
+  #login-form[data-login-step="code"] {
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+    box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  #login-form[data-login-step="code"] #login-email-field input:read-only {
+    opacity: 0.88;
+    cursor: default;
   }
 
   .form-status {
@@ -506,10 +702,12 @@ const websiteJsonLd = {
 
   .field-hint {
     display: block;
-    margin-top: 6px;
+    margin-top: 8px;
+    padding-left: 10px;
+    border-left: 2px solid color-mix(in srgb, var(--accent) 32%, var(--line));
     color: var(--muted);
-    font-size: 0.76rem;
-    line-height: 1.4;
+    font-size: 0.78rem;
+    line-height: 1.45;
   }
 
   /* ── App grid ───────────────────────────── */
@@ -561,6 +759,59 @@ const websiteJsonLd = {
     font-size: 1.1rem;
   }
 
+  .panel-title-stack {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .panel-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-top: 2px;
+    border-radius: 12px;
+    color: var(--accent);
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--accent) 24%, transparent),
+      color-mix(in srgb, var(--accent) 7%, transparent)
+    );
+    border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line));
+    box-shadow: 0 4px 18px color-mix(in srgb, var(--accent) 16%, transparent);
+  }
+
+  .panel-icon svg {
+    display: block;
+    opacity: 0.92;
+  }
+
+  .form-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+    font-size: 1.12rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .form-panel-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+  }
+
   .compact {
     min-width: 190px;
   }
@@ -576,6 +827,34 @@ const websiteJsonLd = {
     display: grid;
     gap: 4px;
     margin: -4px 0 0;
+  }
+
+  .empty-state {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
+    padding: 18px 16px;
+    border-radius: var(--radius);
+    border: 1px dashed color-mix(in srgb, var(--accent) 32%, var(--line));
+    background: linear-gradient(
+      125deg,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0%,
+      transparent 58%
+    );
+  }
+
+  .empty-state::before {
+    content: '';
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--accent-soft) 90%, transparent), transparent 52%),
+      linear-gradient(150deg, var(--accent-soft), var(--accent));
+    opacity: 0.42;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 22%, transparent);
   }
 
   /* ── Country summary cards ──────────────── */
@@ -645,6 +924,82 @@ const websiteJsonLd = {
     opacity: 1;
   }
 
+  .cc-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .cc-flag-wrap {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--accent) 28%, var(--surface-strong)),
+      var(--surface-strong)
+    );
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+    box-shadow:
+      0 6px 20px color-mix(in srgb, var(--accent) 18%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 12%, transparent);
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .cc-flag-wrap .cc-flag {
+    font-size: inherit;
+  }
+
+  .country-card[data-level="warning"] .cc-flag-wrap {
+    border-color: color-mix(in srgb, var(--warn) 45%, var(--line));
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--warn) 14%, transparent);
+  }
+
+  .country-card[data-level="exceeded"] .cc-flag-wrap {
+    border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--danger) 14%, transparent);
+  }
+
+  .cc-main {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .cc-count-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cc-donut {
+    flex-shrink: 0;
+  }
+
+  .cc-donut-track {
+    stroke: color-mix(in srgb, var(--line) 75%, transparent);
+  }
+
+  .cc-donut-arc {
+    stroke: var(--accent);
+    transition: stroke-dashoffset 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .country-card[data-level="warning"] .cc-donut-arc {
+    stroke: var(--warn);
+  }
+
+  .country-card[data-level="exceeded"] .cc-donut-arc {
+    stroke: var(--danger);
+  }
+
   .cc-header {
     display: flex;
     align-items: center;
@@ -659,11 +1014,6 @@ const websiteJsonLd = {
     font-size: 0.95rem;
     font-weight: 800;
     color: var(--text);
-  }
-
-  .cc-flag {
-    font-size: 1.35rem;
-    line-height: 1;
   }
 
   .cc-code {
@@ -717,10 +1067,13 @@ const websiteJsonLd = {
 
   /* ── Progress meter ─────────────────────── */
   .meter {
+    position: relative;
+    z-index: 1;
     overflow: hidden;
-    height: 8px;
+    height: 10px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--line) 80%, transparent);
+    background: color-mix(in srgb, var(--line) 78%, transparent);
+    box-shadow: inset 0 1px 2px color-mix(in srgb, black 12%, transparent);
   }
 
   .meter i {
@@ -728,7 +1081,8 @@ const websiteJsonLd = {
     height: 100%;
     width: var(--w, 0%);
     border-radius: inherit;
-    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft), color-mix(in srgb, var(--accent-soft) 70%, white));
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 35%, transparent);
     animation: meter-grow 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
@@ -760,7 +1114,7 @@ const websiteJsonLd = {
   /* ── Trip list rows ─────────────────────── */
   .list {
     display: grid;
-    gap: 8px;
+    gap: 10px;
   }
 
   .tight {
@@ -777,6 +1131,85 @@ const websiteJsonLd = {
     padding: 12px 14px;
     background: var(--surface-strong);
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .row-trip,
+  .row-tracked {
+    padding: 0;
+    overflow: hidden;
+    gap: 0;
+  }
+
+  .row-accent {
+    flex-shrink: 0;
+    width: 4px;
+    align-self: stretch;
+    min-height: 52px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-soft));
+  }
+
+  .row-tracked .row-accent {
+    background: linear-gradient(180deg, var(--success), color-mix(in srgb, var(--success) 55%, var(--sky)));
+  }
+
+  .row-body {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px 14px 12px 10px;
+  }
+
+  .row-flag-wrap {
+    display: inline-grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    margin-right: 2px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+    vertical-align: middle;
+  }
+
+  .row-flag-wrap .row-flag,
+  .row-flag-wrap .cc-flag {
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .trip-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  .date-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface-strong));
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+  }
+
+  .date-pill--open {
+    background: color-mix(in srgb, var(--success) 14%, var(--surface-strong));
+    border-color: color-mix(in srgb, var(--success) 35%, var(--line));
+    color: color-mix(in srgb, var(--success) 92%, var(--text));
+  }
+
+  .trip-dates-arrow {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
   }
 
   .row:hover {
@@ -802,8 +1235,7 @@ const websiteJsonLd = {
     line-height: 1;
   }
 
-  .row-info span,
-  .row span {
+  .row-info > span {
     display: block;
     color: var(--muted);
     font-size: 0.82rem;
@@ -851,9 +1283,32 @@ const websiteJsonLd = {
   .check {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: var(--muted);
+    gap: 10px;
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+    color: var(--text);
     font-weight: 650;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .check:hover {
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+  }
+
+  .check:has(input:focus-visible) {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+
+  .check:has(input:checked) {
+    border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
   }
 
   /* ── Marketing grid ─────────────────────── */
@@ -1073,6 +1528,12 @@ const websiteJsonLd = {
   @media (prefers-reduced-motion: reduce) {
     .meter i {
       animation: none;
+    }
+
+    .login-pending-banner {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 </style>

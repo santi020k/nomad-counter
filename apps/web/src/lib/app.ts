@@ -105,12 +105,74 @@ const formString = (data: FormData, key: string) => {
   return typeof value === 'string' ? value : ''
 }
 
-const setLoginStatus = (message: string, tone: 'ok' | 'error' = 'ok') => {
+const setLoginStatus = (message: string, tone: 'info' | 'error' | 'success' = 'info') => {
   const status = $('#status')
 
-  if (status) {
-    status.textContent = message
+  if (!status) {
+    return
+  }
+
+  status.textContent = message
+
+  if (!message) {
+    status.removeAttribute('data-tone')
+  } else {
     status.dataset.tone = tone
+  }
+}
+
+/** Partially mask email for on-screen confirmation after requesting a code. */
+const maskEmailForDisplay = (email: string): string => {
+  const trimmed = email.trim()
+  const [localPart, domain] = trimmed.split('@')
+
+  if (!domain || localPart === undefined) {
+    return trimmed
+  }
+
+  if (localPart.length <= 1) {
+    return `*@${domain}`
+  }
+
+  if (localPart.length === 2) {
+    return `${localPart[0]}*@${domain}`
+  }
+
+  return `${localPart.slice(0, 2)}…@${domain}`
+}
+
+const leaveLoginCodeWaitState = (form: HTMLFormElement, options: { clearEmail: boolean, clearStatus?: boolean }) => {
+  form.dataset.codeRequested = 'false'
+  form.dataset.loginStep = 'email'
+  delete form.dataset.pendingEmail
+  $('#login-pending-banner')?.setAttribute('hidden', '')
+  $('#login-change-email')?.setAttribute('hidden', '')
+  $('#code-field')?.setAttribute('hidden', '')
+  const emailInput = $('#login-email') as HTMLInputElement | null
+
+  if (emailInput) {
+    emailInput.readOnly = false
+
+    if (options.clearEmail) {
+      emailInput.value = ''
+    }
+  }
+
+  const codeInput = $('#login-code') as HTMLInputElement | null
+
+  if (codeInput) {
+    codeInput.value = ''
+    codeInput.required = false
+  }
+
+  const primary = $('#login-primary-btn')
+
+  if (primary) {
+    primary.textContent = 'Email me a code'
+  }
+
+  if (options.clearStatus !== false) {
+    setLoginStatus('', 'info')
   }
 }
 
@@ -293,6 +355,59 @@ const renderAuth = () => {
       ? `Synced to ${state.userEmail}`
       : 'Guest mode. Your data stays in this browser until you save it to an account.'
   }
+
+  const form = $('#login-form') as HTMLFormElement | null
+  const title = $('#login-card-title')
+  const sub = $('#login-card-sub')
+  const emailField = $('#login-email-field')
+  const codeField = $('#code-field')
+  const pending = $('#login-pending-banner')
+  const changeEmail = $('#login-change-email')
+  const primary = $('#login-primary-btn')
+  const signOutBtn = $('#login-sign-out')
+
+  if (state.authenticated && state.userEmail) {
+    if (title) {
+      title.textContent = 'You are signed in'
+    }
+
+    if (sub) {
+      sub.textContent = 'Trips and tracked countries sync to your account. Sign out anytime — your saved data stays on this account.'
+    }
+
+    emailField?.setAttribute('hidden', '')
+    codeField?.setAttribute('hidden', '')
+    pending?.setAttribute('hidden', '')
+    changeEmail?.setAttribute('hidden', '')
+    primary?.setAttribute('hidden', '')
+    signOutBtn?.removeAttribute('hidden')
+  } else {
+    if (title) {
+      title.textContent = 'Save to your account'
+    }
+
+    if (sub) {
+      sub.textContent = 'Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.'
+    }
+
+    emailField?.removeAttribute('hidden')
+    pending?.setAttribute('hidden', '')
+    changeEmail?.setAttribute('hidden', '')
+    primary?.removeAttribute('hidden')
+    signOutBtn?.setAttribute('hidden', '')
+
+    if (primary) {
+      primary.textContent = form?.dataset.codeRequested === 'true' ? 'Sign in and sync' : 'Email me a code'
+    }
+
+    if (form?.dataset.codeRequested === 'true') {
+      codeField?.removeAttribute('hidden')
+      pending?.removeAttribute('hidden')
+      changeEmail?.removeAttribute('hidden')
+    } else {
+      codeField?.setAttribute('hidden', '')
+    }
+  }
 }
 
 const renderSummary = () => {
@@ -316,13 +431,30 @@ const renderSummary = () => {
       ? `${Math.abs(country.daysRemaining)} days over threshold`
       : `${country.daysRemaining} days remaining`
     const flag = countryCodeToFlagEmoji(country.countryCode)
+    const donutR = 15.5
+    const donutC = 2 * Math.PI * donutR
+    const dashOffset = donutC * (1 - progress / 100)
 
     return `<article class="country-card" data-level="${country.exposureLevel}">
-      <div class="cc-header">
-        <strong><span class="cc-flag" aria-hidden="true">${flag}</span> ${escapeHtml(country.countryName)}</strong>
-        <span class="cc-code">${escapeHtml(country.countryCode)}</span>
+      <div class="cc-top">
+        <div class="cc-flag-wrap" aria-hidden="true"><span class="cc-flag">${flag}</span></div>
+        <div class="cc-main">
+          <div class="cc-header">
+            <strong>${escapeHtml(country.countryName)}</strong>
+            <span class="cc-code">${escapeHtml(country.countryCode)}</span>
+          </div>
+          <div class="cc-count-row">
+            <svg class="cc-donut" width="44" height="44" viewBox="0 0 40 40" aria-hidden="true">
+              <circle class="cc-donut-track" cx="20" cy="20" r="${String(donutR)}" fill="none" stroke-width="3.25" />
+              <circle class="cc-donut-arc" cx="20" cy="20" r="${String(donutR)}" fill="none" stroke-width="3.25" stroke-linecap="round"
+                stroke-dasharray="${String(donutC)}"
+                stroke-dashoffset="${String(dashOffset)}"
+                transform="rotate(-90 20 20)" />
+            </svg>
+            <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
+          </div>
+        </div>
       </div>
-      <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
       <div class="meter" role="progressbar" aria-valuenow="${country.daysPresent}" aria-valuemin="0" aria-valuemax="${country.thresholdDays}"><i style="--w:${progress}%"></i></div>
       <p class="cc-status">${statusText}</p>
     </article>`
@@ -345,14 +477,23 @@ const renderTrips = () => {
         const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
         const flag = countryCodeToFlagEmoji(trip.countryCode)
 
-        return `<article class="row">
+        return `<article class="row row-trip">
+          <span class="row-accent"></span>
+          <div class="row-body">
           <div class="row-info">
-            <strong><span class="row-flag cc-flag" aria-hidden="true">${flag}</span> ${escapeHtml(trip.countryName)}</strong>
-            <span>${formatDisplayDate(trip.entryDate)} → ${exitLabel}</span>
+            <strong><span class="row-flag-wrap" aria-hidden="true"><span class="row-flag cc-flag">${flag}</span></span> ${escapeHtml(trip.countryName)}</strong>
+            <div class="trip-dates" role="group" aria-label="Entry and exit dates">
+              <time class="date-pill" datetime="${escapeHtml(trip.entryDate)}">${formatDisplayDate(trip.entryDate)}</time>
+              <span class="trip-dates-arrow">→</span>
+              ${trip.exitDate
+            ? `<time class="date-pill" datetime="${escapeHtml(trip.exitDate)}">${exitLabel}</time>`
+            : `<span class="date-pill date-pill--open" role="text">${exitLabel}</span>`}
+            </div>
           </div>
           <div class="row-meta">
             <span class="trip-days">${days}d</span>
             <button class="icon-button" data-delete-trip="${escapeHtml(trip.id)}" title="Delete trip" aria-label="Delete trip">×</button>
+          </div>
           </div>
         </article>`
       })
@@ -371,13 +512,16 @@ const renderHomeCountries = () => {
     : state.countries.map(country => {
       const flag = countryCodeToFlagEmoji(country.countryCode)
 
-      return `<article class="row">
+      return `<article class="row row-tracked">
+      <span class="row-accent"></span>
+      <div class="row-body">
       <div class="row-info">
-        <strong><span class="row-flag cc-flag" aria-hidden="true">${flag}</span> ${escapeHtml(country.countryName)}</strong>
+        <strong><span class="row-flag-wrap" aria-hidden="true"><span class="row-flag cc-flag">${flag}</span></span> ${escapeHtml(country.countryName)}</strong>
         <span>${country.thresholdDays}-day threshold · warning at ${country.warningDays} days left</span>
       </div>
       <div class="row-meta">
         <button class="icon-button" data-delete-country="${escapeHtml(country.id)}" title="Remove country" aria-label="Remove country">×</button>
+      </div>
       </div>
     </article>`
     }).join('')
@@ -442,30 +586,59 @@ const syncLocalToAccount = async () => {
 const requestCode = async (form: HTMLFormElement) => {
   const data = new FormData(form)
   const email = formString(data, 'email')
+  setLoginStatus('Sending code…', 'info')
+
   const response = await request<{ devCode?: string }>('/api/auth/request-code', {
     method: 'POST',
     body: JSON.stringify({ email })
   })
 
   form.dataset.codeRequested = 'true'
+  form.dataset.loginStep = 'code'
+  form.dataset.pendingEmail = email
   $('#code-field')?.removeAttribute('hidden')
+  $('#login-pending-banner')?.removeAttribute('hidden')
+  $('#login-change-email')?.removeAttribute('hidden')
+
+  const masked = $('#login-email-masked')
+
+  if (masked) {
+    masked.textContent = maskEmailForDisplay(email)
+  }
+
+  const emailInput = $('#login-email') as HTMLInputElement | null
+
+  if (emailInput) {
+    emailInput.readOnly = true
+  }
+
   const codeInput = form.elements.namedItem('code')
-  const submitButton = form.querySelector('button[type="submit"]')
+  const primaryBtn = $('#login-primary-btn')
 
   if (codeInput instanceof HTMLInputElement) {
     codeInput.required = true
     codeInput.focus()
   }
 
-  if (submitButton) {
-    submitButton.textContent = 'Sign in and sync'
+  if (primaryBtn) {
+    primaryBtn.textContent = 'Sign in and sync'
   }
 
-  setLoginStatus(response.devCode ? `Local dev code: ${response.devCode}` : 'Check your email for a six-digit code.')
+  $('#login-card-sub')!.textContent = 'Enter the code from your email, then sign in to upload this browser’s trips.'
+
+  form.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+
+  if (response.devCode) {
+    setLoginStatus(`Dev mode: your code is ${response.devCode}`, 'success')
+  } else {
+    setLoginStatus('Code sent. Enter the digits below when they arrive.', 'success')
+  }
 }
 
 const verifyCode = async (form: HTMLFormElement) => {
   const data = new FormData(form)
+  setLoginStatus('Verifying code…', 'info')
+
   const response = await request<{ user: { email: string } }>('/api/auth/verify-code', {
     method: 'POST',
     body: JSON.stringify({
@@ -476,8 +649,11 @@ const verifyCode = async (form: HTMLFormElement) => {
 
   state.authenticated = true
   state.userEmail = response.user.email
-  setLoginStatus('Signed in. Saving this browser data to your account.')
+  setLoginStatus('Saving trips and settings to your account…', 'info')
   await syncLocalToAccount()
+  leaveLoginCodeWaitState(form, { clearEmail: false, clearStatus: false })
+  setLoginStatus('Signed in. Your counter is synced.', 'success')
+  $('#trip-form')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 }
 
 const addTrip = async (form: HTMLFormElement) => {
@@ -641,10 +817,51 @@ const boot = async () => {
 
   $('#login-form')?.addEventListener('submit', event => {
     event.preventDefault()
+
+    if (state.authenticated) {
+      return
+    }
+
     const form = event.currentTarget as HTMLFormElement
 
     void (form.dataset.codeRequested === 'true' ? verifyCode(form) : requestCode(form))
       .catch(error => setLoginStatus(error.message, 'error'))
+  })
+
+  $('#login-sign-out')?.addEventListener('click', () => {
+    void (async () => {
+      try {
+        await request('/api/auth/logout', { method: 'POST', body: JSON.stringify({}) })
+      } catch {
+        // Still reset UI; session may clear on next full load.
+      }
+
+      state.authenticated = false
+      state.userEmail = null
+      const form = $('#login-form') as HTMLFormElement | null
+
+      if (form) {
+        leaveLoginCodeWaitState(form, { clearEmail: true })
+      }
+
+      setLoginStatus('', 'info')
+      renderAll()
+    })()
+  })
+
+  $('#login-change-email')?.addEventListener('click', () => {
+    const form = $('#login-form') as HTMLFormElement | null
+
+    if (!form) {
+      return
+    }
+
+    leaveLoginCodeWaitState(form, { clearEmail: false })
+    $('#login-card-sub')!.textContent = 'Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.'
+    const emailInput = $('#login-email') as HTMLInputElement | null
+
+    emailInput?.focus()
+    emailInput?.select()
   })
 
   $('#trip-form')?.addEventListener('submit', event => {
