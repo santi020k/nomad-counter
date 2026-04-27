@@ -46,6 +46,23 @@ interface State {
   windowLabel: string
 }
 
+interface CountryComboOption {
+  code: string
+  flag: string
+  name: string
+}
+
+interface CountryComboState {
+  input: HTMLInputElement
+  isOpen: boolean
+  list: HTMLElement
+  options: CountryComboOption[]
+  root: HTMLElement
+  selectedCode: string
+  select: HTMLSelectElement
+  visibleOptions: CountryComboOption[]
+}
+
 const state: State = {
   authenticated: false,
   countries: [],
@@ -54,6 +71,8 @@ const state: State = {
   userEmail: null,
   windowLabel: 'Current calendar year'
 }
+
+const countryCombos = new Map<string, CountryComboState>()
 
 const $ = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector)
 const $$ = <T extends HTMLElement>(selector: string) => [...document.querySelectorAll<T>(selector)]
@@ -98,6 +117,269 @@ const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
 }
 
 const countryOptions = () => countries.map(([code, name]) => `<option value="${code}" data-name="${name}">${name}</option>`).join('')
+const countryComboOptions = (): CountryComboOption[] => countries.map(([code, name]) => ({
+  code,
+  flag: countryCodeToFlagEmoji(code),
+  name
+}))
+
+const optionIdFor = (selectId: string, code: string) => `${selectId}-opt-${code.toLowerCase()}`
+
+const setComboExpanded = (combo: CountryComboState, expanded: boolean) => {
+  combo.input.setAttribute('aria-expanded', String(expanded))
+}
+
+const moveComboActiveTo = (combo: CountryComboState, index: number) => {
+  const optionEls = [...combo.list.querySelectorAll<HTMLElement>('[role="option"]')]
+
+  if (optionEls.length === 0) {
+    combo.input.setAttribute('aria-activedescendant', '')
+    return
+  }
+
+  const safeIndex = Math.max(0, Math.min(index, optionEls.length - 1))
+
+  optionEls.forEach((el, i) => {
+    const active = i === safeIndex
+
+    if (active) {
+      el.dataset.active = 'true'
+      combo.input.setAttribute('aria-activedescendant', el.id)
+      el.scrollIntoView({ block: 'nearest' })
+    } else {
+      delete el.dataset.active
+    }
+  })
+}
+
+const renderCountryComboOptions = (combo: CountryComboState, query = '') => {
+  const normalized = query.trim().toLowerCase()
+
+  combo.visibleOptions = combo.options.filter(option =>
+    option.name.toLowerCase().includes(normalized) || option.code.toLowerCase().includes(normalized)
+  )
+
+  if (combo.visibleOptions.length === 0) {
+    combo.list.innerHTML = '<div class="combo-empty" aria-live="polite">No matching country.</div>'
+    combo.input.setAttribute('aria-activedescendant', '')
+    return
+  }
+
+  combo.list.innerHTML = combo.visibleOptions.map(option => {
+    const selected = option.code === combo.selectedCode
+
+    return `<button
+      id="${optionIdFor(combo.select.id, option.code)}"
+      class="combo-option"
+      type="button"
+      role="option"
+      aria-selected="${String(selected)}"
+      data-country-code="${escapeHtml(option.code)}"
+    >
+      <span class="combo-option-flag" aria-hidden="true">${option.flag}</span>
+      <span class="combo-option-label">${escapeHtml(option.name)}</span>
+      <span class="combo-option-code">${escapeHtml(option.code)}</span>
+    </button>`
+  }).join('')
+
+  const selectedIndex = combo.visibleOptions.findIndex(option => option.code === combo.selectedCode)
+
+  moveComboActiveTo(combo, selectedIndex >= 0 ? selectedIndex : 0)
+}
+
+const openCountryCombo = (combo: CountryComboState) => {
+  combo.isOpen = true
+  combo.root.dataset.open = 'true'
+  setComboExpanded(combo, true)
+}
+
+const closeCountryCombo = (combo: CountryComboState) => {
+  combo.isOpen = false
+  delete combo.root.dataset.open
+  setComboExpanded(combo, false)
+}
+
+const syncCountryComboFromSelect = (selectId: string) => {
+  const combo = countryCombos.get(selectId)
+
+  if (!combo) {
+    return
+  }
+
+  combo.selectedCode = combo.select.value || combo.options[0]?.code || ''
+  const active = combo.options.find(option => option.code === combo.selectedCode)
+
+  if (active) {
+    combo.input.value = active.name
+  }
+
+  renderCountryComboOptions(combo, combo.input.value)
+}
+
+const selectCountryFromCombo = (combo: CountryComboState, code: string) => {
+  combo.selectedCode = code
+  combo.select.value = code
+  const active = combo.options.find(option => option.code === code)
+
+  if (active) {
+    combo.input.value = active.name
+  }
+
+  renderCountryComboOptions(combo, combo.input.value)
+  combo.select.dispatchEvent(new Event('change', { bubbles: true }))
+}
+
+const closeAllCountryCombos = () => {
+  countryCombos.forEach(closeCountryCombo)
+}
+
+const initCountryComboboxes = () => {
+  countryCombos.clear()
+
+  $$<HTMLElement>('[data-combo-root]').forEach(root => {
+    const selectId = root.dataset.comboFor
+    const select = selectId ? document.getElementById(selectId) as HTMLSelectElement | null : null
+    const input = root.querySelector<HTMLInputElement>('.combo-input')
+    const list = root.querySelector<HTMLElement>('.combo-list')
+    const toggle = root.querySelector<HTMLButtonElement>('.combo-toggle')
+
+    if (!selectId || !select || !input || !list) {
+      return
+    }
+
+    const combo: CountryComboState = {
+      input,
+      isOpen: false,
+      list,
+      options: countryComboOptions(),
+      root,
+      selectedCode: select.value,
+      select,
+      visibleOptions: []
+    }
+
+    countryCombos.set(selectId, combo)
+    syncCountryComboFromSelect(selectId)
+
+    input.addEventListener('focus', () => {
+      closeAllCountryCombos()
+      openCountryCombo(combo)
+      renderCountryComboOptions(combo, input.value)
+    })
+
+    input.addEventListener('click', () => {
+      if (!combo.isOpen) {
+        closeAllCountryCombos()
+        openCountryCombo(combo)
+      }
+
+      renderCountryComboOptions(combo, input.value)
+    })
+
+    input.addEventListener('input', () => {
+      if (!combo.isOpen) {
+        closeAllCountryCombos()
+        openCountryCombo(combo)
+      }
+
+      renderCountryComboOptions(combo, input.value)
+    })
+
+    input.addEventListener('keydown', event => {
+      const optionEls = [...combo.list.querySelectorAll<HTMLElement>('[role="option"]')]
+      const activeId = input.getAttribute('aria-activedescendant') || ''
+      const activeIndex = optionEls.findIndex(el => el.id === activeId)
+
+      if (event.key === 'ArrowDown') {
+        event.preventDefault()
+
+        if (!combo.isOpen) {
+          closeAllCountryCombos()
+          openCountryCombo(combo)
+          renderCountryComboOptions(combo, input.value)
+          return
+        }
+
+        moveComboActiveTo(combo, activeIndex + 1)
+      }
+
+      if (event.key === 'ArrowUp') {
+        event.preventDefault()
+
+        if (!combo.isOpen) {
+          closeAllCountryCombos()
+          openCountryCombo(combo)
+          renderCountryComboOptions(combo, input.value)
+          return
+        }
+
+        moveComboActiveTo(combo, activeIndex <= 0 ? 0 : activeIndex - 1)
+      }
+
+      if (event.key === 'Enter') {
+        if (!combo.isOpen) {
+          return
+        }
+
+        event.preventDefault()
+        const activeEl = optionEls.find(el => el.dataset.active === 'true') || optionEls[0]
+        const selectedCode = activeEl?.dataset.countryCode
+
+        if (selectedCode) {
+          selectCountryFromCombo(combo, selectedCode)
+        }
+
+        closeCountryCombo(combo)
+      }
+
+      if (event.key === 'Escape') {
+        if (!combo.isOpen) {
+          return
+        }
+
+        event.preventDefault()
+        syncCountryComboFromSelect(selectId)
+        closeCountryCombo(combo)
+      }
+    })
+
+    list.addEventListener('mousedown', event => {
+      event.preventDefault()
+      const target = (event.target as HTMLElement).closest<HTMLElement>('[data-country-code]')
+      const selectedCode = target?.dataset.countryCode
+
+      if (!selectedCode) {
+        return
+      }
+
+      selectCountryFromCombo(combo, selectedCode)
+      closeCountryCombo(combo)
+      input.focus()
+    })
+
+    toggle?.addEventListener('click', () => {
+      if (combo.isOpen) {
+        closeCountryCombo(combo)
+        return
+      }
+
+      closeAllCountryCombos()
+      openCountryCombo(combo)
+      renderCountryComboOptions(combo, input.value)
+      input.focus()
+    })
+
+    select.addEventListener('change', () => syncCountryComboFromSelect(selectId))
+  })
+
+  document.addEventListener('click', event => {
+    const target = event.target as HTMLElement
+
+    if (!target.closest('[data-combo-root]')) {
+      closeAllCountryCombos()
+    }
+  })
+}
 
 const formString = (data: FormData, key: string) => {
   const value = data.get(key)
@@ -476,6 +758,7 @@ const renderTrips = () => {
         const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
         const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
         const flag = countryCodeToFlagEmoji(trip.countryCode)
+        const note = trip.note?.trim()
 
         return `<article class="row row-trip">
           <span class="row-accent"></span>
@@ -489,10 +772,16 @@ const renderTrips = () => {
             ? `<time class="date-pill" datetime="${escapeHtml(trip.exitDate)}">${exitLabel}</time>`
             : `<span class="date-pill date-pill--open" role="text">${exitLabel}</span>`}
             </div>
+            ${note ? `<p class="trip-note">${escapeHtml(note)}</p>` : ''}
           </div>
           <div class="row-meta">
             <span class="trip-days">${days}d</span>
-            <button class="icon-button" data-delete-trip="${escapeHtml(trip.id)}" title="Delete trip" aria-label="Delete trip">×</button>
+            <button class="row-remove-button" data-delete-trip="${escapeHtml(trip.id)}" title="Remove trip" aria-label="Remove trip">
+              <span aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
+              </span>
+              <span>Remove</span>
+            </button>
           </div>
           </div>
         </article>`
@@ -517,10 +806,18 @@ const renderHomeCountries = () => {
       <div class="row-body">
       <div class="row-info">
         <strong><span class="row-flag-wrap" aria-hidden="true"><span class="row-flag cc-flag">${flag}</span></span> ${escapeHtml(country.countryName)}</strong>
-        <span>${country.thresholdDays}-day threshold · warning at ${country.warningDays} days left</span>
+        <div class="tracked-meta">
+          <span class="tracked-pill">${country.thresholdDays}-day threshold</span>
+          <span class="tracked-pill tracked-pill--warning">Warn at ${country.warningDays} days</span>
+        </div>
       </div>
       <div class="row-meta">
-        <button class="icon-button" data-delete-country="${escapeHtml(country.id)}" title="Remove country" aria-label="Remove country">×</button>
+        <button class="row-remove-button" data-delete-country="${escapeHtml(country.id)}" title="Remove tracked country" aria-label="Remove tracked country">
+          <span aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
+          </span>
+          <span>Remove</span>
+        </button>
       </div>
       </div>
     </article>`
@@ -700,6 +997,7 @@ const addTrip = async (form: HTMLFormElement) => {
   }
 
   form.reset()
+  syncCountryComboFromSelect('trip-country')
   applyOpenEndedUi(false)
   syncExitMinFromEntry()
 
@@ -731,6 +1029,7 @@ const addHomeCountry = async (form: HTMLFormElement) => {
   }
 
   form.reset()
+  syncCountryComboFromSelect('home-country')
 }
 
 const exportCsv = () => {
@@ -809,6 +1108,7 @@ const boot = async () => {
   $$('#trip-country, #home-country').forEach(select => {
     select.innerHTML = countryOptions()
   })
+  initCountryComboboxes()
 
   wireTripFormDates()
 

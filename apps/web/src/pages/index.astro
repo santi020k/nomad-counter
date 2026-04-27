@@ -1208,7 +1208,9 @@ const websiteJsonLd = {
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 12px 14px;
-    background: var(--surface-strong);
+    background:
+      linear-gradient(155deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 50%),
+      var(--surface-strong);
     transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   }
 
@@ -1234,7 +1236,7 @@ const websiteJsonLd = {
   .row-body {
     display: flex;
     flex: 1;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
     min-width: 0;
@@ -1304,7 +1306,7 @@ const websiteJsonLd = {
 
   .row-info {
     display: grid;
-    gap: 3px;
+    gap: 6px;
   }
 
   .row-info strong {
@@ -1320,10 +1322,37 @@ const websiteJsonLd = {
     line-height: 1;
   }
 
-  .row-info > span {
-    display: block;
-    color: var(--muted);
-    font-size: 0.82rem;
+  .trip-note {
+    margin: 0;
+    max-width: 52ch;
+    color: color-mix(in srgb, var(--muted) 82%, var(--text));
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .tracked-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tracked-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+    border-radius: 999px;
+    padding: 0 9px;
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: color-mix(in srgb, var(--accent) 92%, var(--text));
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .tracked-pill--warning {
+    border-color: color-mix(in srgb, var(--warn) 36%, var(--line));
+    background: color-mix(in srgb, var(--warn) 12%, transparent);
+    color: color-mix(in srgb, var(--warn) 74%, var(--text));
   }
 
   .row-meta {
@@ -1345,26 +1374,29 @@ const websiteJsonLd = {
     letter-spacing: 0.02em;
   }
 
-  .icon-button {
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
-    border: 1px solid var(--line);
+  .row-remove-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    border: 1px solid color-mix(in srgb, var(--danger) 32%, var(--line));
     border-radius: var(--radius);
-    background: transparent;
-    color: var(--muted);
-    font-size: 1.2rem;
-    line-height: 1;
+    padding: 0 10px;
+    background: color-mix(in srgb, var(--danger) 7%, transparent);
+    color: color-mix(in srgb, var(--danger) 86%, var(--text));
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .icon-button:hover {
-    border-color: color-mix(in srgb, var(--danger) 50%, var(--line));
+  .row-remove-button:hover {
+    border-color: color-mix(in srgb, var(--danger) 56%, var(--line));
     color: var(--danger);
-    background: color-mix(in srgb, var(--danger) 6%, transparent);
+    background: color-mix(in srgb, var(--danger) 12%, transparent);
   }
 
-  .icon-button:focus-visible {
+  .row-remove-button:focus-visible {
     border-color: color-mix(in srgb, var(--danger) 46%, var(--line));
     color: color-mix(in srgb, var(--danger) 88%, var(--text));
     background: color-mix(in srgb, var(--danger) 8%, transparent);
