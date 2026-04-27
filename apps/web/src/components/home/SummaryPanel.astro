@@ -1,19 +1,23 @@
 ---
 import SelectControl from '@/components/forms/SelectControl.astro'
+import SectionHeading from '@/components/ui/SectionHeading.astro'
 ---
 
 <section class="panel summary-panel">
   <div class="panel-heading summary-heading">
-    <div class="panel-title-stack">
-      <span class="panel-icon panel-icon--chart" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18" /><path d="M7 16l4-4 4 4 6-7" /></svg>
-      </span>
-      <div class="summary-title-content">
-        <p class="eyebrow">Exposure</p>
-        <h2 id="summary-panel-heading">Country day counts</h2>
-        <p id="window-label" class="muted window-label">Current calendar year</p>
-      </div>
-    </div>
+    <SectionHeading
+      class="panel-title-stack"
+      contentClass="summary-title-content"
+      eyebrow="Exposure"
+      icon="chart"
+      iconClass="panel-icon panel-icon--chart"
+      iconSize={22}
+      lede="Current calendar year"
+      ledeClass="muted window-label"
+      ledeId="window-label"
+      title="Country day counts"
+      titleId="summary-panel-heading"
+    />
     <div class="field compact summary-window">
       <label for="window-mode">Window</label>
       <SelectControl id="window-mode" aria-describedby="window-help">

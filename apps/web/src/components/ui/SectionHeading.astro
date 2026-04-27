@@ -1,0 +1,49 @@
+---
+import { iconSvg } from '@/lib/icons'
+
+type IconName = Parameters<typeof iconSvg>[0]
+
+interface Props {
+  class?: string
+  contentClass?: string
+  eyebrow: string
+  icon: IconName
+  iconClass?: string
+  iconSize?: number
+  lede?: string
+  ledeClass?: string
+  ledeId?: string
+  title: string
+  titleClass?: string
+  titleId?: string
+}
+
+const {
+  class: className = '',
+  contentClass = '',
+  eyebrow,
+  icon,
+  iconClass = 'panel-icon',
+  iconSize,
+  lede,
+  ledeClass = 'muted',
+  ledeId,
+  title,
+  titleClass = '',
+  titleId
+} = Astro.props
+
+const classes = className
+const contentClasses = contentClass
+const titleClasses = titleClass || undefined
+const iconClasses = iconClass
+---
+
+<div class={classes}>
+  <span class={iconClasses} set:html={iconSvg(icon, iconSize ? { size: iconSize } : {})}></span>
+  <div class={contentClasses}>
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 id={titleId} class={titleClasses}>{title}</h2>
+    {lede ? <p id={ledeId} class={ledeClass}>{lede}</p> : null}
+  </div>
+</div>

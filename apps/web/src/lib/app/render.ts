@@ -3,6 +3,7 @@ import { $ } from './dom'
 import type { CountrySummary, ExposureLevel, HomeCountry, State, Trip } from './types'
 
 import { countryCodeToFlagEmoji, escapeHtml } from '../tripForm'
+import { iconSvg } from '../icons'
 
 export const renderAuth = (state: State) => {
   document.body.dataset.authenticated = String(state.authenticated)
@@ -139,7 +140,7 @@ const renderCountryCard = (country: CountrySummary) => {
                   aria-label="Actions for ${escapeHtml(country.countryName)}"
                   data-cc-actions="${escapeHtml(country.countryCode)}"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.75" /><circle cx="12" cy="12" r="1.75" /><circle cx="12" cy="19" r="1.75" /></svg>
+                  ${iconSvg('more')}
                 </button>
                 <div class="cc-actions-menu" role="menu" hidden data-cc-menu-for="${escapeHtml(country.countryCode)}">
                   <button type="button" class="cc-actions-menu-item" role="menuitem" data-open-summary-remove="${escapeHtml(country.countryCode)}">Remove</button>
@@ -267,7 +268,7 @@ export const renderTrips = (trips: Trip[]) => {
               <span class="trip-days" aria-label="${days} days in ${escapeHtml(trip.countryName)}"><span aria-hidden="true">${days}d</span></span>
               <button class="row-remove-button" type="button" data-open-trip-remove="${escapeHtml(trip.id)}" title="Remove trip" aria-label="Remove trip to ${escapeHtml(trip.countryName)}">
                 <span aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
+                  ${iconSvg('trash')}
                 </span>
                 <span>Remove</span>
               </button>
@@ -304,7 +305,7 @@ export const renderHomeCountries = (countries: HomeCountry[]) => {
       <div class="row-meta">
         <button class="row-remove-button" type="button" data-open-tracked-remove="${escapeHtml(country.id)}" title="Remove tracked country" aria-label="Stop tracking ${escapeHtml(country.countryName)}">
           <span aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
+            ${iconSvg('trash')}
           </span>
           <span>Remove</span>
         </button>

@@ -1,14 +1,13 @@
 ---
 import FormField from '@/components/forms/FormField.astro'
 import InputControl from '@/components/forms/InputControl.astro'
+import { iconSvg } from '@/lib/icons'
 ---
 
 <form id="login-form" class="card login-card" aria-labelledby="login-card-title" data-login-step="email">
   <p id="sync-state" class="sync-state">Guest mode. Your data stays in this browser until you save it to an account.</p>
   <div class="login-card-head">
-    <span class="login-card-icon" aria-hidden="true">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
-    </span>
+    <span class="login-card-icon" set:html={iconSvg('mail')}></span>
     <div>
       <h2 id="login-card-title">Save to your account</h2>
       <p id="login-card-sub" class="muted login-card-sub">Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.</p>
@@ -16,9 +15,7 @@ import InputControl from '@/components/forms/InputControl.astro'
   </div>
 
   <div id="login-pending-banner" class="login-pending-banner" hidden>
-    <span class="login-pending-icon" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 7-4-14-2 7H2" /></svg>
-    </span>
+    <span class="login-pending-icon" set:html={iconSvg('pulse')}></span>
     <div>
       <p class="login-pending-title">Check your inbox</p>
       <p class="login-pending-text">We sent a 6-digit code to <strong id="login-email-masked"></strong></p>

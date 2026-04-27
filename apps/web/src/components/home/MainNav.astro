@@ -1,5 +1,14 @@
 ---
 import ThemeToggle from '@/components/ThemeToggle.astro'
+
+interface Props {
+  variant?: 'home' | 'legal' | 'stats'
+}
+
+const { variant = 'home' } = Astro.props
+const isHome = variant === 'home'
+const showStats = variant !== 'stats'
+const showCounter = variant !== 'home'
 ---
 
 <header class="topbar">
@@ -11,10 +20,10 @@ import ThemeToggle from '@/components/ThemeToggle.astro'
       </picture>
     </a>
     <div class="nav-actions">
-      <a class="nav-link" href="/stats/">Stats</a>
+      {showStats ? <a class={isHome ? 'nav-link' : 'btn secondary'} href="/stats/">Stats</a> : null}
       <ThemeToggle />
-      <div class="nav-sep" aria-hidden="true"></div>
-      <a class="btn nav-cta" href="#counter">Start counting</a>
+      {isHome ? <div class="nav-sep" aria-hidden="true"></div> : null}
+      {showCounter ? <a class="btn secondary" href="/#counter">Counter</a> : <a class="btn nav-cta" href="#counter">Start counting</a>}
     </div>
   </nav>
 </header>

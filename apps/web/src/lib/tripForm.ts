@@ -1,6 +1,4 @@
-import { format, isValid, parseISO } from 'date-fns'
-
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
+import { isValidIsoDate, todayIsoDate } from './isoDate'
 
 export const escapeHtml = (s: string): string => s
   .replaceAll('&', '&amp;')
@@ -32,18 +30,6 @@ export const countryCodeToFlagEmoji = (code: string): string => {
   return String.fromCodePoint(base + a, base + b)
 }
 
-const isValidIsoDateString = (value: string): boolean => {
-  if (!ISO_DATE.test(value.trim())) {
-    return false
-  }
-
-  const d = parseISO(value.trim())
-
-  return isValid(d) && format(d, 'yyyy-MM-dd') === value.trim()
-}
-
-const todayYmd = (): string => format(new Date(), 'yyyy-MM-dd')
-
 interface TripFormInput {
   entryDate: string
   exitDate: string
@@ -68,12 +54,12 @@ export const validateTripForm = (input: TripFormInput): TripFormResult => {
     return { ok: false, error: 'Entry date is required.' }
   }
 
-  if (!isValidIsoDateString(entryDate)) {
+  if (!isValidIsoDate(entryDate)) {
     return { ok: false, error: 'Entry date is not a valid calendar date.' }
   }
 
   if (openEnded) {
-    if (entryDate > todayYmd()) {
+    if (entryDate > todayIsoDate()) {
       return { ok: true, exitDate: null, hint: 'Future entry—double-check.' }
     }
 
@@ -84,7 +70,7 @@ export const validateTripForm = (input: TripFormInput): TripFormResult => {
     return { ok: false, error: 'Exit date is required unless “Currently there” is checked.' }
   }
 
-  if (!isValidIsoDateString(exitRaw)) {
+  if (!isValidIsoDate(exitRaw)) {
     return { ok: false, error: 'Exit date is not a valid calendar date.' }
   }
 
@@ -92,7 +78,7 @@ export const validateTripForm = (input: TripFormInput): TripFormResult => {
     return { ok: false, error: 'Exit date must be on or after entry date.' }
   }
 
-  if (entryDate > todayYmd()) {
+  if (entryDate > todayIsoDate()) {
     return { ok: true, exitDate: exitRaw, hint: 'Future entry—double-check.' }
   }
 

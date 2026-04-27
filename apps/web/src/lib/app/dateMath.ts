@@ -1,28 +1,32 @@
-import { differenceInCalendarDays, format, parseISO, subDays } from 'date-fns'
+import { endOfYear, format, parseISO, startOfYear, subDays } from 'date-fns'
 
 import { $ } from './dom'
 import type { CountrySummary, ExposureLevel, HomeCountry, Trip } from './types'
 
+import { formatIsoDisplayDate, inclusiveCalendarDays, todayIsoDate } from '../isoDate'
+
 export const currentWindow = () => {
   const windowMode = $<HTMLSelectElement>('#window-mode')
   const mode = windowMode instanceof HTMLSelectElement ? windowMode.value : 'calendar-year'
-  const today = new Date()
-  const year = today.getFullYear()
-  const startDate = mode === 'rolling-365' ? subDays(today, 364) : new Date(year, 0, 1)
-  const endDate = mode === 'rolling-365' ? today : new Date(year, 11, 31)
+  const today = todayIsoDate()
+  const todayDate = parseISO(today)
+  const startDate = mode === 'rolling-365' ? subDays(todayDate, 364) : startOfYear(todayDate)
+  const endDate = mode === 'rolling-365' ? today : endOfYear(todayDate)
 
   return {
     mode,
-    startDate: format(startDate, 'yyyy-MM-dd'),
-    endDate: format(endDate, 'yyyy-MM-dd')
+    startDate: todayIsoDateFromDate(startDate),
+    endDate: todayIsoDateFromDate(endDate)
   }
 }
 
-export const todayIso = () => format(new Date(), 'yyyy-MM-dd')
+const todayIsoDateFromDate = (date: Date | string) => typeof date === 'string' ? date : format(date, 'yyyy-MM-dd')
 
-export const inclusiveDays = (startDate: string, endDate: string) => differenceInCalendarDays(parseISO(endDate), parseISO(startDate)) + 1
+export const todayIso = todayIsoDate
 
-export const formatDisplayDate = (date: string) => format(parseISO(date), 'MMM d, yyyy')
+export const inclusiveDays = inclusiveCalendarDays
+
+export const formatDisplayDate = formatIsoDisplayDate
 
 const overlapDays = (trip: Trip, startDate: string, endDate: string) => {
   const exitDate = trip.exitDate ?? todayIso()

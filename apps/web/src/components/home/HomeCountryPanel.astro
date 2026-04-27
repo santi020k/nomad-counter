@@ -2,13 +2,12 @@
 import CountryComboboxField from '@/components/forms/CountryComboboxField.astro'
 import FormField from '@/components/forms/FormField.astro'
 import InputControl from '@/components/forms/InputControl.astro'
+import { iconSvg } from '@/lib/icons'
 ---
 
 <form id="home-country-form" class="panel form-panel">
   <h2 class="form-panel-title">
-    <span class="form-panel-icon" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" /></svg>
-    </span>
+    <span class="form-panel-icon" set:html={iconSvg('globe')}></span>
     Tracked country
   </h2>
   <CountryComboboxField
