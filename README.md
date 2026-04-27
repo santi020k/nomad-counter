@@ -13,6 +13,30 @@ Personal web app for tracking calendar days spent in countries where tax residen
 
 The app intentionally has no Supabase and no Vercel. You can use the counter without signing in; trips stay in local browser storage. Email-code sign-in exists only to save that data to an account and sync it across devices.
 
+## Architecture
+
+```text
+nomad-counter/
+├── apps/
+│   ├── web/                 # Astro frontend deployed to Cloudflare Pages
+│   │   ├── src/pages/       # Route files; pages compose focused components
+│   │   ├── src/components/  # Shared UI plus feature components
+│   │   ├── src/lib/         # Browser behavior, validation, and country data
+│   │   ├── src/styles/      # Global tokens and page-level CSS
+│   │   └── tests/           # Playwright SEO, accessibility, and flow tests
+│   └── api/                 # Hono Worker API deployed to Cloudflare Workers
+│       ├── src/routes/      # Auth, countries, trips, and summary endpoints
+│       └── src/lib/         # D1, email, HTTP, and timezone-safe date helpers
+├── packages/
+│   └── db/                  # Drizzle schema and D1 migration source
+├── docs/                    # Brand and AI collaboration notes
+└── .agent/skills/           # Project-local AI workflow guides
+```
+
+The frontend is guest-first. `apps/web/src/pages/index.astro` is deliberately thin: it imports the home feature components in `apps/web/src/components/home/`, the shared form controls in `apps/web/src/components/forms/`, and the behavior bootstrap in `apps/web/src/lib/app.ts`. The first screen remains the usable counter experience, with marketing sections kept secondary.
+
+The API owns persistence and account sync. Route handlers use the shared Drizzle schema from `packages/db`, Cloudflare D1 for storage, and passwordless email-code sessions. Date-sensitive residency counting stays ISO-string based; API date math uses Temporal helpers, while frontend display and local summaries avoid ad hoc timezone-sensitive arithmetic.
+
 ## Local Dev
 
 ```sh

@@ -1,0 +1,71 @@
+---
+import CheckboxControl from '@/components/forms/CheckboxControl.astro'
+import CountryComboboxField from '@/components/forms/CountryComboboxField.astro'
+import DateShell from '@/components/forms/DateShell.astro'
+import FormField from '@/components/forms/FormField.astro'
+import InputControl from '@/components/forms/InputControl.astro'
+import TextareaControl from '@/components/forms/TextareaControl.astro'
+---
+
+<form id="trip-form" class="panel form-panel" novalidate>
+  <div class="form-panel-heading">
+    <span class="form-panel-icon form-panel-icon--route" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3" /><path d="M12 21.7V14" /><path d="M5 10a7 7 0 0 1 14 0c0 5-7 9-7 9s-7-4-7-9" /></svg>
+    </span>
+    <div class="form-panel-heading-text">
+      <p class="eyebrow">New stay</p>
+      <h2 class="form-panel-heading-title">Add trip</h2>
+    </div>
+  </div>
+  <CountryComboboxField
+    fieldLabel="Country"
+    comboLabel="Trip country"
+    searchId="trip-country-search"
+    listboxId="trip-country-listbox"
+    selectId="trip-country"
+    selectName="countryCode"
+  />
+  <fieldset class="trip-form-dates-block">
+    <legend class="sr-only">Stay dates</legend>
+    <div class="grid-fit trip-form-date-grid">
+      <FormField forId="trip-entry" label="Entry date">
+        <DateShell>
+          <InputControl id="trip-entry" name="entryDate" type="date" required class="ui-input--date" />
+        </DateShell>
+      </FormField>
+      <FormField
+        forId="trip-exit"
+        label="Exit date"
+        hint="Required for completed stays. Disabled while “Currently there” is checked."
+        hintId="trip-exit-help"
+      >
+        <DateShell>
+          <InputControl
+            id="trip-exit"
+            name="exitDate"
+            type="date"
+            required
+            class="ui-input--date"
+            aria-describedby="trip-exit-help"
+          />
+        </DateShell>
+      </FormField>
+    </div>
+    <CheckboxControl
+      id="trip-open-ended"
+      inputName="openEnded"
+      label="Currently there"
+      aria-describedby="trip-open-ended-help"
+    />
+    <p id="trip-open-ended-help" class="trip-open-ended-hint">
+      When checked, exit date is optional until the stay ends.
+    </p>
+  </fieldset>
+  <FormField forId="trip-note" label="Note" hint="Avoid sensitive tax, immigration, or identity details." hintId="trip-note-help">
+    <TextareaControl id="trip-note" name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help" />
+  </FormField>
+  <div class="form-panel-footer">
+    <p id="trip-form-status" class="form-status" role="status" aria-live="polite"></p>
+    <button class="btn" type="submit">Add trip</button>
+  </div>
+</form>

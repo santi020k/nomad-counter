@@ -1,0 +1,32 @@
+---
+import LoginCard from './LoginCard.astro'
+---
+
+<section class="hero" data-animate>
+  <div>
+    <p class="eyebrow">Counting your days</p>
+    <h1>Know your days before they count against you.</h1>
+    <p>
+      Log stays by country, count inclusive calendar days, and see when a common residency threshold deserves a closer look.
+    </p>
+    <div class="hero-actions">
+      <a class="btn" href="#counter">Start counting</a>
+      <a class="btn secondary" href="#faq">How it works</a>
+    </div>
+    <dl class="hero-facts" aria-label="Nomad Counter highlights">
+      <div>
+        <dt>Default threshold</dt>
+        <dd>183 days</dd>
+      </div>
+      <div>
+        <dt>Counting rule</dt>
+        <dd>Entry and exit count</dd>
+      </div>
+      <div>
+        <dt>Privacy model</dt>
+        <dd>Local until sync</dd>
+      </div>
+    </dl>
+  </div>
+  <LoginCard />
+</section>

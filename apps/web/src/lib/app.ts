@@ -75,8 +75,8 @@ const state: State = {
 }
 
 const countryCombos = new Map<string, CountryComboState>()
-const $ = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector)
-const $$ = <T extends HTMLElement>(selector: string) => [...document.querySelectorAll<T>(selector)]
+const $ = <T extends Element = HTMLElement>(selector: string) => document.querySelector<T>(selector)
+const $$ = <T extends Element = HTMLElement>(selector: string) => [...document.querySelectorAll<T>(selector)]
 
 const readLocal = <T>(key: string, fallback: T): T => {
   const raw = localStorage.getItem(key)
@@ -279,7 +279,7 @@ const closeAllCountryCombos = () => {
 const initCountryComboboxes = () => {
   countryCombos.clear()
 
-  $$<HTMLElement>('[data-combo-root]').forEach(root => {
+  $$('[data-combo-root]').forEach(root => {
     const selectId = root.dataset.comboFor
     const select = selectId ? document.getElementById(selectId) as HTMLSelectElement | null : null
     const input = root.querySelector<HTMLInputElement>('.combo-input')
@@ -520,7 +520,7 @@ const leaveLoginCodeWaitState = (form: HTMLFormElement, options: { clearEmail: b
 
   $('#code-field')?.setAttribute('hidden', '')
 
-  const emailInput = $('#login-email')
+  const emailInput = $<HTMLInputElement>('#login-email')
 
   if (emailInput) {
     emailInput.readOnly = false
@@ -530,7 +530,7 @@ const leaveLoginCodeWaitState = (form: HTMLFormElement, options: { clearEmail: b
     }
   }
 
-  const codeInput = $('#login-code')
+  const codeInput = $<HTMLInputElement>('#login-code')
 
   if (codeInput) {
     codeInput.value = ''
@@ -582,9 +582,9 @@ const setHomeCountryFormStatus = (message: string, tone: 'ok' | 'error' = 'ok') 
 }
 
 const getTripFormEls = () => ({
-  open: $('#trip-open-ended'),
-  exit: $('#trip-exit'),
-  entry: $('#trip-entry')
+  open: $<HTMLInputElement>('#trip-open-ended'),
+  exit: $<HTMLInputElement>('#trip-exit'),
+  entry: $<HTMLInputElement>('#trip-entry')
 })
 
 const syncExitMinFromEntry = () => {
@@ -681,7 +681,7 @@ const initDateShellPickers = () => {
 
       try {
         if (typeof input.showPicker === 'function') {
-          void input.showPicker()
+          input.showPicker()
         } else {
           input.focus()
           input.click()
@@ -696,7 +696,7 @@ const initDateShellPickers = () => {
 const countryNameFor = (select: HTMLSelectElement) => select.selectedOptions[0]?.dataset.name ?? select.value
 
 const currentWindow = () => {
-  const windowMode = $('#window-mode')
+  const windowMode = $<HTMLSelectElement>('#window-mode')
   const mode = windowMode instanceof HTMLSelectElement ? windowMode.value : 'calendar-year'
   const today = new Date()
   const year = today.getFullYear()
@@ -839,6 +839,7 @@ const renderAuth = () => {
 }
 
 const summaryEmptyStateMarkup = '<li class="summary-list-empty"><p class="muted empty-state">Add a trip to see your residency exposure by country.</p></li>'
+
 /** Summary ring: viewBox 0–100, radius in user units */
 const summaryDonutRadius = 36.5
 const summaryDonutStroke = 7
@@ -1371,7 +1372,7 @@ const requestCode = async (form: HTMLFormElement) => {
     masked.textContent = maskEmailForDisplay(email)
   }
 
-  const emailInput = $('#login-email')
+  const emailInput = $<HTMLInputElement>('#login-email')
 
   if (emailInput) {
     emailInput.readOnly = true
@@ -1643,7 +1644,7 @@ const boot = async () => {
 
       state.userEmail = null
 
-      const form = $('#login-form')
+      const form = $<HTMLFormElement>('#login-form')
 
       if (form) {
         leaveLoginCodeWaitState(form, { clearEmail: true })
@@ -1656,7 +1657,7 @@ const boot = async () => {
   })
 
   $('#login-change-email')?.addEventListener('click', () => {
-    const form = $('#login-form')
+    const form = $<HTMLFormElement>('#login-form')
 
     if (!form) {
       return
@@ -1666,7 +1667,7 @@ const boot = async () => {
 
     $('#login-card-sub')!.textContent = 'Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.'
 
-    const emailInput = $('#login-email')
+    const emailInput = $<HTMLInputElement>('#login-email')
 
     emailInput?.focus()
 
@@ -1777,7 +1778,7 @@ const boot = async () => {
 
       closeAllCcActionMenus()
 
-      if (wasOpen && menu) {
+      if (wasOpen) {
         return
       }
 

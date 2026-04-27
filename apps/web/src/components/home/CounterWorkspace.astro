@@ -1,0 +1,18 @@
+---
+import HomeCountryPanel from './HomeCountryPanel.astro'
+import SummaryPanel from './SummaryPanel.astro'
+import TripFormPanel from './TripFormPanel.astro'
+import TripLogPanel from './TripLogPanel.astro'
+---
+
+<section id="counter" class="app-grid" aria-label="Nomad Counter app" data-animate>
+  <div class="dashboard">
+    <SummaryPanel />
+    <TripLogPanel />
+  </div>
+
+  <div class="sidebar">
+    <TripFormPanel />
+    <HomeCountryPanel />
+  </div>
+</section>

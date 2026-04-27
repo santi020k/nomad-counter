@@ -1,0 +1,20 @@
+---
+import ThemeToggle from '@/components/ThemeToggle.astro'
+---
+
+<header class="topbar">
+  <nav class="shell nav" aria-label="Main">
+    <a href="/" class="brand" aria-label="Nomad Counter">
+      <picture>
+        <source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
+        <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" />
+      </picture>
+    </a>
+    <div class="nav-actions">
+      <a class="nav-link" href="/stats/">Stats</a>
+      <ThemeToggle />
+      <div class="nav-sep" aria-hidden="true"></div>
+      <a class="btn nav-cta" href="#counter">Start counting</a>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,30 @@
+---
+import InputControl from '@/components/forms/InputControl.astro'
+---
+
+<section class="panel trip-log-panel" aria-labelledby="trip-log-heading">
+  <div class="panel-heading trip-log-heading">
+    <div class="panel-title-stack">
+      <span class="panel-icon panel-icon--route" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3" /><path d="M12 21.7V14" /><path d="M5 10a7 7 0 0 1 14 0c0 5-7 9-7 9s-7-4-7-9" /></svg>
+      </span>
+      <div class="trip-log-title-block">
+        <p class="eyebrow">Trips</p>
+        <h2 id="trip-log-heading">Travel log</h2>
+        <p class="muted trip-log-lede">Newest stays first. Export or import CSV to move your history between devices.</p>
+      </div>
+    </div>
+    <div class="inline-actions trip-log-actions" role="group" aria-label="Trip data">
+      <button id="export-csv" class="btn secondary" type="button">Export CSV</button>
+      <label class="btn secondary">
+        Import CSV
+        <InputControl id="import-csv" class="sr-only" type="file" accept=".csv,text/csv" />
+      </label>
+    </div>
+  </div>
+  <ul id="trip-list" class="list trip-log-list" aria-labelledby="trip-log-heading">
+    <li class="trip-log-empty-item">
+      <p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>
+    </li>
+  </ul>
+</section>
