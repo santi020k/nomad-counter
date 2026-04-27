@@ -15,10 +15,15 @@ const {
   ...rest
 } = Astro.props as Props
 
-const classes = ['check', className].filter(Boolean).join(' ')
+const classes = ['ui-checkbox', className].filter(Boolean).join(' ')
 ---
 
 <label class={classes}>
-  <input id={id} name={inputName} type="checkbox" {...rest} />
-  <span>{label}</span>
+  <input id={id} name={inputName} type="checkbox" class="ui-checkbox-native" {...rest} />
+  <span class="ui-checkbox-row">
+    <span class="ui-checkbox-switch" aria-hidden="true">
+      <span class="ui-checkbox-knob"></span>
+    </span>
+    <span class="ui-checkbox-label">{label}</span>
+  </span>
 </label>

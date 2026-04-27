@@ -6,7 +6,10 @@ const {
   ...rest
 } = Astro.props as Props & { class?: string }
 
-const classes = ['ui-textarea', className].filter(Boolean).join(' ')
+const textareaClasses = ['ui-textarea', className].filter(Boolean).join(' ')
 ---
 
-<textarea class={classes} {...rest}></textarea>
+<div class="ui-textarea-shell">
+  <span class="ui-textarea-shell__accent" aria-hidden="true"></span>
+  <textarea class={textareaClasses} {...rest}></textarea>
+</div>

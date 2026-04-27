@@ -657,6 +657,42 @@ const wireTripFormDates = () => {
   }
 }
 
+const initDateShellPickers = () => {
+  document.querySelectorAll<HTMLElement>('[data-date-shell]').forEach(shell => {
+    if (shell.dataset.datePickerBound === 'true') {
+      return
+    }
+
+    shell.dataset.datePickerBound = 'true'
+
+    const input = shell.querySelector<HTMLInputElement>('input[type="date"]')
+    const openBtn = shell.querySelector<HTMLButtonElement>('[data-date-open]')
+
+    if (!input || !openBtn) {
+      return
+    }
+
+    openBtn.addEventListener('click', event => {
+      event.preventDefault()
+
+      if (input.disabled) {
+        return
+      }
+
+      try {
+        if (typeof input.showPicker === 'function') {
+          void input.showPicker()
+        } else {
+          input.focus()
+          input.click()
+        }
+      } catch {
+        input.focus()
+      }
+    })
+  })
+}
+
 const countryNameFor = (select: HTMLSelectElement) => select.selectedOptions[0]?.dataset.name ?? select.value
 
 const currentWindow = () => {
@@ -832,6 +868,176 @@ const summaryLevelLabel = (level: ExposureLevel) => {
   return 'On track'
 }
 
+type PendingConfirmAction =
+  | { kind: 'summary-country', countryCode: string }
+  | { kind: 'trip', tripId: string }
+  | { kind: 'tracked-country', countryId: string }
+
+let pendingConfirmAction: PendingConfirmAction | null = null
+
+const getConfirmDialog = () => $('#confirm-action-dialog') as HTMLDialogElement | null
+
+const setConfirmDialogContent = (title: string, description: string) => {
+  const titleEl = $('#confirm-action-dialog-title')
+  const descEl = $('#confirm-action-dialog-desc')
+
+  if (titleEl) {
+    titleEl.textContent = title
+  }
+
+  if (descEl) {
+    descEl.textContent = description
+  }
+}
+
+const closeAllCcActionMenus = () => {
+  $$('[data-cc-menu-for]').forEach(el => el.setAttribute('hidden', ''))
+
+  $$<HTMLButtonElement>('[data-cc-actions]').forEach(btn => {
+    btn.setAttribute('aria-expanded', 'false')
+  })
+}
+
+const openConfirmDialog = (title: string, description: string, action: PendingConfirmAction) => {
+  pendingConfirmAction = action
+  closeAllCcActionMenus()
+  setConfirmDialogContent(title, description)
+  getConfirmDialog()?.showModal()
+}
+
+const summaryRemoveDialogMessage = (countryCode: string) => {
+  const name = state.summary.find(row => row.countryCode === countryCode)?.countryName ?? countryCode
+  const tripCount = state.trips.filter(trip => trip.countryCode === countryCode).length
+  const hasTracked = state.countries.some(country => country.countryCode === countryCode)
+
+  if (hasTracked && tripCount > 0) {
+    return `This will stop tracking ${name} and delete all ${String(tripCount)} trip${tripCount === 1 ? '' : 's'} for this country from your travel log. You cannot undo this.`
+  }
+
+  if (hasTracked) {
+    return `This will stop tracking ${name} and remove its custom threshold from your settings. You cannot undo this.`
+  }
+
+  return `This will delete all ${String(tripCount)} trip${tripCount === 1 ? '' : 's'} to ${name} from your travel log. You cannot undo this.`
+}
+
+const openSummaryRemoveDialog = (countryCode: string) => {
+  openConfirmDialog('Remove from dashboard', summaryRemoveDialogMessage(countryCode), {
+    kind: 'summary-country',
+    countryCode
+  })
+}
+
+const tripRemoveDialogMessage = (trip: Trip) => {
+  const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
+
+  const entryLabel = formatDisplayDate(trip.entryDate)
+
+  return `Remove this stay (${entryLabel} → ${exitLabel}) for ${trip.countryName}? You cannot undo this.`
+}
+
+const openTripRemoveDialog = (tripId: string) => {
+  const trip = state.trips.find(row => row.id === tripId)
+
+  if (!trip) {
+    return
+  }
+
+  openConfirmDialog('Remove trip', tripRemoveDialogMessage(trip), { kind: 'trip', tripId })
+}
+
+const trackedCountryRemoveMessage = (country: HomeCountry) =>
+  `Stop tracking ${country.countryName}? Its custom threshold and warning settings will be removed. Trips in your travel log are not deleted. You cannot undo this.`
+
+const openTrackedCountryRemoveDialog = (countryId: string) => {
+  const country = state.countries.find(row => row.id === countryId)
+
+  if (!country) {
+    return
+  }
+
+  openConfirmDialog('Stop tracking country', trackedCountryRemoveMessage(country), {
+    kind: 'tracked-country',
+    countryId
+  })
+}
+
+const removeTrackedCountryById = async (countryId: string) => {
+  const dialog = getConfirmDialog()
+
+  try {
+    if (state.authenticated && !countryId.startsWith('local_')) {
+      await request(`/api/home-countries/${countryId}`, { method: 'DELETE' })
+      await refreshRemote()
+    } else {
+      state.countries = state.countries.filter(country => country.id !== countryId)
+      saveLocal()
+      renderAll()
+    }
+
+    dialog?.close()
+    pendingConfirmAction = null
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Something went wrong.'
+    setHomeCountryFormStatus(message, 'error')
+  }
+}
+
+const removeTripById = async (tripId: string) => {
+  const dialog = getConfirmDialog()
+
+  try {
+    if (state.authenticated && !tripId.startsWith('local_')) {
+      await request(`/api/trips/${tripId}`, { method: 'DELETE' })
+      await refreshRemote()
+    } else {
+      state.trips = state.trips.filter(trip => trip.id !== tripId)
+      saveLocal()
+      renderAll()
+    }
+
+    dialog?.close()
+    pendingConfirmAction = null
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Something went wrong.'
+    setTripFormStatus(message, 'error')
+  }
+}
+
+const removeCountryFromDashboard = async (countryCode: string) => {
+  const dialog = getConfirmDialog()
+  const tripsForCountry = state.trips.filter(trip => trip.countryCode === countryCode)
+  const tracked = state.countries.find(country => country.countryCode === countryCode)
+
+  try {
+    if (state.authenticated) {
+      await Promise.all(
+        tripsForCountry
+          .filter(trip => !trip.id.startsWith('local_'))
+          .map(trip => request(`/api/trips/${trip.id}`, { method: 'DELETE' }))
+      )
+
+      if (tracked && !tracked.id.startsWith('local_')) {
+        await request(`/api/home-countries/${tracked.id}`, { method: 'DELETE' })
+      }
+
+      await refreshRemote()
+    } else {
+      state.trips = state.trips.filter(trip => trip.countryCode !== countryCode)
+      state.countries = state.countries.filter(country => country.countryCode !== countryCode)
+      saveLocal()
+      renderAll()
+    }
+
+    dialog?.close()
+    pendingConfirmAction = null
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Something went wrong.'
+    setTripFormStatus(message, 'error')
+    setHomeCountryFormStatus(message, 'error')
+  }
+}
+
 const renderCountryCard = (country: CountrySummary) => {
   const progress = summaryProgressPercent(country)
   const dashOffset = summaryDonutCircumference * (1 - progress / 100)
@@ -851,7 +1057,24 @@ const renderCountryCard = (country: CountrySummary) => {
               <h3 class="cc-title">${escapeHtml(country.countryName)}</h3>
               <span class="cc-code">${escapeHtml(country.countryCode)}</span>
             </div>
-            <span class="cc-level-pill">${levelLabel}</span>
+            <div class="cc-header-end">
+              <span class="cc-level-pill">${levelLabel}</span>
+              <div class="cc-actions">
+                <button
+                  type="button"
+                  class="cc-actions-btn"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="Actions for ${escapeHtml(country.countryName)}"
+                  data-cc-actions="${escapeHtml(country.countryCode)}"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.75" /><circle cx="12" cy="12" r="1.75" /><circle cx="12" cy="19" r="1.75" /></svg>
+                </button>
+                <div class="cc-actions-menu" role="menu" hidden data-cc-menu-for="${escapeHtml(country.countryCode)}">
+                  <button type="button" class="cc-actions-menu-item" role="menuitem" data-open-summary-remove="${escapeHtml(country.countryCode)}">Remove</button>
+                </div>
+              </div>
+            </div>
           </div>
           <p class="cc-threshold"><span class="cc-threshold-label">Residency threshold</span> <span class="cc-threshold-value">${String(country.thresholdDays)} days</span></p>
         </div>
@@ -943,33 +1166,41 @@ const renderTrips = () => {
     return
   }
 
-  target.innerHTML = state.trips.length === 0
-    ? '<p class="muted empty-state">No trips yet. Add your first stay or import a CSV.</p>'
-    : state.trips
-      .sort((a, b) => b.entryDate.localeCompare(a.entryDate))
-      .map(trip => {
-        const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
-        const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
-        const flag = countryCodeToFlagEmoji(trip.countryCode)
-        const note = trip.note?.trim()
+  if (state.trips.length === 0) {
+    target.removeAttribute('role')
+    target.innerHTML =
+      '<p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>'
 
-        return `<article class="row row-trip">
-          <span class="row-accent"></span>
+    return
+  }
+
+  target.setAttribute('role', 'list')
+  target.innerHTML = state.trips
+    .sort((a, b) => b.entryDate.localeCompare(a.entryDate))
+    .map(trip => {
+      const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
+      const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
+      const flag = countryCodeToFlagEmoji(trip.countryCode)
+      const note = trip.note?.trim()
+      const exitOpenAria = trip.exitDate ? '' : ' aria-label="Open stay (no exit date yet)"'
+
+      return `<article class="row row-trip" role="listitem">
+          <span class="row-accent" aria-hidden="true"></span>
           <div class="row-body">
           <div class="row-info">
             <strong><span class="row-flag-wrap" aria-hidden="true"><span class="row-flag cc-flag">${flag}</span></span> ${escapeHtml(trip.countryName)}</strong>
-            <div class="trip-dates" role="group" aria-label="Entry and exit dates">
-              <time class="date-pill" datetime="${escapeHtml(trip.entryDate)}">${formatDisplayDate(trip.entryDate)}</time>
-              <span class="trip-dates-arrow">→</span>
+            <div class="trip-dates trip-dates--log" role="group" aria-label="Entry and exit dates">
+              <time class="date-pill date-pill--log" datetime="${escapeHtml(trip.entryDate)}"><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${formatDisplayDate(trip.entryDate)}</span></time>
+              <span class="trip-dates-arrow" aria-hidden="true">→</span>
               ${trip.exitDate
-                ? `<time class="date-pill" datetime="${escapeHtml(trip.exitDate)}">${exitLabel}</time>`
-                : `<span class="date-pill date-pill--open" role="text">${exitLabel}</span>`}
+                ? `<time class="date-pill date-pill--log" datetime="${escapeHtml(trip.exitDate)}"><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${exitLabel}</span></time>`
+                : `<span class="date-pill date-pill--log date-pill--open"${exitOpenAria}><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${exitLabel}</span></span>`}
             </div>
             ${note ? `<p class="trip-note">${escapeHtml(note)}</p>` : ''}
           </div>
           <div class="row-meta">
-            <span class="trip-days">${days}d</span>
-            <button class="row-remove-button" data-delete-trip="${escapeHtml(trip.id)}" title="Remove trip" aria-label="Remove trip">
+            <span class="trip-days" aria-label="${days} days in ${escapeHtml(trip.countryName)}"><span aria-hidden="true">${days}d</span></span>
+            <button class="row-remove-button" type="button" data-open-trip-remove="${escapeHtml(trip.id)}" title="Remove trip" aria-label="Remove trip to ${escapeHtml(trip.countryName)}">
               <span aria-hidden="true">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
               </span>
@@ -978,8 +1209,8 @@ const renderTrips = () => {
           </div>
           </div>
         </article>`
-      })
-      .join('')
+    })
+    .join('')
 }
 
 const renderHomeCountries = () => {
@@ -1005,7 +1236,7 @@ const renderHomeCountries = () => {
         </div>
       </div>
       <div class="row-meta">
-        <button class="row-remove-button" data-delete-country="${escapeHtml(country.id)}" title="Remove tracked country" aria-label="Remove tracked country">
+        <button class="row-remove-button" type="button" data-open-tracked-remove="${escapeHtml(country.id)}" title="Remove tracked country" aria-label="Stop tracking ${escapeHtml(country.countryName)}">
           <span aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
           </span>
@@ -1374,6 +1605,8 @@ const boot = async () => {
 
   wireTripFormDates()
 
+  initDateShellPickers()
+
   state.trips = readLocal<Trip[]>(tripsKey, [])
 
   state.countries = readLocal<HomeCountry[]>(countriesKey, [])
@@ -1463,33 +1696,95 @@ const boot = async () => {
     }
   })
 
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeAllCcActionMenus()
+    }
+  })
+
+  getConfirmDialog()?.addEventListener('close', () => {
+    pendingConfirmAction = null
+  })
+
   document.addEventListener('click', event => {
-    const el = (event.target as HTMLElement).closest<HTMLElement>('[data-delete-trip], [data-delete-country]')
-    const tripId = el?.dataset.deleteTrip
-    const countryId = el?.dataset.deleteCountry
+    const target = event.target as HTMLElement
 
-    if (tripId) {
-      if (state.authenticated && !tripId.startsWith('local_')) {
-        void request(`/api/trips/${tripId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setTripFormStatus(error.message, 'error'))
-      } else {
-        state.trips = state.trips.filter(trip => trip.id !== tripId)
+    if (target.closest('#confirm-action-cancel')) {
+      getConfirmDialog()?.close()
 
-        saveLocal()
-
-        renderAll()
-      }
+      return
     }
 
-    if (countryId) {
-      if (state.authenticated && !countryId.startsWith('local_')) {
-        void request(`/api/home-countries/${countryId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setHomeCountryFormStatus(error.message, 'error'))
-      } else {
-        state.countries = state.countries.filter(country => country.id !== countryId)
+    if (target.closest('#confirm-action-confirm')) {
+      event.preventDefault()
 
-        saveLocal()
+      const action = pendingConfirmAction
 
-        renderAll()
+      if (action?.kind === 'summary-country') {
+        void removeCountryFromDashboard(action.countryCode)
+      } else if (action?.kind === 'trip') {
+        void removeTripById(action.tripId)
+      } else if (action?.kind === 'tracked-country') {
+        void removeTrackedCountryById(action.countryId)
       }
+
+      return
+    }
+
+    const openTrackedRemove = target.closest<HTMLElement>('[data-open-tracked-remove]')
+
+    if (openTrackedRemove?.dataset.openTrackedRemove) {
+      event.preventDefault()
+      openTrackedCountryRemoveDialog(openTrackedRemove.dataset.openTrackedRemove)
+
+      return
+    }
+
+    const openTripRemove = target.closest<HTMLElement>('[data-open-trip-remove]')
+
+    if (openTripRemove?.dataset.openTripRemove) {
+      event.preventDefault()
+      openTripRemoveDialog(openTripRemove.dataset.openTripRemove)
+
+      return
+    }
+
+    const openSummaryRemove = target.closest<HTMLElement>('[data-open-summary-remove]')
+
+    if (openSummaryRemove?.dataset.openSummaryRemove) {
+      event.preventDefault()
+
+      openSummaryRemoveDialog(openSummaryRemove.dataset.openSummaryRemove)
+
+      return
+    }
+
+    const ccActionsBtn = target.closest<HTMLElement>('[data-cc-actions]')
+
+    if (ccActionsBtn?.dataset.ccActions) {
+      event.preventDefault()
+
+      const code = ccActionsBtn.dataset.ccActions
+      const menu = document.querySelector(`[data-cc-menu-for="${code}"]`)
+      const wasOpen = menu && !menu.hasAttribute('hidden')
+
+      closeAllCcActionMenus()
+
+      if (wasOpen && menu) {
+        return
+      }
+
+      if (menu) {
+        menu.removeAttribute('hidden')
+
+        ccActionsBtn.setAttribute('aria-expanded', 'true')
+      }
+
+      return
+    }
+
+    if (!target.closest('.cc-actions')) {
+      closeAllCcActionMenus()
     }
   })
 

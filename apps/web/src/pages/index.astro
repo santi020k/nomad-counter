@@ -4,6 +4,7 @@ import SEO from '@/components/SEO.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 import CheckboxControl from '@/components/forms/CheckboxControl.astro'
 import CountryComboboxField from '@/components/forms/CountryComboboxField.astro'
+import DateShell from '@/components/forms/DateShell.astro'
 import FormField from '@/components/forms/FormField.astro'
 import InputControl from '@/components/forms/InputControl.astro'
 import SelectControl from '@/components/forms/SelectControl.astro'
@@ -180,18 +181,19 @@ const websiteJsonLd = {
             </p>
           </section>
 
-          <section class="panel">
-            <div class="panel-heading">
+          <section class="panel trip-log-panel" aria-labelledby="trip-log-heading">
+            <div class="panel-heading trip-log-heading">
               <div class="panel-title-stack">
                 <span class="panel-icon panel-icon--route" aria-hidden="true">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3" /><path d="M12 21.7V14" /><path d="M5 10a7 7 0 0 1 14 0c0 5-7 9-7 9s-7-4-7-9" /></svg>
                 </span>
-                <div>
+                <div class="trip-log-title-block">
                   <p class="eyebrow">Trips</p>
-                  <h2>Travel log</h2>
+                  <h2 id="trip-log-heading">Travel log</h2>
+                  <p class="muted trip-log-lede">Newest stays first. Export or import CSV to move your history between devices.</p>
                 </div>
               </div>
-              <div class="inline-actions">
+              <div class="inline-actions trip-log-actions" role="group" aria-label="Trip data">
                 <button id="export-csv" class="btn secondary" type="button">Export CSV</button>
                 <label class="btn secondary">
                   Import CSV
@@ -199,8 +201,8 @@ const websiteJsonLd = {
                 </label>
               </div>
             </div>
-            <div id="trip-list" class="list">
-              <p class="muted empty-state">No trips yet. Add your first stay or import a CSV.</p>
+            <div id="trip-list" class="list trip-log-list" aria-labelledby="trip-log-heading">
+              <p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>
             </div>
           </section>
         </div>
@@ -228,7 +230,9 @@ const websiteJsonLd = {
               <legend class="sr-only">Stay dates</legend>
               <div class="grid-fit trip-form-date-grid">
                 <FormField forId="trip-entry" label="Entry date">
-                  <InputControl id="trip-entry" name="entryDate" type="date" required />
+                  <DateShell>
+                    <InputControl id="trip-entry" name="entryDate" type="date" required class="ui-input--date" />
+                  </DateShell>
                 </FormField>
                 <FormField
                   forId="trip-exit"
@@ -236,7 +240,16 @@ const websiteJsonLd = {
                   hint="Required for completed stays. Disabled while “Currently there” is checked."
                   hintId="trip-exit-help"
                 >
-                  <InputControl id="trip-exit" name="exitDate" type="date" required aria-describedby="trip-exit-help" />
+                  <DateShell>
+                    <InputControl
+                      id="trip-exit"
+                      name="exitDate"
+                      type="date"
+                      required
+                      class="ui-input--date"
+                      aria-describedby="trip-exit-help"
+                    />
+                  </DateShell>
                 </FormField>
               </div>
               <CheckboxControl
@@ -347,6 +360,24 @@ const websiteJsonLd = {
         </details>
       </section>
     </main>
+
+    <dialog id="confirm-action-dialog" class="confirm-action-dialog" aria-labelledby="confirm-action-dialog-title">
+      <div class="confirm-action-dialog-box">
+        <h2 id="confirm-action-dialog-title"></h2>
+        <p id="confirm-action-dialog-desc" class="muted confirm-action-dialog-desc"></p>
+        <div class="confirm-action-dialog-actions">
+          <button type="button" class="btn secondary" id="confirm-action-cancel">Cancel</button>
+          <button
+            type="button"
+            class="btn danger"
+            id="confirm-action-confirm"
+            aria-describedby="confirm-action-dialog-desc"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </dialog>
 
     <SiteFooter />
 
@@ -777,17 +808,6 @@ const websiteJsonLd = {
     line-height: 1.45;
   }
 
-  #trip-exit:disabled {
-    color: color-mix(in srgb, var(--muted) 86%, var(--text));
-    border-color: color-mix(in srgb, var(--line) 70%, var(--text));
-    background: color-mix(in srgb, var(--line) 44%, var(--surface));
-  }
-
-  #trip-exit:disabled + #trip-exit-help {
-    color: color-mix(in srgb, var(--muted) 72%, var(--text));
-    border-left-color: color-mix(in srgb, var(--line) 78%, var(--text));
-  }
-
   /* ── App grid ───────────────────────────── */
   .app-grid {
     display: grid;
@@ -863,6 +883,55 @@ const websiteJsonLd = {
         transparent 44%
       ),
       var(--surface);
+  }
+
+  .trip-log-panel {
+    background:
+      linear-gradient(
+        168deg,
+        color-mix(in srgb, var(--accent) 3.5%, transparent),
+        transparent 42%
+      ),
+      var(--surface);
+  }
+
+  .trip-log-heading {
+    align-items: flex-start;
+    padding-bottom: 16px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+  }
+
+  .trip-log-title-block {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .trip-log-title-block h2 {
+    font-size: 1.12rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .trip-log-lede {
+    margin: 2px 0 0;
+    max-width: 42ch;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .trip-log-actions {
+    flex-shrink: 0;
+  }
+
+  .trip-log-list:not(:empty) {
+    gap: 12px;
+  }
+
+  .trip-log-empty {
+    grid-column: 1 / -1;
   }
 
   .summary-heading {
@@ -1177,6 +1246,90 @@ const websiteJsonLd = {
     gap: 10px;
   }
 
+  .summary-panel :global(.cc-header-end) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .summary-panel :global(.cc-header-end .cc-level-pill) {
+    align-self: center;
+    margin-top: 0;
+  }
+
+  .summary-panel :global(.cc-actions) {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .summary-panel :global(.cc-actions-btn) {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .summary-panel :global(.cc-actions-btn:hover) {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+    background: color-mix(in srgb, var(--accent) 11%, transparent);
+  }
+
+  .summary-panel :global(.cc-actions-btn[aria-expanded="true"]) {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+
+  .summary-panel :global(.cc-actions-btn svg) {
+    display: block;
+  }
+
+  .summary-panel :global(.cc-actions-menu) {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 12.5rem;
+    padding: 6px;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+    background: var(--surface-strong);
+    box-shadow: var(--shadow);
+  }
+
+  .summary-panel :global(.cc-actions-menu-item) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 0;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-weight: 650;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+
+  .summary-panel :global(.cc-actions-menu-item:hover) {
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
+    color: color-mix(in srgb, var(--danger) 88%, var(--text));
+  }
+
   .summary-panel :global(.cc-name-row) {
     display: flex;
     flex-wrap: wrap;
@@ -1484,6 +1637,55 @@ const websiteJsonLd = {
     line-height: 1.55;
   }
 
+  /* ── Shared confirm dialog (summary + travel log) ──────────────── */
+  .confirm-action-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(calc(100% - 24px), 26rem);
+    max-width: none;
+    max-height: min(90dvh, calc(100% - 24px));
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+    border-radius: var(--radius-lg);
+    background: var(--surface-strong);
+    box-shadow: var(--shadow-lg);
+    color: var(--text);
+    transform: translate(-50%, -50%);
+  }
+
+  .confirm-action-dialog::backdrop {
+    background: color-mix(in srgb, var(--text) 38%, transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .confirm-action-dialog-box {
+    padding: 22px 22px 20px;
+  }
+
+  .confirm-action-dialog-box h2 {
+    margin: 0 0 12px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .confirm-action-dialog-desc {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .confirm-action-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
   /* ── Trip list rows ─────────────────────── */
   .list {
     display: grid;
@@ -1581,6 +1783,64 @@ const websiteJsonLd = {
     color: color-mix(in srgb, var(--success) 92%, var(--text));
   }
 
+  /* Trip rows are injected in app.ts without data-astro-cid — scope via #trip-list :global */
+  #trip-list :global(.trip-dates--log) {
+    gap: 8px;
+  }
+
+  #trip-list :global(.date-pill--log) {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    padding: 0;
+    padding-right: 11px;
+    border-radius: 10px;
+    overflow: hidden;
+    vertical-align: middle;
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, white 3%, transparent), transparent 38%),
+      color-mix(in srgb, var(--accent) 11%, var(--surface-strong));
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+    box-shadow: inset 0 1px 1px color-mix(in srgb, var(--text) 5%, transparent);
+  }
+
+  #trip-list :global(.date-pill--log .date-pill__accent) {
+    flex-shrink: 0;
+    width: 4px;
+    align-self: stretch;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 82%, transparent),
+      color-mix(in srgb, var(--accent-soft) 55%, transparent)
+    );
+  }
+
+  #trip-list :global(.date-pill--log .date-pill__text) {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 0 5px 8px;
+  }
+
+  #trip-list :global(.date-pill--log.date-pill--open) {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, white 3%, transparent), transparent 38%),
+      color-mix(in srgb, var(--success) 12%, var(--surface-strong));
+    border-color: color-mix(in srgb, var(--success) 38%, var(--line));
+    color: color-mix(in srgb, var(--success) 92%, var(--text));
+  }
+
+  #trip-list :global(.date-pill--log.date-pill--open .date-pill__accent) {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--success) 75%, transparent),
+      color-mix(in srgb, var(--sky) 48%, transparent)
+    );
+  }
+
   .trip-dates-arrow {
     color: var(--muted);
     font-size: 0.85rem;
@@ -1657,7 +1917,8 @@ const websiteJsonLd = {
   }
 
   .trip-days {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
     border-radius: 6px;
     padding: 2px 8px;
@@ -1696,33 +1957,22 @@ const websiteJsonLd = {
     background: color-mix(in srgb, var(--danger) 8%, transparent);
   }
 
+  @media (max-width: 520px) {
+    .row-trip .row-body {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .row-trip .row-meta {
+      justify-content: space-between;
+      width: 100%;
+      padding-top: 12px;
+      border-top: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+    }
+  }
+
   /* ── Form panel ─────────────────────────── */
-  .check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    padding: 10px 12px;
-    border-radius: var(--radius);
-    border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
-    background: color-mix(in srgb, var(--accent) 5%, transparent);
-    color: var(--text);
-    font-weight: 650;
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
-  }
-
-  .check:hover {
-    border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
-    background: color-mix(in srgb, var(--accent) 9%, transparent);
-  }
-
-  .check:has(input:focus-visible) {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: var(--focus-ring);
-  }
-
   #trip-form-status,
   #home-country-form-status {
     min-height: 1.3rem;
@@ -1732,11 +1982,6 @@ const websiteJsonLd = {
   #home-country-form-status:empty {
     display: block;
     visibility: hidden;
-  }
-
-  .check:has(input:checked) {
-    border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
   }
 
   /* ── Marketing grid ─────────────────────── */
