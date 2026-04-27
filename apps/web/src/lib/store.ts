@@ -24,7 +24,7 @@ export const subscribe = (fn: () => void): (() => void) => {
 
 export const setState = (updater: (prev: State) => State): void => {
   _state = updater(_state)
-  _listeners.forEach(fn => fn())
+  _listeners.forEach(fn => { fn() })
 }
 
 export const initStoreFromLocal = (): void => {

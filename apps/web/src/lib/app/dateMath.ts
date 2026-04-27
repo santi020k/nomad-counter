@@ -4,7 +4,7 @@ import type { CountrySummary, ExposureLevel, HomeCountry, Trip } from './types'
 
 import { formatIsoDisplayDate, inclusiveCalendarDays, todayIsoDate } from '../isoDate'
 
-export const currentWindow = (mode: string = 'calendar-year') => {
+export const currentWindow = (mode = 'calendar-year') => {
   const today = todayIsoDate()
   const todayDate = parseISO(today)
   const startDate = mode === 'rolling-365' ? subDays(todayDate, 364) : startOfYear(todayDate)

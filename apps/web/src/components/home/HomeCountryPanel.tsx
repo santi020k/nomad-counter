@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react'
+import { useState, type SyntheticEvent } from 'react'
 import { iconSvg } from '../../lib/icons'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
 import type { HomeCountry } from '../../lib/app/types'
@@ -25,8 +25,8 @@ function TrackedRow({ country, onRemove }: TrackedRowProps) {
             {country.countryName}
           </strong>
           <div className={styles.trackedMeta}>
-            <span className={styles.pill}>{country.thresholdDays}-day threshold</span>
-            <span className={`${styles.pill} ${styles.pillWarn}`}>Warn at {country.warningDays} days</span>
+            <span className={styles.pill}>{`${country.thresholdDays}-day threshold`}</span>
+            <span className={`${styles.pill} ${styles.pillWarn}`}>{`Warn at ${country.warningDays} days`}</span>
           </div>
         </div>
         <div className="row-meta">
@@ -35,7 +35,7 @@ function TrackedRow({ country, onRemove }: TrackedRowProps) {
             type="button"
             title="Remove tracked country"
             aria-label={`Stop tracking ${country.countryName}`}
-            onClick={() => onRemove(country.id)}
+            onClick={() => { onRemove(country.id) }}
           >
             <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg('trash') }} />
             <span>Remove</span>
@@ -68,7 +68,7 @@ export function HomeCountryPanel({ countries, onAddCountry, onRemoveCountry }: P
   const [statusTone, setStatusTone] = useState<'ok' | 'error'>('ok')
   const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('')
     setSubmitting(true)
@@ -118,7 +118,7 @@ export function HomeCountryPanel({ countries, onAddCountry, onRemoveCountry }: P
             required
             aria-describedby="threshold-help"
             value={thresholdDays}
-            onChange={e => setThresholdDays(e.target.value)}
+            onChange={e => { setThresholdDays(e.target.value) }}
           />
         </div>
         <div className="field">
@@ -133,7 +133,7 @@ export function HomeCountryPanel({ countries, onAddCountry, onRemoveCountry }: P
             required
             aria-describedby="warning-help"
             value={warningDays}
-            onChange={e => setWarningDays(e.target.value)}
+            onChange={e => { setWarningDays(e.target.value) }}
           />
         </div>
       </div>

@@ -13,9 +13,9 @@ function progressPercent(country: CountrySummary) {
 }
 
 function statusText(country: CountrySummary) {
-  return country.daysRemaining <= 0
-    ? `${Math.abs(country.daysRemaining)} days over threshold`
-    : `${country.daysRemaining} days remaining`
+  return country.daysRemaining <= 0 ?
+    `${Math.abs(country.daysRemaining)} days over threshold` :
+    `${country.daysRemaining} days remaining`
 }
 
 function levelLabel(level: ExposureLevel) {
@@ -72,7 +72,7 @@ function CountryCard({ country, onRemove }: CountryCardProps) {
                       type="button"
                       className={styles.actionsMenuItem}
                       role="menuitem"
-                      onClick={() => onRemove(country.countryCode)}
+                      onClick={() => { onRemove(country.countryCode) }}
                     >
                       Remove
                     </button>
@@ -81,8 +81,9 @@ function CountryCard({ country, onRemove }: CountryCardProps) {
               </div>
             </div>
             <p className={styles.threshold}>
-              <span className={styles.thresholdLabel}>Residency threshold</span>{' '}
-              <span className={styles.thresholdValue}>{country.thresholdDays} days</span>
+              <span className={styles.thresholdLabel}>Residency threshold</span>
+              {' '}
+              <span className={styles.thresholdValue}>{`${country.thresholdDays} days`}</span>
             </p>
           </div>
         </div>
@@ -114,14 +115,14 @@ function CountryCard({ country, onRemove }: CountryCardProps) {
                 transform="rotate(-90 50 50)"
               />
               <text className={styles.donutPct} x="50" y="50" textAnchor="middle" dominantBaseline="central">
-                {progress}%
+                {`${progress}%`}
               </text>
             </svg>
           </div>
           <div className={styles.countBlock}>
             <p className={styles.count} aria-hidden="true">
               <span className={styles.countValue}>{country.daysPresent}</span>
-              <span className={styles.countSuffix}>/ {country.thresholdDays}</span>
+              <span className={styles.countSuffix}>{`/ ${country.thresholdDays}`}</span>
             </p>
             <p className={styles.countPct}>Days in window vs threshold</p>
           </div>
@@ -173,7 +174,7 @@ export function SummaryPanel({ summary, windowLabel, windowMode, onWindowChange,
             className="ui-select"
             aria-describedby="window-help"
             value={windowMode}
-            onChange={e => onWindowChange(e.target.value)}
+            onChange={e => { onWindowChange(e.target.value) }}
           >
             <option value="calendar-year">Calendar year</option>
             <option value="rolling-365">Rolling 365 days</option>

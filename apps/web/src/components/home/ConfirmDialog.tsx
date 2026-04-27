@@ -26,9 +26,9 @@ export function ConfirmDialog({ open, title, description, confirmLabel = 'Remove
   useEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
-    const handleClose = () => onCancel()
+    const handleClose = () => { onCancel() }
     dialog.addEventListener('close', handleClose)
-    return () => dialog.removeEventListener('close', handleClose)
+    return () => { dialog.removeEventListener('close', handleClose) }
   }, [onCancel])
 
   return (

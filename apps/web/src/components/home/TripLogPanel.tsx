@@ -50,14 +50,14 @@ function TripItem({ trip, onRemove }: TripItemProps) {
           </div>
           <div className="row-meta">
             <span className={styles.tripDays} aria-label={`${days} days in ${trip.countryName}`}>
-              <span aria-hidden="true">{days}d</span>
+              <span aria-hidden="true">{`${days}d`}</span>
             </span>
             <button
               className="row-remove-button"
               type="button"
               title="Remove trip"
               aria-label={`Remove trip to ${trip.countryName}`}
-              onClick={() => onRemove(trip.id)}
+              onClick={() => { onRemove(trip.id) }}
             >
               <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg('trash') }} />
               <span>Remove</span>

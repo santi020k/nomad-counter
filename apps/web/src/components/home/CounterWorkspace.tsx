@@ -22,7 +22,7 @@ interface ConfirmState {
 }
 
 export default function CounterWorkspace() {
-  const state = useSyncExternalStore(subscribe, getSnapshot)
+  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   const [confirm, setConfirm] = useState<ConfirmState>({ open: false, title: '', description: '', action: null })
   const [tripFormStatus, setTripFormStatus] = useState('')
 
@@ -60,10 +60,10 @@ export default function CounterWorkspace() {
     )
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        document.querySelectorAll<HTMLElement>('[data-animate], [data-stagger]').forEach(el => observer.observe(el))
+        document.querySelectorAll<HTMLElement>('[data-animate], [data-stagger]').forEach(el => { observer.observe(el) })
       })
     })
-    return () => observer.disconnect()
+    return () => { observer.disconnect() }
   }, [])
 
   const openConfirm = useCallback((title: string, description: string, action: PendingConfirmAction) => {
@@ -132,7 +132,7 @@ export default function CounterWorkspace() {
   const handleRemoveTrip = useCallback((tripId: string) => {
     const trip = getSnapshot().trips.find(t => t.id === tripId)
     if (!trip) return
-    const exitLabel = trip.exitDate ? trip.exitDate : 'present'
+    const exitLabel = trip.exitDate ?? 'present'
     openConfirm(
       'Remove trip',
       `Remove this stay (${trip.entryDate} → ${exitLabel}) for ${trip.countryName}? You cannot undo this.`,
@@ -195,7 +195,7 @@ export default function CounterWorkspace() {
           const local = summarizeLocal(s.trips, newCountries, s.windowMode)
           setState(prev => ({ ...prev, summary: local.summary, windowLabel: local.windowLabel }))
         }
-      } else if (action.kind === 'summary-country') {
+      } else {
         const { countryCode } = action
         if (s.authenticated) {
           await Promise.all(
@@ -221,7 +221,7 @@ export default function CounterWorkspace() {
     }
   }, [confirm])
 
-  const handleExportCsv = useCallback(() => exportCsv(), [])
+  const handleExportCsv = useCallback(() => { exportCsv() }, [])
 
   const handleImportCsv = useCallback(async (file: File) => {
     const result = await importCsv(file, { syncLocalToAccount })
@@ -262,7 +262,7 @@ export default function CounterWorkspace() {
         title={confirm.title}
         description={confirm.description}
         onConfirm={handleConfirm}
-        onCancel={() => setConfirm(s => ({ ...s, open: false, action: null }))}
+        onCancel={() => { setConfirm(s => ({ ...s, open: false, action: null })) }}
       />
     </section>
   )

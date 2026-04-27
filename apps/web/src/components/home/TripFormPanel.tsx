@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type SyntheticEvent } from 'react'
 import { iconSvg } from '../../lib/icons'
 import { validateTripForm } from '../../lib/tripForm'
 import { CountryCombobox } from './CountryCombobox'
@@ -68,7 +68,7 @@ export function TripFormPanel({ onAddTrip }: Props) {
     setStatus('')
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('')
 
@@ -137,10 +137,10 @@ export function TripFormPanel({ onAddTrip }: Props) {
                 type="date"
                 required
                 value={entryDate}
-                onChange={e => handleEntryChange(e.target.value)}
+                onChange={e => { handleEntryChange(e.target.value) }}
               />
               <span className={styles.dateAccent} aria-hidden="true" />
-              <button type="button" className={styles.dateOpen} aria-label="Open date picker" onClick={() => openDatePicker(entryRef)}>
+              <button type="button" className={styles.dateOpen} aria-label="Open date picker" onClick={() => { openDatePicker(entryRef) }}>
                 {calendarIcon}
               </button>
             </div>
@@ -159,10 +159,10 @@ export function TripFormPanel({ onAddTrip }: Props) {
                 min={entryDate || undefined}
                 value={exitDate}
                 aria-describedby="trip-exit-help"
-                onChange={e => setExitDate(e.target.value)}
+                onChange={e => { setExitDate(e.target.value) }}
               />
               <span className={styles.dateAccent} aria-hidden="true" />
-              <button type="button" className={styles.dateOpen} aria-label="Open date picker" onClick={() => openDatePicker(exitRef)} disabled={openEnded}>
+              <button type="button" className={styles.dateOpen} aria-label="Open date picker" onClick={() => { openDatePicker(exitRef) }} disabled={openEnded}>
                 {calendarIcon}
               </button>
             </div>
@@ -176,7 +176,7 @@ export function TripFormPanel({ onAddTrip }: Props) {
             type="checkbox"
             className="ui-checkbox-native"
             checked={openEnded}
-            onChange={e => handleOpenEndedChange(e.target.checked)}
+            onChange={e => { handleOpenEndedChange(e.target.checked) }}
           />
           <span className="ui-checkbox-row">
             <span className="ui-checkbox-switch" aria-hidden="true">
@@ -202,7 +202,7 @@ export function TripFormPanel({ onAddTrip }: Props) {
           placeholder="Optional"
           aria-describedby="trip-note-help"
           value={note}
-          onChange={e => setNote(e.target.value)}
+          onChange={e => { setNote(e.target.value) }}
         />
       </div>
 

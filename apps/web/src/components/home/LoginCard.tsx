@@ -1,4 +1,4 @@
-import { type FormEvent, useSyncExternalStore, useState } from 'react'
+import { useSyncExternalStore, useState, type SyntheticEvent } from 'react'
 import { iconSvg } from '../../lib/icons'
 import { request } from '../../lib/app/apiClient'
 import { syncLocalToAccount } from '../../lib/app/remoteSync'
@@ -18,7 +18,7 @@ function maskEmail(email: string): string {
 }
 
 export default function LoginCard() {
-  const state = useSyncExternalStore(subscribe, getSnapshot)
+  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
@@ -28,7 +28,7 @@ export default function LoginCard() {
 
   const showStatus = (msg: string, t: Tone) => { setStatus(msg); setTone(t) }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (state.authenticated) return
 
@@ -85,7 +85,7 @@ export default function LoginCard() {
     return (
       <div className={`card ${styles.card}`} aria-labelledby="login-card-title">
         <p id="sync-state" className={styles.syncState}>
-          Synced to {state.userEmail}
+          {`Synced to ${state.userEmail}`}
         </p>
         <div className={styles.head}>
           <span className={styles.icon} dangerouslySetInnerHTML={{ __html: iconSvg('mail') }} />
@@ -116,9 +116,9 @@ export default function LoginCard() {
         <div>
           <h2 id="login-card-title">Save to your account</h2>
           <p className={`muted ${styles.sub}`}>
-            {step === 'code'
-              ? 'Enter the code from your email, then sign in to upload this browser\'s trips.'
-              : 'Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.'}
+            {step === 'code' ?
+              'Enter the code from your email, then sign in to upload this browser\'s trips.' :
+              'Enter your email when you want to sync trips across devices. We will send a one-time code — no password to remember.'}
           </p>
         </div>
       </div>
@@ -128,7 +128,10 @@ export default function LoginCard() {
           <span className={styles.pendingIcon} dangerouslySetInnerHTML={{ __html: iconSvg('pulse') }} />
           <div>
             <p className={styles.pendingTitle}>Check your inbox</p>
-            <p className={styles.pendingText}>We sent a 6-digit code to <strong>{maskEmail(pendingEmail)}</strong></p>
+            <p className={styles.pendingText}>
+              {'We sent a 6-digit code to '}
+              <strong>{maskEmail(pendingEmail)}</strong>
+            </p>
           </div>
         </div>
       )}
@@ -144,7 +147,7 @@ export default function LoginCard() {
           required
           readOnly={step === 'code'}
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={e => { setEmail(e.target.value) }}
         />
       </div>
 
@@ -166,7 +169,7 @@ export default function LoginCard() {
             aria-describedby="login-code-help"
             required
             value={code}
-            onChange={e => setCode(e.target.value)}
+            onChange={e => { setCode(e.target.value) }}
           />
         </div>
       )}
