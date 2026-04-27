@@ -27,3 +27,104 @@ const classes = ['ui-checkbox', className].filter(Boolean).join(' ')
     <span class="ui-checkbox-label">{label}</span>
   </span>
 </label>
+
+<style is:global>
+/* Switch-style checkbox: same panel affordance as trip form, keyboard on native input */
+.ui-checkbox {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  color: var(--text);
+  font-weight: 650;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ui-checkbox:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+.ui-checkbox:has(.ui-checkbox-native:focus-visible) {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+.ui-checkbox-native {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0.001;
+  cursor: pointer;
+}
+
+.ui-checkbox-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.ui-checkbox-switch {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--line) 55%, var(--surface));
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--text) 6%, transparent);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ui-checkbox-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface-strong);
+  box-shadow: 0 1px 4px color-mix(in srgb, black 18%, transparent);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ui-checkbox-native:checked ~ .ui-checkbox-row .ui-checkbox-switch {
+  border-color: color-mix(in srgb, var(--accent) 32%, transparent);
+  background: linear-gradient(135deg, var(--accent), var(--sky));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 22%, transparent);
+}
+
+.ui-checkbox-native:checked ~ .ui-checkbox-row .ui-checkbox-knob {
+  transform: translateX(18px);
+}
+
+.ui-checkbox:has(.ui-checkbox-native:checked) {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.ui-checkbox-label {
+  font-size: 0.9rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--muted) 22%, var(--text));
+}
+
+.field select.ui-select {
+  cursor: pointer;
+}
+</style>

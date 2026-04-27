@@ -13,3 +13,88 @@
     <p>Open-ended trips count from the entry date through today, so the dashboard keeps updating while you travel.</p>
   </details>
 </section>
+
+<style is:global>
+/* ── FAQ ────────────────────────────────── */
+  .faq {
+    display: grid;
+    gap: 10px;
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+  }
+
+  .faq details {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 0;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq details:hover,
+  .faq details[open] {
+    border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+    box-shadow: var(--shadow-sm);
+  }
+
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--text);
+    font-weight: 800;
+    user-select: none;
+    transition: color 0.15s ease;
+  }
+
+  .faq summary:hover {
+    color: var(--accent);
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq summary::after {
+    content: '+';
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface-strong);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--muted);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .faq details[open] summary::after {
+    transform: rotate(45deg);
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface-strong));
+  }
+
+  .faq .eyebrow {
+    margin-bottom: 6px;
+  }
+
+  .faq details p {
+    margin: 0;
+    padding: 14px 18px 18px;
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 0.95rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

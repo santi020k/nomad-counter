@@ -24,7 +24,7 @@ export const inclusiveDays = (startDate: string, endDate: string) => differenceI
 
 export const formatDisplayDate = (date: string) => format(parseISO(date), 'MMM d, yyyy')
 
-export const overlapDays = (trip: Trip, startDate: string, endDate: string) => {
+const overlapDays = (trip: Trip, startDate: string, endDate: string) => {
   const exitDate = trip.exitDate ?? todayIso()
   const start = trip.entryDate > startDate ? trip.entryDate : startDate
   const end = exitDate < endDate ? exitDate : endDate

@@ -55,3 +55,211 @@ const fieldClasses = ['field', className].filter(Boolean).join(' ')
     <select id={selectId} name={selectName} class="combo-native" aria-hidden="true" tabindex="-1"></select>
   </div>
 </div>
+
+<style is:global>
+.combo {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 2%, transparent), transparent 35%),
+    var(--surface-strong);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 5%, transparent);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.combo:focus-within,
+.combo[data-open="true"] {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  box-shadow: var(--focus-ring), 0 8px 20px color-mix(in srgb, var(--accent) 14%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 40%),
+    var(--surface-strong);
+}
+
+.combo-input {
+  min-height: 44px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.combo-input::placeholder {
+  color: color-mix(in srgb, var(--muted) 80%, var(--text));
+}
+
+.combo-input:focus-visible {
+  outline: none;
+}
+
+.combo-toggle {
+  width: 38px;
+  height: 38px;
+  margin-right: 5px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  color: color-mix(in srgb, var(--accent) 92%, var(--text));
+  font-size: 0.92rem;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.combo[data-open="true"] .combo-toggle {
+  transform: rotate(180deg);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.combo-selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  margin-left: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 999px;
+  padding: 0 8px 0 6px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: color-mix(in srgb, var(--accent) 92%, var(--text));
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.combo-selected-flag {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.combo-selected-code {
+  line-height: 1;
+}
+
+.combo-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 18;
+  display: none;
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 10px;
+  padding: 6px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.combo[data-open="true"] .combo-list {
+  display: grid;
+  gap: 4px;
+}
+
+.combo-option {
+  display: grid;
+  grid-template-columns: 1.8rem 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.combo-option:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  box-shadow: var(--focus-ring);
+}
+
+.combo-option:hover,
+.combo-option[data-active="true"] {
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--line));
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.combo-option[aria-selected="true"] {
+  border-color: color-mix(in srgb, var(--accent) 44%, var(--line));
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.combo-option[aria-selected="true"] .combo-option-label {
+  color: color-mix(in srgb, var(--accent) 72%, var(--text));
+}
+
+.combo-option-flag {
+  font-size: 1.03rem;
+}
+
+.combo-option-label {
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.combo-option-code {
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 999px;
+  padding: 2px 7px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: color-mix(in srgb, var(--accent) 90%, var(--text));
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.combo-option-check {
+  width: 1rem;
+  text-align: right;
+  color: color-mix(in srgb, var(--accent) 85%, var(--text));
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.combo-empty {
+  padding: 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.combo-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+</style>

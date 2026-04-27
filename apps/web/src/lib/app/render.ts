@@ -109,7 +109,7 @@ const summaryLevelLabel = (level: ExposureLevel) => {
   return 'On track'
 }
 
-export const renderCountryCard = (country: CountrySummary) => {
+const renderCountryCard = (country: CountrySummary) => {
   const progress = summaryProgressPercent(country)
   const dashOffset = summaryDonutCircumference * (1 - progress / 100)
   const donutGradId = `cc-donut-grad-${country.countryCode.toLowerCase()}`

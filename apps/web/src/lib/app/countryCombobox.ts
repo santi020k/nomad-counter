@@ -180,7 +180,7 @@ const selectCountryFromCombo = (combo: CountryComboState, code: string) => {
   combo.select.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
-export const closeAllCountryCombos = () => {
+const closeAllCountryCombos = () => {
   countryCombos.forEach(closeCountryCombo)
 }
 
