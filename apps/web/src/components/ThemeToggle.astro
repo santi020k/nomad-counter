@@ -48,7 +48,7 @@
       const button = this.querySelector<HTMLButtonElement>('button')
       if (!button) return
 
-      const isDarkMode = () => document.documentElement.getAttribute('data-theme') === 'dark' || 
+      const isDarkMode = () => document.documentElement.getAttribute('data-theme') === 'dark' ||
         (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
       button.setAttribute('role', 'switch')
@@ -73,7 +73,7 @@
 
     #circularReveal(button: HTMLButtonElement, isDark: boolean, newTheme: string) {
       const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches
-      
+
       if (isTouchDevice) {
         document.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: newTheme } }))
         button.setAttribute('aria-checked', String(!isDark))

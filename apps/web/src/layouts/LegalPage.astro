@@ -17,7 +17,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
 <!doctype html>
 <html lang="en">
   <head>
-    <SEO title={title} description={description} ogImage="/og-legal.png" />
+    <SEO title={title} description={description} ogImage="/og-legal.png" canonicalUrl={canonicalUrl} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

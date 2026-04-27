@@ -2,6 +2,7 @@
 import { differenceInCalendarDays, format, parseISO, subDays } from 'date-fns'
 
 import { countries } from './countries'
+import { countryCodeToFlagEmoji, escapeHtml, validateTripForm } from './tripForm'
 
 const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
 const tripsKey = 'nomad-counter:trips'
@@ -104,12 +105,115 @@ const formString = (data: FormData, key: string) => {
   return typeof value === 'string' ? value : ''
 }
 
-const setStatus = (message: string, tone: 'ok' | 'error' = 'ok') => {
+const setLoginStatus = (message: string, tone: 'ok' | 'error' = 'ok') => {
   const status = $('#status')
 
   if (status) {
     status.textContent = message
     status.dataset.tone = tone
+  }
+}
+
+const setTripFormStatus = (message: string, tone: 'ok' | 'error' = 'ok') => {
+  const el = $('#trip-form-status')
+
+  if (!el) {
+    return
+  }
+
+  el.textContent = message
+
+  if (!message) {
+    el.removeAttribute('data-tone')
+  } else {
+    el.dataset.tone = tone
+  }
+}
+
+const setHomeCountryFormStatus = (message: string, tone: 'ok' | 'error' = 'ok') => {
+  const el = $('#home-country-form-status')
+
+  if (!el) {
+    return
+  }
+
+  el.textContent = message
+
+  if (!message) {
+    el.removeAttribute('data-tone')
+  } else {
+    el.dataset.tone = tone
+  }
+}
+
+const getTripFormEls = () => ({
+  open: $('#trip-open-ended') as HTMLInputElement | null,
+  exit: $('#trip-exit') as HTMLInputElement | null,
+  entry: $('#trip-entry') as HTMLInputElement | null
+})
+
+const syncExitMinFromEntry = () => {
+  const { entry, exit } = getTripFormEls()
+
+  if (!entry || !exit) {
+    return
+  }
+
+  const v = entry.value
+
+  if (v) {
+    exit.min = v
+  } else {
+    exit.removeAttribute('min')
+  }
+}
+
+const applyOpenEndedUi = (checked: boolean) => {
+  const { exit } = getTripFormEls()
+
+  if (!exit) {
+    return
+  }
+
+  if (checked) {
+    if (exit.value) {
+      exit.dataset.lastExit = exit.value
+    }
+
+    exit.value = ''
+    exit.disabled = true
+    exit.removeAttribute('required')
+  } else {
+    exit.disabled = false
+    exit.setAttribute('required', '')
+    const last = exit.dataset.lastExit
+
+    if (last) {
+      exit.value = last
+      delete exit.dataset.lastExit
+    }
+  }
+
+  syncExitMinFromEntry()
+}
+
+const wireTripFormDates = () => {
+  const { open, entry, exit } = getTripFormEls()
+
+  open?.addEventListener('change', () => applyOpenEndedUi(open.checked))
+
+  entry?.addEventListener('change', () => {
+    syncExitMinFromEntry()
+
+    if (exit && !exit.disabled && entry.value && exit.value && exit.value < entry.value) {
+      exit.value = entry.value
+    }
+  })
+
+  if (open?.checked) {
+    applyOpenEndedUi(true)
+  } else {
+    syncExitMinFromEntry()
   }
 }
 
@@ -211,11 +315,12 @@ const renderSummary = () => {
     const statusText = country.daysRemaining <= 0
       ? `${Math.abs(country.daysRemaining)} days over threshold`
       : `${country.daysRemaining} days remaining`
+    const flag = countryCodeToFlagEmoji(country.countryCode)
 
     return `<article class="country-card" data-level="${country.exposureLevel}">
       <div class="cc-header">
-        <strong>${country.countryName}</strong>
-        <span class="cc-code">${country.countryCode}</span>
+        <strong><span class="cc-flag" aria-hidden="true">${flag}</span> ${escapeHtml(country.countryName)}</strong>
+        <span class="cc-code">${escapeHtml(country.countryCode)}</span>
       </div>
       <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
       <div class="meter" role="progressbar" aria-valuenow="${country.daysPresent}" aria-valuemin="0" aria-valuemax="${country.thresholdDays}"><i style="--w:${progress}%"></i></div>
@@ -238,15 +343,16 @@ const renderTrips = () => {
       .map(trip => {
         const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
         const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
+        const flag = countryCodeToFlagEmoji(trip.countryCode)
 
         return `<article class="row">
           <div class="row-info">
-            <strong>${trip.countryName}</strong>
+            <strong><span class="row-flag cc-flag" aria-hidden="true">${flag}</span> ${escapeHtml(trip.countryName)}</strong>
             <span>${formatDisplayDate(trip.entryDate)} → ${exitLabel}</span>
           </div>
           <div class="row-meta">
             <span class="trip-days">${days}d</span>
-            <button class="icon-button" data-delete-trip="${trip.id}" title="Delete trip" aria-label="Delete trip">×</button>
+            <button class="icon-button" data-delete-trip="${escapeHtml(trip.id)}" title="Delete trip" aria-label="Delete trip">×</button>
           </div>
         </article>`
       })
@@ -262,13 +368,19 @@ const renderHomeCountries = () => {
 
   target.innerHTML = state.countries.length === 0
     ? '<p class="muted empty-state">Track a country to customize its threshold and warning range.</p>'
-    : state.countries.map(country => `<article class="row">
-      <div>
-        <strong>${country.countryName}</strong>
+    : state.countries.map(country => {
+      const flag = countryCodeToFlagEmoji(country.countryCode)
+
+      return `<article class="row">
+      <div class="row-info">
+        <strong><span class="row-flag cc-flag" aria-hidden="true">${flag}</span> ${escapeHtml(country.countryName)}</strong>
         <span>${country.thresholdDays}-day threshold · warning at ${country.warningDays} days left</span>
       </div>
-      <button class="icon-button" data-delete-country="${country.id}" title="Remove country" aria-label="Remove country">×</button>
-    </article>`).join('')
+      <div class="row-meta">
+        <button class="icon-button" data-delete-country="${escapeHtml(country.id)}" title="Remove country" aria-label="Remove country">×</button>
+      </div>
+    </article>`
+    }).join('')
 }
 
 const renderAll = () => {
@@ -349,7 +461,7 @@ const requestCode = async (form: HTMLFormElement) => {
     submitButton.textContent = 'Sign in and sync'
   }
 
-  setStatus(response.devCode ? `Local dev code: ${response.devCode}` : 'Check your email for a six-digit code.')
+  setLoginStatus(response.devCode ? `Local dev code: ${response.devCode}` : 'Check your email for a six-digit code.')
 }
 
 const verifyCode = async (form: HTMLFormElement) => {
@@ -364,26 +476,46 @@ const verifyCode = async (form: HTMLFormElement) => {
 
   state.authenticated = true
   state.userEmail = response.user.email
-  setStatus('Signed in. Saving this browser data to your account.')
+  setLoginStatus('Signed in. Saving this browser data to your account.')
   await syncLocalToAccount()
 }
 
 const addTrip = async (form: HTMLFormElement) => {
+  setTripFormStatus('', 'ok')
   const data = new FormData(form)
   const select = form.elements.namedItem('countryCode') as HTMLSelectElement
+  const openEnded = data.get('openEnded') === 'on'
+  const entryDate = formString(data, 'entryDate')
+  const exitDateRaw = formString(data, 'exitDate')
+  const validated = validateTripForm({ entryDate, exitDate: exitDateRaw, openEnded })
+
+  if (!validated.ok) {
+    setTripFormStatus(validated.error, 'error')
+    return
+  }
+
+  setTripFormStatus('', 'ok')
+
   const trip: Trip = {
     id: `local_${crypto.randomUUID()}`,
     countryCode: formString(data, 'countryCode'),
     countryName: countryNameFor(select),
-    entryDate: formString(data, 'entryDate'),
-    exitDate: data.get('openEnded') === 'on' ? null : formString(data, 'exitDate'),
+    entryDate,
+    exitDate: validated.exitDate,
     note: formString(data, 'note') || null
   }
 
-  trip.exitDate = trip.exitDate || null
-
   if (state.authenticated) {
-    await request('/api/trips', { method: 'POST', body: JSON.stringify(trip) })
+    await request('/api/trips', {
+      method: 'POST',
+      body: JSON.stringify({
+        countryCode: trip.countryCode,
+        countryName: trip.countryName,
+        entryDate: trip.entryDate,
+        exitDate: trip.exitDate,
+        note: trip.note
+      })
+    })
     await refreshRemote()
   } else {
     state.trips.push(trip)
@@ -392,9 +524,16 @@ const addTrip = async (form: HTMLFormElement) => {
   }
 
   form.reset()
+  applyOpenEndedUi(false)
+  syncExitMinFromEntry()
+
+  if (validated.hint) {
+    setTripFormStatus(validated.hint, 'ok')
+  }
 }
 
 const addHomeCountry = async (form: HTMLFormElement) => {
+  setHomeCountryFormStatus('', 'ok')
   const data = new FormData(form)
   const select = form.elements.namedItem('countryCode') as HTMLSelectElement
   const country: HomeCountry = {
@@ -435,22 +574,42 @@ const exportCsv = () => {
 const importCsv = async (file: File) => {
   const text = await file.text()
   const [, ...lines] = text.trim().split(/\r?\n/)
+  let imported = 0
+  let skipped = 0
 
   for (const line of lines) {
     const [countryCode = '', countryName = '', entryDate = '', exitDate = '', note = ''] = line
       .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
       .map(value => value.replace(/^"|"$/g, '').replaceAll('""', '"'))
 
-    if (countryCode && countryName && entryDate) {
-      state.trips.push({
-        id: `local_${crypto.randomUUID()}`,
-        countryCode,
-        countryName,
-        entryDate,
-        exitDate: exitDate || null,
-        note: note || null
-      })
+    if (!countryCode || !countryName || !entryDate.trim()) {
+      skipped++
+      continue
     }
+
+    const entryTrim = entryDate.trim()
+    const exitTrim = exitDate.trim()
+    const openEnded = exitTrim.length === 0
+    const rowValidation = validateTripForm({
+      entryDate: entryTrim,
+      exitDate: exitTrim,
+      openEnded
+    })
+
+    if (!rowValidation.ok) {
+      skipped++
+      continue
+    }
+
+    state.trips.push({
+      id: `local_${crypto.randomUUID()}`,
+      countryCode,
+      countryName,
+      entryDate: entryTrim,
+      exitDate: rowValidation.exitDate,
+      note: note || null
+    })
+    imported++
   }
 
   saveLocal()
@@ -460,6 +619,14 @@ const importCsv = async (file: File) => {
   } else {
     renderAll()
   }
+
+  if (imported === 0 && skipped > 0) {
+    setTripFormStatus('No valid trips imported. Check dates (exit on or after entry) and required columns.', 'error')
+  } else if (skipped > 0) {
+    setTripFormStatus(`Imported ${String(imported)} trip(s). Skipped ${String(skipped)} invalid row(s).`, 'ok')
+  } else if (imported > 0) {
+    setTripFormStatus(`Imported ${String(imported)} trip(s).`, 'ok')
+  }
 }
 
 const boot = async () => {
@@ -467,41 +634,32 @@ const boot = async () => {
     select.innerHTML = countryOptions()
   })
 
+  wireTripFormDates()
+
   state.trips = readLocal<Trip[]>(tripsKey, [])
   state.countries = readLocal<HomeCountry[]>(countriesKey, [])
-
-  try {
-    const response = await request<{ user: { email: string } }>('/api/auth/me')
-
-    state.authenticated = true
-    state.userEmail = response.user.email
-    await refreshRemote()
-  } catch {
-    state.authenticated = false
-    renderAll()
-  }
 
   $('#login-form')?.addEventListener('submit', event => {
     event.preventDefault()
     const form = event.currentTarget as HTMLFormElement
 
     void (form.dataset.codeRequested === 'true' ? verifyCode(form) : requestCode(form))
-      .catch(error => setStatus(error.message, 'error'))
+      .catch(error => setLoginStatus(error.message, 'error'))
   })
 
   $('#trip-form')?.addEventListener('submit', event => {
     event.preventDefault()
-    void addTrip(event.currentTarget as HTMLFormElement).catch(error => setStatus(error.message, 'error'))
+    void addTrip(event.currentTarget as HTMLFormElement).catch(error => setTripFormStatus(error.message, 'error'))
   })
 
   $('#home-country-form')?.addEventListener('submit', event => {
     event.preventDefault()
-    void addHomeCountry(event.currentTarget as HTMLFormElement).catch(error => setStatus(error.message, 'error'))
+    void addHomeCountry(event.currentTarget as HTMLFormElement).catch(error => setHomeCountryFormStatus(error.message, 'error'))
   })
 
   $('#window-mode')?.addEventListener('change', () => {
     if (state.authenticated) {
-      void refreshRemote().catch(error => setStatus(error.message, 'error'))
+      void refreshRemote().catch(error => setLoginStatus(error.message, 'error'))
     } else {
       renderAll()
     }
@@ -512,7 +670,7 @@ const boot = async () => {
     const file = (event.currentTarget as HTMLInputElement).files?.[0]
 
     if (file) {
-      void importCsv(file).catch(error => setStatus(error.message, 'error'))
+      void importCsv(file).catch(error => setTripFormStatus(error.message, 'error'))
     }
   })
 
@@ -523,7 +681,7 @@ const boot = async () => {
 
     if (tripId) {
       if (state.authenticated && !tripId.startsWith('local_')) {
-        void request(`/api/trips/${tripId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setStatus(error.message, 'error'))
+        void request(`/api/trips/${tripId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setTripFormStatus(error.message, 'error'))
       } else {
         state.trips = state.trips.filter(trip => trip.id !== tripId)
         saveLocal()
@@ -533,7 +691,7 @@ const boot = async () => {
 
     if (countryId) {
       if (state.authenticated && !countryId.startsWith('local_')) {
-        void request(`/api/home-countries/${countryId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setStatus(error.message, 'error'))
+        void request(`/api/home-countries/${countryId}`, { method: 'DELETE' }).then(refreshRemote).catch(error => setHomeCountryFormStatus(error.message, 'error'))
       } else {
         state.countries = state.countries.filter(country => country.id !== countryId)
         saveLocal()
@@ -541,6 +699,18 @@ const boot = async () => {
       }
     }
   })
+
+  try {
+    const response = await request<{ user: { email: string } }>('/api/auth/me')
+
+    state.authenticated = true
+    state.userEmail = response.user.email
+    await refreshRemote()
+  } catch {
+    state.authenticated = false
+    state.userEmail = null
+    renderAll()
+  }
 
   const revealElement = (el: HTMLElement) => {
     if (el.hasAttribute('data-stagger')) {

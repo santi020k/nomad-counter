@@ -146,7 +146,7 @@ const websiteJsonLd = {
         </div>
 
         <div class="sidebar">
-          <form id="trip-form" class="panel form-panel">
+          <form id="trip-form" class="panel form-panel" novalidate>
             <h2>Add trip</h2>
             <div class="field">
               <label for="trip-country">Country</label>
@@ -159,13 +159,15 @@ const websiteJsonLd = {
               </div>
               <div class="field">
                 <label for="trip-exit">Exit date</label>
-                <input id="trip-exit" name="exitDate" type="date" />
+                <input id="trip-exit" name="exitDate" type="date" required aria-describedby="trip-exit-help" />
+                <small id="trip-exit-help" class="field-hint">Required for completed stays. Disabled while “Currently there” is checked.</small>
               </div>
             </div>
             <label class="check">
-              <input name="openEnded" type="checkbox" />
+              <input id="trip-open-ended" name="openEnded" type="checkbox" />
               <span>Currently there</span>
             </label>
+            <p id="trip-form-status" class="form-status" role="status" aria-live="polite"></p>
             <div class="field">
               <label for="trip-note">Note</label>
               <textarea id="trip-note" name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help"></textarea>
@@ -195,6 +197,7 @@ const websiteJsonLd = {
               <span id="warning-help">Warning is how many days before the threshold should feel close.</span>
             </p>
             <button class="btn secondary" type="submit">Track country</button>
+            <p id="home-country-form-status" class="form-status" role="status" aria-live="polite"></p>
             <div id="home-country-list" class="list tight">
               <p class="muted empty-state">Track a country to customize its threshold and warning range.</p>
             </div>
@@ -484,6 +487,31 @@ const websiteJsonLd = {
     color: var(--danger);
   }
 
+  .form-status {
+    min-height: 0;
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--accent);
+  }
+
+  .form-status:empty {
+    display: none;
+  }
+
+  .form-status[data-tone="error"] {
+    color: var(--danger);
+  }
+
+  .field-hint {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+
   /* ── App grid ───────────────────────────── */
   .app-grid {
     display: grid;
@@ -625,9 +653,17 @@ const websiteJsonLd = {
   }
 
   .cc-header strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 0.95rem;
     font-weight: 800;
     color: var(--text);
+  }
+
+  .cc-flag {
+    font-size: 1.35rem;
+    line-height: 1;
   }
 
   .cc-code {
@@ -754,8 +790,16 @@ const websiteJsonLd = {
   }
 
   .row-info strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 0.92rem;
     font-weight: 700;
+  }
+
+  .row-flag {
+    font-size: 1.2rem;
+    line-height: 1;
   }
 
   .row-info span,

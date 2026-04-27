@@ -20,7 +20,9 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix --quiet",
     "check": "astro check",
-    "test": "playwright test",
+    "test": "pnpm run test:unit && pnpm run test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
     "test:install": "playwright install chromium",
     "lighthouse": "lhci autorun --config=lighthouserc.cjs",
     "lighthouse:mobile": "lhci autorun --config=lighthouserc.mobile.cjs"
@@ -44,6 +46,7 @@
     "eslint": "^10.2.1",
     "sharp": "^0.34.5",
     "typescript": "^6.0.3",
+    "vitest": "^4.1.5",
     "wrangler": "^4.85.0"
   }
 }

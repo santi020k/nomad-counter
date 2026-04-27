@@ -20,7 +20,7 @@
     "test": {
       "dependsOn": ["^build"],
       "cache": false,
-      "outputs": ["playwright-report/**", "test-results/**"]
+      "outputs": ["playwright-report/**", "test-results/**", "coverage/**"]
     },
     "deploy": {
       "dependsOn": ["build"],

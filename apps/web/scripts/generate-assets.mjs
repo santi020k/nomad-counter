@@ -35,9 +35,9 @@ const escapeXml = (unsafe) => {
 const generateOgImage = async (filename, title, subtitle) => {
   const safeTitle = escapeXml(title)
   const safeSubtitle = escapeXml(subtitle)
-  
+
   const titleFontSize = title.length > 35 ? 42 : 48
-  
+
   return sharp(wallpaper)
     .resize(1200, 630, { fit: 'cover' })
     .composite([

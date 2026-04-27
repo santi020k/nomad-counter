@@ -122,6 +122,49 @@ html[data-scroll-reveal="ready"] [data-stagger] > *.is-visible {
   }
 }
 
+/* ── View Transitions ──────────────────────────────────────────────────────── */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out, slide-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in, slide-in;
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes slide-out {
+  to { transform: translateY(-8px); }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(8px); }
+}
+
+/* Ensure header and logo stay persistent or transition smoothly */
+.topbar {
+  view-transition-name: topbar;
+}
+
+.brand {
+  view-transition-name: brand;
+  display: inline-flex;
+  align-items: center;
+}
+
 body {
   min-height: 100%;
   margin: 0;
