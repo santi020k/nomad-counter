@@ -1,4 +1,5 @@
 ---
+import ThemeProvider from './ThemeProvider.astro'
 interface Props {
   title?: string
   description?: string
@@ -56,3 +57,5 @@ const ogImageUrl = new URL(ogImage, siteUrl).toString()
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={ogImageUrl} />
+
+<ThemeProvider />

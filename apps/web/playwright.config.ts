@@ -6,12 +6,12 @@ export default defineConfig({
   fullyParallel: true,
   reporter: [['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://127.0.0.1:4321',
+    baseURL: 'http://localhost:4321',
     trace: 'on-first-retry'
   },
   webServer: {
-    command: 'pnpm run dev --host 127.0.0.1',
-    url: 'http://127.0.0.1:4321',
+    command: 'pnpm run dev --host localhost',
+    url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000
   },

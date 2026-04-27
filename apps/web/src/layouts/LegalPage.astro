@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '@/components/SiteFooter.astro'
 import SEO from '@/components/SEO.astro'
+import ThemeToggle from '@/components/ThemeToggle.astro'
 import '@/styles/global.css'
 
 interface Props {
@@ -29,6 +30,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
           </picture>
         </a>
         <div class="nav-actions">
+          <ThemeToggle />
           <a class="btn secondary" href="/#counter">Counter</a>
           <a class="btn secondary" href="/stats/">Stats</a>
         </div>

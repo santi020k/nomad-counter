@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '@/components/SiteFooter.astro'
 import SEO from '@/components/SEO.astro'
+import ThemeToggle from '@/components/ThemeToggle.astro'
 import '@/styles/global.css'
 
 const title = 'Nomad Counter'
@@ -46,7 +47,8 @@ const websiteJsonLd = {
           </picture>
         </a>
         <div class="nav-actions">
-          <a class="nav-link" href="/stats">Stats</a>
+          <a class="nav-link" href="/stats/">Stats</a>
+          <ThemeToggle />
           <div class="nav-sep" aria-hidden="true"></div>
           <a class="btn nav-cta" href="#counter">Start counting</a>
         </div>

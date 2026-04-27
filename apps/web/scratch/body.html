@@ -1,0 +1,679 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-j3fvw3lo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico" sizes="32x32"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-16.png" sizes="16x16"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="icon" href="/favicon-48.png" sizes="48x48"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#471aa0"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#471aa0"><!-- Primary Meta Tags --><title>Public Stats — Nomad Counter</title><meta name="title" content="Public Stats — Nomad Counter"><meta name="description" content="Public Nomad Counter aggregate statistics and platform health."><meta name="robots" content="index, follow"><link rel="canonical" href="https://nomad.santi020k.com/stats/"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://nomad.santi020k.com/stats/"><meta property="og:title" content="Public Stats — Nomad Counter"><meta property="og:description" content="Public Nomad Counter aggregate statistics and platform health."><meta property="og:image" content="https://nomad.santi020k.com/og-stats.png"><meta property="og:site_name" content="Nomad Counter"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://nomad.santi020k.com/stats/"><meta property="twitter:title" content="Public Stats — Nomad Counter"><meta property="twitter:description" content="Public Nomad Counter aggregate statistics and platform health."><meta property="twitter:image" content="https://nomad.santi020k.com/og-stats.png"><script>
+  const lightModePref = window.matchMedia('(prefers-color-scheme: light)')
+
+  const getUserPref = () => {
+    const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+    return storedTheme || (lightModePref.matches ? 'light' : 'dark')
+  }
+
+  const setTheme = newTheme => {
+    if (newTheme !== 'light' && newTheme !== 'dark') return
+
+    const root = document.documentElement
+    if (newTheme === root.getAttribute('data-theme')) return
+
+    root.setAttribute('data-theme', newTheme)
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('theme', newTheme)
+    }
+  }
+
+  // initial setup
+  setTheme(getUserPref())
+
+  // View Transitions hook to restore theme
+  document.addEventListener('astro:after-swap', () => setTheme(getUserPref()))
+
+  // listen for theme-change custom event
+  document.addEventListener('theme-change', e => {
+    setTheme(e.detail.theme)
+  })
+
+  // listen for prefers-color-scheme change.
+  lightModePref.addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) {
+      setTheme(e.matches ? 'light' : 'dark')
+    }
+  })
+</script><style data-vite-dev-id="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro?astro&#38;type=style&#38;index=0&#38;lang.css">.site-footer[data-astro-cid-gcn2mc3v]{margin-top:40px;padding-block:32px 48px;color:var(--muted);font-size:0.88rem}.site-footer[data-astro-cid-gcn2mc3v]::before{content:"";display:block;height:1px;margin-bottom:28px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 35%,var(--line)),transparent)}.footer-main[data-astro-cid-gcn2mc3v],.footer-bottom[data-astro-cid-gcn2mc3v]{display:flex;align-items:center;justify-content:space-between;gap:20px}.footer-main[data-astro-cid-gcn2mc3v]{align-items:start}.footer-bottom[data-astro-cid-gcn2mc3v]{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}.footer-kicker[data-astro-cid-gcn2mc3v]{margin:0 0 6px;color:var(--text);font-size:0.82rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase}.footer-copy[data-astro-cid-gcn2mc3v],.footer-bottom[data-astro-cid-gcn2mc3v] p[data-astro-cid-gcn2mc3v]{max-width:620px;margin:0;line-height:1.6}.footer-links[data-astro-cid-gcn2mc3v],.footer-actions[data-astro-cid-gcn2mc3v]{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px}.footer-links[data-astro-cid-gcn2mc3v]{margin:0;padding:0;list-style:none}.site-footer[data-astro-cid-gcn2mc3v] a[data-astro-cid-gcn2mc3v]{color:var(--accent);font-weight:700;text-decoration:none;transition:color 0.15s ease,border-color 0.15s ease,background 0.15s ease,transform 0.15s ease}.site-footer[data-astro-cid-gcn2mc3v] a[data-astro-cid-gcn2mc3v]:hover{color:var(--accent-strong)}.footer-links[data-astro-cid-gcn2mc3v] a[data-astro-cid-gcn2mc3v]{display:inline-flex;border-radius:6px;padding:6px 8px}.footer-links[data-astro-cid-gcn2mc3v] a[data-astro-cid-gcn2mc3v]:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}.footer-action[data-astro-cid-gcn2mc3v]{display:inline-flex;min-height:40px;align-items:center;gap:8px;border:1px solid var(--line);border-radius:var(--radius);padding:0 12px;background:var(--surface-strong);color:var(--text);box-shadow:var(--shadow-sm)}.footer-action[data-astro-cid-gcn2mc3v]:hover{border-color:color-mix(in srgb,var(--accent-soft) 60%,var(--line));background:color-mix(in srgb,var(--accent) 4%,var(--surface-strong));transform:translateY(-1px)}.footer-action[data-astro-cid-gcn2mc3v] svg[data-astro-cid-gcn2mc3v]{width:18px;height:18px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8}@media (prefers-reduced-motion: reduce){.site-footer[data-astro-cid-gcn2mc3v] a[data-astro-cid-gcn2mc3v],.footer-action[data-astro-cid-gcn2mc3v]{transition:none}.footer-action[data-astro-cid-gcn2mc3v]:hover{transform:none}}@media (max-width: 760px){.footer-main[data-astro-cid-gcn2mc3v],.footer-bottom[data-astro-cid-gcn2mc3v]{align-items:stretch;flex-direction:column}.footer-links[data-astro-cid-gcn2mc3v],.footer-actions[data-astro-cid-gcn2mc3v]{justify-content:flex-start}}</style>
+<style data-vite-dev-id="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro?astro&#38;type=style&#38;index=0&#38;lang.css">.theme-toggle-btn[data-astro-cid-x3pjskd3]{position:relative;display:flex;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);border-radius:999px;background:var(--surface-strong);color:var(--text);transition:transform 0.2s ease,border-color 0.2s ease,box-shadow 0.2s ease;box-shadow:var(--shadow-sm)}.theme-toggle-btn[data-astro-cid-x3pjskd3]:hover{transform:translateY(-1px);border-color:var(--accent-soft);box-shadow:var(--shadow)}.theme-toggle-btn[data-astro-cid-x3pjskd3] svg[data-astro-cid-x3pjskd3]{position:absolute;width:18px;height:18px;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.3s ease}.sun-icon[data-astro-cid-x3pjskd3]{opacity:1;transform:scale(1) rotate(0)}.moon-icon[data-astro-cid-x3pjskd3]{opacity:0;transform:scale(0) rotate(-90deg)}[data-theme="dark"] .sun-icon[data-astro-cid-x3pjskd3]{opacity:0;transform:scale(0) rotate(90deg)}[data-theme="dark"] .moon-icon[data-astro-cid-x3pjskd3]{opacity:1;transform:scale(1) rotate(0)}@media (prefers-color-scheme: dark){:not([data-theme="light"]) .sun-icon[data-astro-cid-x3pjskd3]{opacity:0;transform:scale(0) rotate(90deg)}:not([data-theme="light"]) .moon-icon[data-astro-cid-x3pjskd3]{opacity:1;transform:scale(1) rotate(0)}}@media (prefers-reduced-motion: reduce){.theme-toggle-btn[data-astro-cid-x3pjskd3] svg[data-astro-cid-x3pjskd3]{transition:none}}</style>
+<style data-vite-dev-id="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/styles/global.css">/*! tailwindcss v4.2.4 | MIT License | https://tailwindcss.com */
+@layer properties;
+@layer theme, base, components, utilities;
+@layer theme {
+  :root, :host {
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    --spacing: 0.25rem;
+    --radius-lg: 0.5rem;
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    --default-font-family: var(--font-sans);
+    --default-mono-font-family: var(--font-mono);
+  }
+}
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+  html, :host {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+    font-feature-settings: var(--default-font-feature-settings, normal);
+    font-variation-settings: var(--default-font-variation-settings, normal);
+    -webkit-tap-highlight-color: transparent;
+  }
+  hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+  abbr:where([title]) {
+    -webkit-text-decoration: underline dotted;
+    text-decoration: underline dotted;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  a {
+    color: inherit;
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+  }
+  b, strong {
+    font-weight: bolder;
+  }
+  code, kbd, samp, pre {
+    font-family: var(--default-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+    font-feature-settings: var(--default-mono-font-feature-settings, normal);
+    font-variation-settings: var(--default-mono-font-variation-settings, normal);
+    font-size: 1em;
+  }
+  small {
+    font-size: 80%;
+  }
+  sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  sub {
+    bottom: -0.25em;
+  }
+  sup {
+    top: -0.5em;
+  }
+  table {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+  :-moz-focusring {
+    outline: auto;
+  }
+  progress {
+    vertical-align: baseline;
+  }
+  summary {
+    display: list-item;
+  }
+  ol, ul, menu {
+    list-style: none;
+  }
+  img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    vertical-align: middle;
+  }
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+  button, input, select, optgroup, textarea, ::file-selector-button {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  :where(select:is([multiple], [size])) optgroup {
+    font-weight: bolder;
+  }
+  :where(select:is([multiple], [size])) optgroup option {
+    padding-inline-start: 20px;
+  }
+  ::file-selector-button {
+    margin-inline-end: 4px;
+  }
+  ::placeholder {
+    opacity: 1;
+  }
+  @supports (not (-webkit-appearance: -apple-pay-button))  or (contain-intrinsic-size: 1px) {
+    ::placeholder {
+      color: currentcolor;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, currentcolor 50%, transparent);
+      }
+    }
+  }
+  textarea {
+    resize: vertical;
+  }
+  ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+  ::-webkit-date-and-time-value {
+    min-height: 1lh;
+    text-align: inherit;
+  }
+  ::-webkit-datetime-edit {
+    display: inline-flex;
+  }
+  ::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+  ::-webkit-datetime-edit, ::-webkit-datetime-edit-year-field, ::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-hour-field, ::-webkit-datetime-edit-minute-field, ::-webkit-datetime-edit-second-field, ::-webkit-datetime-edit-millisecond-field, ::-webkit-datetime-edit-meridiem-field {
+    padding-block: 0;
+  }
+  ::-webkit-calendar-picker-indicator {
+    line-height: 1;
+  }
+  :-moz-ui-invalid {
+    box-shadow: none;
+  }
+  button, input:where([type="button"], [type="reset"], [type="submit"]), ::file-selector-button {
+    appearance: button;
+  }
+  ::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+    height: auto;
+  }
+  [hidden]:where(:not([hidden="until-found"])) {
+    display: none !important;
+  }
+}
+@layer utilities {
+  .visible {
+    visibility: visible;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  .fixed {
+    position: fixed;
+  }
+  .start {
+    inset-inline-start: var(--spacing);
+  }
+  .end {
+    inset-inline-end: var(--spacing);
+  }
+  .contents {
+    display: contents;
+  }
+  .grid {
+    display: grid;
+  }
+  .hidden {
+    display: none;
+  }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
+  .transform {
+    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+  .filter {
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .backdrop-filter {
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .transition {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .ease-out {
+    --tw-ease: var(--ease-out);
+    transition-timing-function: var(--ease-out);
+  }
+}
+:root, :root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #471aa0;
+  --accent-strong: #4c1d95;
+  --accent-soft: #b579e6;
+  --sky: #804bc4;
+  --warn: #eab308;
+  --danger: #dc2626;
+  --success: #14b8a6;
+  --shadow-sm: 0 2px 8px rgb(71 26 160 / 8%);
+  --shadow: 0 8px 28px rgb(71 26 160 / 12%), 0 2px 8px rgb(71 26 160 / 6%);
+  --shadow-lg: 0 20px 60px rgb(71 26 160 / 16%), 0 4px 16px rgb(71 26 160 / 8%);
+  --glow: 0 0 28px var(--accent);
+  @supports (color: color-mix(in lab, red, red)) {
+    --glow: 0 0 28px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #17122a;
+    --surface: #21183c;
+    --surface-strong: #2b2050;
+    --text: #ffffff;
+    --muted: #d1c7e8;
+    --line: #4a3976;
+    --accent: #b579e6;
+    --accent-strong: #d8c7ff;
+    --accent-soft: #804bc4;
+    --sky: #c7bae2;
+    --warn: #eab308;
+    --danger: #f87171;
+    --success: #2dd4bf;
+    --shadow-sm: 0 2px 8px rgb(0 0 0 / 20%);
+    --shadow: 0 8px 32px rgb(0 0 0 / 28%), 0 2px 8px rgb(0 0 0 / 16%);
+    --shadow-lg: 0 24px 72px rgb(0 0 0 / 40%), 0 4px 16px rgb(0 0 0 / 24%);
+    --glow: 0 0 32px var(--accent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --glow: 0 0 32px color-mix(in srgb, var(--accent) 50%, transparent);
+    }
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #17122a;
+  --surface: #21183c;
+  --surface-strong: #2b2050;
+  --text: #ffffff;
+  --muted: #d1c7e8;
+  --line: #4a3976;
+  --accent: #b579e6;
+  --accent-strong: #d8c7ff;
+  --accent-soft: #804bc4;
+  --sky: #c7bae2;
+  --warn: #eab308;
+  --danger: #f87171;
+  --success: #2dd4bf;
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 20%);
+  --shadow: 0 8px 32px rgb(0 0 0 / 28%), 0 2px 8px rgb(0 0 0 / 16%);
+  --shadow-lg: 0 24px 72px rgb(0 0 0 / 40%), 0 4px 16px rgb(0 0 0 / 24%);
+  --glow: 0 0 32px var(--accent);
+  @supports (color: color-mix(in lab, red, red)) {
+    --glow: 0 0 32px color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+html[data-scroll-reveal="ready"] [data-animate] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html[data-scroll-reveal="ready"] [data-animate].is-visible {
+  opacity: 1;
+  transform: none;
+}
+html[data-scroll-reveal="ready"] [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html[data-scroll-reveal="ready"] [data-stagger] > *.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-scroll-reveal="ready"] [data-animate], html[data-scroll-reveal="ready"] [data-stagger] > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+body {
+  min-height: 100%;
+  margin: 0;
+  background: radial-gradient(circle at 18% 8%, rgb(181 121 230 / 18%), transparent 36%), radial-gradient(circle at 82% 72%, rgb(71 26 160 / 12%), transparent 32%), linear-gradient(140deg, rgb(71 26 160 / 8%), transparent 40%), linear-gradient(318deg, rgb(128 75 196 / 10%), transparent 36%), radial-gradient(circle at 1px 1px, var(--accent) 1px, transparent 0), var(--bg);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: radial-gradient(circle at 18% 8%, rgb(181 121 230 / 18%), transparent 36%), radial-gradient(circle at 82% 72%, rgb(71 26 160 / 12%), transparent 32%), linear-gradient(140deg, rgb(71 26 160 / 8%), transparent 40%), linear-gradient(318deg, rgb(128 75 196 / 10%), transparent 36%), radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--accent) 8%, transparent) 1px, transparent 0), var(--bg);
+  }
+  background-size: auto, auto, auto, auto, 28px 28px;
+}
+button, input, select, textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.shell {
+  width: min(1180px, calc(100% - 32px));
+  margin-inline: auto;
+}
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  transform: translateY(-160%);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  background: var(--accent);
+  color: white;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.18s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+  }
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+.btn {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 0 16px;
+  background: linear-gradient(135deg, var(--accent), var(--sky));
+  color: white;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow), var(--glow);
+}
+.btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+.btn.secondary {
+  border-color: var(--line);
+  background: var(--surface-strong);
+  color: var(--text);
+  box-shadow: none;
+}
+.btn.secondary:hover {
+  border-color: var(--accent-soft);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in srgb, var(--accent-soft) 60%, var(--line));
+  }
+  background: var(--accent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--accent) 4%, var(--surface-strong));
+  }
+  box-shadow: var(--shadow-sm);
+}
+.btn.danger {
+  background: var(--danger);
+}
+.field {
+  display: grid;
+  gap: 6px;
+}
+.field label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  background: var(--surface-strong);
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent);
+  @supports (color: color-mix(in lab, red, red)) {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+}
+.grid-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 14px;
+}
+.muted {
+  color: var(--muted);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-drop-shadow-size {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ease {
+  syntax: "*";
+  inherits: false;
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+      --tw-rotate-x: initial;
+      --tw-rotate-y: initial;
+      --tw-rotate-z: initial;
+      --tw-skew-x: initial;
+      --tw-skew-y: initial;
+      --tw-border-style: solid;
+      --tw-blur: initial;
+      --tw-brightness: initial;
+      --tw-contrast: initial;
+      --tw-grayscale: initial;
+      --tw-hue-rotate: initial;
+      --tw-invert: initial;
+      --tw-opacity: initial;
+      --tw-saturate: initial;
+      --tw-sepia: initial;
+      --tw-drop-shadow: initial;
+      --tw-drop-shadow-color: initial;
+      --tw-drop-shadow-alpha: 100%;
+      --tw-drop-shadow-size: initial;
+      --tw-backdrop-blur: initial;
+      --tw-backdrop-brightness: initial;
+      --tw-backdrop-contrast: initial;
+      --tw-backdrop-grayscale: initial;
+      --tw-backdrop-hue-rotate: initial;
+      --tw-backdrop-invert: initial;
+      --tw-backdrop-opacity: initial;
+      --tw-backdrop-saturate: initial;
+      --tw-backdrop-sepia: initial;
+      --tw-ease: initial;
+    }
+  }
+}
+</style>
+<style data-vite-dev-id="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro?astro&#38;type=style&#38;index=0&#38;lang.css">.topbar[data-astro-cid-j3fvw3lo]{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);box-shadow:0 1px 0 var(--line),0 4px 20px color-mix(in srgb,var(--accent) 6%,transparent)}.nav[data-astro-cid-j3fvw3lo]{display:flex;min-height:76px;align-items:center;justify-content:space-between;gap:16px}.brand[data-astro-cid-j3fvw3lo] img[data-astro-cid-j3fvw3lo]{display:block;width:220px;max-width:48vw;height:auto}.nav-actions[data-astro-cid-j3fvw3lo]{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px}@media (max-width: 640px){.brand[data-astro-cid-j3fvw3lo] img[data-astro-cid-j3fvw3lo]{width:148px;max-width:none}}</style><script type="module" src="/@vite/client"></script>
+<script type="module" src="/@id/astro/runtime/client/dev-toolbar/entrypoint.js"></script>
+<script>window.__astro_dev_toolbar__ = {"root":"/Users/smith/Projects/santi020k/nomad-counter/apps/web/","version":"6.1.9","debugInfo":"Astro                    v6.1.9\nNode                     v24.5.0\nSystem                   macOS (arm64)\nPackage Manager          pnpm\nOutput                   static\nAdapter                  none\nIntegrations             @astrojs/sitemap\n                         astro-robots-txt"}</script>
+<script type="module" src="/src/components/SiteFooter.astro?astro&type=style&index=0&lang.css"></script>
+<script type="module" src="/src/components/ThemeToggle.astro?astro&type=style&index=0&lang.css"></script>
+<script type="module" src="/src/styles/global.css"></script>
+<script type="module" src="/src/pages/stats.astro?astro&type=style&index=0&lang.css"></script></head> <body data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="16:9"> <a class="skip-link" href="#main-content" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="17:47">Skip to content</a> <header class="topbar" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="18:28"> <nav class="shell nav" aria-label="Main" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="19:48"> <a href="/" class="brand" aria-label="Nomad Counter home" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="20:67"> <picture data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="21:20"> <source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="22:14"> <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="23:14"> </picture> </a> <div class="nav-actions" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="26:34"> <theme-toggle class="contents" data-astro-cid-x3pjskd3="true" data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro"> <button class="theme-toggle-btn" type="button" title="Toggle color theme" aria-label="Toggle color theme" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="7:4"> <svg aria-hidden="true" class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="17:6"> <circle cx="12" cy="12" r="4" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="18:8"></circle> <path d="M12 2v2" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="19:8"></path> <path d="M12 20v2" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="20:8"></path> <path d="M4.93 4.93l1.41 1.41" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="21:8"></path> <path d="M17.66 17.66l1.41 1.41" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="22:8"></path> <path d="M2 12h2" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="23:8"></path> <path d="M20 12h2" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="24:8"></path> <path d="M6.34 17.66l-1.41 1.41" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="25:8"></path> <path d="M19.07 4.93l-1.41 1.41" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="26:8"></path> </svg> <svg aria-hidden="true" class="moon-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="37:6"> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z" data-astro-cid-x3pjskd3 data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/ThemeToggle.astro" data-astro-source-loc="38:8"></path> </svg> </button> </theme-toggle> <script type="module" src="/src/components/ThemeToggle.astro?astro&type=script&index=0&lang.ts"></script> <a class="btn secondary" href="/#counter" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="28:53">Counter</a> </div> </nav> </header> <main id="main-content" class="shell" style="padding-block: clamp(42px, 7vw, 86px) 24px;" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="33:95"> <section style="max-width: 760px; padding-block: 56px;" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="34:63"> <p class="eyebrow" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="35:28">Public stats</p> <h1 style="font-size: clamp(3rem, 8vw, 6rem); line-height: .95; margin-bottom: 24px;" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="36:95">No personal data here.</h1> <p class="muted" style="font-size: 1.15rem; line-height: 1.6;" data-astro-cid-j3fvw3lo data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/pages/stats.astro" data-astro-source-loc="37:72">
+The API exposes private per-user counts after sign-in. A public aggregate stats page is intentionally stubbed until there is enough non-PII data to publish safely.
+</p> </section> </main> <footer class="site-footer shell" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="12:35"> <div class="footer-main" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="13:28"> <div data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="14:10"> <p class="footer-kicker" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="15:32">Nomad Counter</p> <p class="footer-copy" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="16:30">
+Built by <a href="https://santi020k.com" rel="noopener noreferrer" target="_blank" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="17:80">Santiago Molina</a>.
+        Guest-first travel-day tracking for residency exposure, not tax advice.
+</p> </div> <nav aria-label="Legal" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="22:29"> <ul class="footer-links" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="23:32"> <li data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="25:15"> <a href="/privacy/" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="26:33">Privacy</a> </li><li data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="25:15"> <a href="/terms/" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="26:33">Terms</a> </li> </ul> </nav> </div> <div class="footer-bottom" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="33:30"> <p data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="34:8">© 2026 Nomad Counter. Keep your own records and confirm rules with a qualified advisor.</p> <div class="footer-actions" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="35:33"> <a class="footer-action" href="https://santi020k.com" rel="noopener noreferrer me" target="_blank" aria-label="Visit Santiago Molina website" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="36:137"> <svg aria-hidden="true" viewBox="0 0 24 24" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="37:53"> <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="38:12"></path> <path d="M3.6 9h16.8" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="39:12"></path> <path d="M3.6 15h16.8" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="40:12"></path> <path d="M12 3c2.1 2.3 3.2 5.3 3.2 9s-1.1 6.7-3.2 9c-2.1-2.3-3.2-5.3-3.2-9S9.9 5.3 12 3Z" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="41:12"></path> </svg> <span data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="43:15">Website</span> </a> <a class="footer-action" href="https://github.com/santi020k/nomad-counter" rel="noopener noreferrer" target="_blank" aria-label="View Nomad Counter source code on GitHub" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="45:149"> <svg aria-hidden="true" viewBox="0 0 24 24" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="46:53"> <path d="M9 19c-4.3 1.4-4.3-2.1-6-2.5" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="47:12"></path> <path d="M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.4 4.4 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.8 11.8 0 0 0-6.2 0C6.6 3.8 5.6 4.1 5.6 4.1a4.4 4.4 0 0 0-.1 3.2A4.7 4.7 0 0 0 4.2 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22" data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="48:12"></path> </svg> <span data-astro-cid-gcn2mc3v data-astro-source-file="/Users/smith/Projects/santi020k/nomad-counter/apps/web/src/components/SiteFooter.astro" data-astro-source-loc="50:15">GitHub</span> </a> </div> </div> </footer></body></html>
