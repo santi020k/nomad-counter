@@ -91,7 +91,7 @@ jobs:
           sed -i "s/REPLACE_WITH_YOUR_D1_ID/${CLOUDFLARE_D1_DATABASE_ID}/" apps/api/wrangler.toml
         env:
           CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
-      - run: pnpm deploy
+      - run: pnpm run deploy
         env:
           PUBLIC_API_URL: https://api.nomad.santi020k.com
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

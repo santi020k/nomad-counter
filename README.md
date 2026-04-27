@@ -112,7 +112,7 @@ Put the returned database id into `apps/api/wrangler.toml` or provide it to CI a
 Deploy both API and web:
 
 ```sh
-pnpm deploy
+pnpm run deploy
 ```
 
 Cloudflare targets:
