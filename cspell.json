@@ -1,0 +1,32 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "Astro",
+    "autorun",
+    "Cloudflare",
+    "Dedupe",
+    "Drizzle",
+    "Hono",
+    "iCal",
+    "lhci",
+    "lighthouserc",
+    "libSQL",
+    "Santiago",
+    "Santi",
+    "SRT",
+    "Supabase",
+    "Turso",
+    "webmanifest",
+    "Wrangler",
+    "workerd"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    ".astro",
+    ".turbo",
+    ".wrangler",
+    "pnpm-lock.yaml"
+  ]
+}

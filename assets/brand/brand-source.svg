@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <title>Nomad Counter editable brand source</title>
+  <defs>
+    <style>
+      .label{font:700 18px Inter,Arial,sans-serif;fill:#68736d}.word{font:800 48px Inter,Arial,sans-serif}
+    </style>
+  </defs>
+  <rect width="900" height="520" fill="#F7F4ED"/>
+  <text x="40" y="56" class="label">Logo master</text>
+  <g transform="translate(40 88)">
+    <rect width="128" height="128" rx="28" fill="#0E7C66"/>
+    <path d="M31 77.5c14.2-33.8 51.3-34 66 0" fill="none" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
+    <path d="M64 29v70" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
+    <path d="M42 53h44" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="64" cy="82" r="9" fill="#F4BD50"/>
+  </g>
+  <text x="200" y="156" class="word" fill="#18201D">Nomad</text>
+  <text x="200" y="201" class="word" fill="#0E7C66">Counter</text>
+  <text x="40" y="292" class="label">Palette: passport green, paper, route blue, warning amber, stamp red</text>
+  <rect x="40" y="320" width="100" height="100" fill="#0E7C66"/><rect x="160" y="320" width="100" height="100" fill="#F7F4ED"/><rect x="280" y="320" width="100" height="100" fill="#2F80ED"/><rect x="400" y="320" width="100" height="100" fill="#F4BD50"/><rect x="520" y="320" width="100" height="100" fill="#C23B22"/>
+</svg>

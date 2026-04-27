@@ -1,91 +1,65 @@
 {
   "name": "nomad-counter",
+  "version": "1.0.0",
+  "description": "Personal travel day counter for tax residency exposure.",
+  "private": true,
+  "license": "MIT",
   "type": "module",
-  "version": "0.5.0",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "pre-commit": "lint-staged && vitest run",
-    "pre-push": "eslint . --fix --max-warnings=0 && npm run build",
-    "prepare": "husky install config/.husky",
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "test:ui": "vitest --coverage.enabled=true --ui --watch"
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22"
   },
-  "dependencies": {
-    "@astrojs/check": "^0.4.1",
-    "@astrojs/mdx": "^2.0.4",
-    "@astrojs/react": "^3.0.9",
-    "@astrojs/sitemap": "^3.0.4",
-    "@astrojs/tailwind": "6.0.0-beta.0",
-    "@astrojs/vercel": "^6.1.4",
-    "@fontsource-variable/cabin": "^5.0.17",
-    "@supabase/supabase-js": "^2.39.3",
-    "@tabler/icons-react": "^2.46.0",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
-    "@vercel/analytics": "^1.1.1",
-    "@vitejs/plugin-react": "^4.2.1",
-    "astro": "^4.1.2",
-    "astro-i18n-aut": "^0.6.5",
-    "dayjs": "^1.11.10",
-    "i18next": "23.7.16",
-    "i18next-browser-languagedetector": "^7.2.0",
-    "i18next-chained-backend": "^4.6.2",
-    "i18next-fs-backend": "^2.3.1",
-    "i18next-http-backend": "^2.4.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.49.3",
-    "react-tailwindcss-datepicker": "^1.6.6",
-    "tailwindcss": "^3.4.1",
-    "toastify-js": "^1.12.0",
-    "typescript": "^5.3.3",
-    "usehooks-ts": "^2.9.4",
-    "zod": "^3.22.4",
-    "zustand": "^4.4.7"
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "pnpm --filter @nomad-counter/api db:migrate && turbo run dev",
+    "lint": "turbo run lint",
+    "check": "turbo run check",
+    "test": "turbo run test",
+    "deploy": "turbo run deploy",
+    "deploy:api": "pnpm --filter @nomad-counter/api run deploy",
+    "deploy:web": "pnpm --filter @nomad-counter/web run deploy",
+    "spellcheck": "cspell --no-progress \"**/*.{md,json}\" --gitignore --no-must-find-files",
+    "knip": "knip",
+    "lighthouse": "pnpm --filter @nomad-counter/web run lighthouse && pnpm --filter @nomad-counter/web run lighthouse:mobile",
+    "prepare": "husky",
+    "pre-commit": "lint-staged --quiet",
+    "pre-push": "pnpm run spellcheck && pnpm run knip && pnpm turbo run lint check",
+    "commit": "cz"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.3.1",
-    "@tailwindcss/forms": "^0.5.7",
-    "@tailwindcss/typography": "^0.5.10",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/lodash": "^4.14.202",
-    "@types/toastify-js": "^1.12.3",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
-    "@vitest/coverage-v8": "^1.2.0",
-    "@vitest/ui": "^1.2.0",
+    "commitizen": "^4.3.1",
+    "cspell": "^10.0.0",
     "cz-conventional-changelog": "^3.3.0",
-    "daisyui": "^4.6.0",
-    "eslint": "^8.56.0",
-    "eslint-config-standard-with-typescript": "^43.0.0",
-    "eslint-plugin-astro": "^0.31.0",
-    "eslint-plugin-i18next": "^6.0.3",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-mdx": "^2.3.4",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-tailwindcss": "^3.13.1",
-    "eslint-plugin-testing-library": "^6.2.0",
-    "eslint-plugin-unused-imports": "^3.0.0",
-    "eslint-plugin-vitest": "^0.3.20",
-    "husky": "^8.0.3",
-    "jsdom": "^23.2.0",
-    "lint-staged": "^15.2.0",
-    "vitest": "^1.2.0"
+    "eslint": "^10.2.1",
+    "husky": "^9.1.7",
+    "knip": "^6.7.0",
+    "lint-staged": "^16.4.0",
+    "turbo": "^2.9.6",
+    "typescript": "^6.0.3"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,astro,md}": [
-      "eslint --fix"
+    "apps/web/**/*.{js,ts,astro}": [
+      "eslint --config apps/web/eslint.config.js --fix --quiet"
+    ],
+    "apps/api/**/*.{js,ts}": [
+      "eslint --config apps/api/eslint.config.js --fix --quiet"
+    ],
+    "packages/db/**/*.{js,ts}": [
+      "eslint --config packages/db/eslint.config.js --fix --quiet"
+    ],
+    "**/*.{md,json}": [
+      "cspell --no-must-find-files --no-progress"
+    ]
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.25.0",
+      "sharp": "^0.34.5"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
     ]
   },
   "config": {

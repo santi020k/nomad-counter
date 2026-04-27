@@ -1,0 +1,48 @@
+{
+  "name": "@nomad-counter/web",
+  "version": "1.0.0",
+  "description": "Nomad Counter web app (Astro 6 on Cloudflare Pages).",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "pnpm run generate:assets",
+    "build": "astro build",
+    "deploy": "wrangler pages deploy dist --project-name=nomad-counter",
+    "deploy:preview": "wrangler pages deploy dist --project-name=nomad-counter --branch=$WORKERS_CI_BRANCH",
+    "preview": "astro preview",
+    "generate:assets": "node scripts/generate-assets.mjs",
+    "prelint": "astro sync",
+    "lint": "eslint . --quiet",
+    "lint:fix": "eslint . --fix --quiet",
+    "check": "astro check",
+    "test": "playwright test",
+    "test:install": "playwright install chromium",
+    "lighthouse": "lhci autorun --config=lighthouserc.cjs",
+    "lighthouse:mobile": "lhci autorun --config=lighthouserc.mobile.cjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.1.9",
+    "astro-robots-txt": "^1.0.0",
+    "date-fns": "^4.1.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/ts-plugin": "^1.10.7",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.59.1",
+    "@santi020k/eslint-config-astro": "^1.5.0",
+    "@santi020k/eslint-config-basic": "^1.5.0",
+    "eslint": "^10.2.1",
+    "sharp": "^0.34.5",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.85.0"
+  }
+}

@@ -1,0 +1,475 @@
+---
+import '@/styles/global.css'
+
+const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
+const title = 'Nomad Counter'
+const description = 'A private 183-day tax residency exposure tracker for frequent travelers.'
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://nomad.santi020k.com/" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-16.png" sizes="16x16" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0e7c66" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0e7c66" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://nomad.santi020k.com/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+  </head>
+  <body data-authenticated="false">
+    <header class="topbar">
+      <nav class="shell nav" aria-label="Main">
+        <a href="/" class="brand" aria-label="Nomad Counter">
+          <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" />
+        </a>
+        <div class="nav-actions">
+          <a class="btn secondary" href="/stats">Stats</a>
+          <span class="api-pill" title="API endpoint">{apiUrl}</span>
+        </div>
+      </nav>
+    </header>
+
+    <main class="shell app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">183-day residency exposure</p>
+          <h1>Know your days before they count against you.</h1>
+          <p>
+            Log stays, track rolling and calendar windows, and spot countries that are close to a tax residency threshold.
+          </p>
+        </div>
+        <form id="login-form" class="card login-card" aria-label="Sign in">
+          <h2>Private access</h2>
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span>Access code</span>
+            <input name="accessCode" type="password" autocomplete="current-password" required />
+          </label>
+          <button class="btn" type="submit">Sign in</button>
+          <p id="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="app-grid" aria-label="Nomad Counter app">
+        <div class="dashboard">
+          <section class="panel summary-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Exposure</p>
+                <h2>Country day counts</h2>
+                <p id="window-label" class="muted">Current calendar year</p>
+              </div>
+              <label class="field compact">
+                <span>Window</span>
+                <select id="window-mode">
+                  <option value="calendar-year">Calendar year</option>
+                  <option value="rolling-365">Rolling 365 days</option>
+                </select>
+              </label>
+            </div>
+            <div id="summary-list" class="summary-list"></div>
+            <p class="rule">
+              Counting rule: any calendar day with presence in a country counts as one full day. Entry and exit dates are inclusive.
+            </p>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Trips</p>
+                <h2>Travel log</h2>
+              </div>
+              <div class="inline-actions">
+                <button id="export-csv" class="btn secondary" type="button">Export CSV</button>
+                <label class="btn secondary">
+                  Import CSV
+                  <input id="import-csv" class="sr-only" type="file" accept=".csv,text/csv" />
+                </label>
+              </div>
+            </div>
+            <div id="trip-list" class="list"></div>
+          </section>
+        </div>
+
+        <aside class="sidebar">
+          <form id="trip-form" class="panel form-panel">
+            <h2>Add trip</h2>
+            <label class="field">
+              <span>Country</span>
+              <select id="trip-country" name="countryCode"></select>
+            </label>
+            <div class="grid-fit">
+              <label class="field">
+                <span>Entry date</span>
+                <input name="entryDate" type="date" required />
+              </label>
+              <label class="field">
+                <span>Exit date</span>
+                <input name="exitDate" type="date" />
+              </label>
+            </div>
+            <label class="check">
+              <input name="openEnded" type="checkbox" />
+              Currently there
+            </label>
+            <label class="field">
+              <span>Note</span>
+              <textarea name="note" rows="3" placeholder="Optional"></textarea>
+            </label>
+            <button class="btn" type="submit">Add trip</button>
+          </form>
+
+          <form id="home-country-form" class="panel form-panel">
+            <h2>Tracked country</h2>
+            <label class="field">
+              <span>Country</span>
+              <select id="home-country" name="countryCode"></select>
+            </label>
+            <div class="grid-fit">
+              <label class="field">
+                <span>Threshold</span>
+                <input name="thresholdDays" type="number" min="1" max="366" value="183" required />
+              </label>
+              <label class="field">
+                <span>Warning</span>
+                <input name="warningDays" type="number" min="0" max="90" value="14" required />
+              </label>
+            </div>
+            <button class="btn secondary" type="submit">Track country</button>
+            <div id="home-country-list" class="list tight"></div>
+          </form>
+        </aside>
+      </section>
+
+      <section class="deferred">
+        <h2>Roadmap stubs</h2>
+        <p>
+          Deferred intentionally: calendar imports, map heatmap, PWA offline sync, and richer “what if?” planning. The current build keeps the high-value core solid.
+        </p>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <span>Built by Santiago Molina.</span>
+      <a href="https://santi020k.com">santi020k.com</a>
+    </footer>
+
+    <script>
+      import '@/lib/app'
+    </script>
+  </body>
+</html>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(14px);
+  }
+
+  .nav {
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand img {
+    display: block;
+    width: 220px;
+    max-width: 48vw;
+    height: auto;
+  }
+
+  .nav-actions,
+  .inline-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .api-pill {
+    max-width: 260px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 10px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app-shell {
+    padding-block: 38px 24px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+    gap: 22px;
+    align-items: end;
+    min-height: 420px;
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    max-width: 820px;
+    margin-bottom: 16px;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.92;
+  }
+
+  .hero p:not(.eyebrow) {
+    max-width: 640px;
+    color: var(--muted);
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+
+  .login-card,
+  .panel {
+    padding: 18px;
+  }
+
+  .login-card {
+    display: grid;
+    gap: 12px;
+  }
+
+  #status {
+    min-height: 20px;
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  #status[data-tone="error"] {
+    color: var(--danger);
+  }
+
+  .app-grid {
+    display: none;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 18px;
+    align-items: start;
+    margin-top: 34px;
+  }
+
+  [data-authenticated="true"] .app-grid {
+    display: grid;
+  }
+
+  [data-authenticated="true"] .login-card {
+    display: none;
+  }
+
+  .dashboard,
+  .sidebar,
+  .form-panel {
+    display: grid;
+    gap: 18px;
+  }
+
+  .panel {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  .panel-heading {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .compact {
+    min-width: 190px;
+  }
+
+  .summary-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 12px;
+  }
+
+  .country-card {
+    display: grid;
+    gap: 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    background: var(--surface-strong);
+  }
+
+  .country-card div:first-child,
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .country-card span,
+  .row span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .country-card p {
+    margin: 0;
+  }
+
+  .country-card b {
+    font-size: 1.8rem;
+  }
+
+  .country-card[data-level="warning"] {
+    border-color: var(--warn);
+  }
+
+  .country-card[data-level="exceeded"] {
+    border-color: var(--danger);
+  }
+
+  .meter {
+    overflow: hidden;
+    height: 9px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--line) 70%, transparent);
+  }
+
+  .meter i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--accent);
+  }
+
+  [data-level="warning"] .meter i {
+    background: var(--warn);
+  }
+
+  [data-level="exceeded"] .meter i {
+    background: var(--danger);
+  }
+
+  .rule {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .tight {
+    margin-top: 6px;
+  }
+
+  .row {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    background: var(--surface-strong);
+  }
+
+  .icon-button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-weight: 650;
+  }
+
+  .deferred,
+  .footer {
+    margin-top: 24px;
+    color: var(--muted);
+  }
+
+  .deferred {
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 22px 42px;
+    font-size: 0.9rem;
+  }
+
+  .footer a {
+    color: var(--accent);
+  }
+
+  @media (max-width: 840px) {
+    .hero,
+    .app-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero {
+      min-height: auto;
+    }
+
+    .panel-heading,
+    .footer {
+      flex-direction: column;
+    }
+  }
+</style>

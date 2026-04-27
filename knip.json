@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/api": {
+      "entry": ["wrangler.toml"]
+    },
+    "apps/web": {
+      "entry": ["src/pages/**/*.astro", "lighthouserc.cjs", "lighthouserc.mobile.cjs"]
+    },
+    "packages/db": {
+      "entry": []
+    }
+  }
+}

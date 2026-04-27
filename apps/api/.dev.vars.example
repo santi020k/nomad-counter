@@ -1,0 +1,2 @@
+NOMAD_LOGIN_SECRET=change-me-locally
+ALLOWED_ORIGINS=http://localhost:4321

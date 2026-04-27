@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Nomad Counter mark">
+  <rect width="128" height="128" rx="28" fill="#0E7C66"/>
+  <path d="M31 77.5c14.2-33.8 51.3-34 66 0" fill="none" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
+  <path d="M64 29v70" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
+  <path d="M42 53h44" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="64" cy="82" r="9" fill="#F4BD50"/>
+</svg>

@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://nomad.santi020k.me/sitemap-index.xml
