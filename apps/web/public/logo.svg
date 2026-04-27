@@ -1,16 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 160" role="img" aria-label="Nomad Counter">
-  <defs>
-    <linearGradient id="violet-wordmark-light" x1="12" y1="144" x2="140" y2="16" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#471AA0"/>
-      <stop offset="1" stop-color="#804BC4"/>
-    </linearGradient>
-  </defs>
-  <rect x="12" y="16" width="128" height="128" rx="28" fill="url(#violet-wordmark-light)"/>
-  <circle cx="76" cy="80" r="38" fill="none" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="8"/>
-  <path d="M45 88c14-18 32-24 62-16" fill="none" stroke="#C7BAE2" stroke-width="7" stroke-linecap="round"/>
-  <path d="M54 59h44M54 101h44" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
-  <text x="76" y="88" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="29" font-weight="800" text-anchor="middle">183</text>
-  <circle cx="107" cy="72" r="8" fill="#EAB308"/>
-  <text x="168" y="74" fill="#1F2937" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="800">Nomad</text>
-  <text x="168" y="119" fill="#471AA0" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="800">Counter</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-label="Nomad Counter">
+  <g transform="translate(10, 10)">
+    <rect width="80" height="80" rx="18" fill="#471AA0" />
+    <rect x="22" y="22" width="14" height="14" rx="4" fill="#FFFFFF" fill-opacity="0.95" />
+    <rect x="44" y="22" width="14" height="14" rx="4" fill="#FFFFFF" fill-opacity="0.6" />
+    <rect x="22" y="44" width="14" height="14" rx="4" fill="#FFFFFF" fill-opacity="0.3" />
+    <rect x="44" y="44" width="14" height="14" rx="4" fill="#EAB308" />
+  </g>
+  <text x="110" y="62" fill="#1F2937" font-family="Inter, -apple-system, sans-serif" font-size="42" font-weight="800" letter-spacing="-0.04em">Nomad <tspan fill="#471AA0" font-weight="600" letter-spacing="-0.02em">Counter</tspan></text>
 </svg>
