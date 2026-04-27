@@ -1159,6 +1159,9 @@ const renderSummary = () => {
   target.innerHTML = state.summary.map(renderCountryCard).join('')
 }
 
+const tripLogTitleDomId = (tripId: string): string =>
+  `trip-log-title-${tripId.replace(/[^a-zA-Z0-9_-]/g, '')}`
+
 const renderTrips = () => {
   const target = $('#trip-list')
 
@@ -1167,48 +1170,52 @@ const renderTrips = () => {
   }
 
   if (state.trips.length === 0) {
-    target.removeAttribute('role')
     target.innerHTML =
-      '<p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>'
+      '<li class="trip-log-empty-item"><p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p></li>'
 
     return
   }
 
-  target.setAttribute('role', 'list')
   target.innerHTML = state.trips
     .sort((a, b) => b.entryDate.localeCompare(a.entryDate))
     .map(trip => {
+      const titleId = tripLogTitleDomId(trip.id)
       const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
       const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
       const flag = countryCodeToFlagEmoji(trip.countryCode)
       const note = trip.note?.trim()
       const exitOpenAria = trip.exitDate ? '' : ' aria-label="Open stay (no exit date yet)"'
 
-      return `<article class="row row-trip" role="listitem">
+      return `<li class="trip-log-item">
+        <article class="row row-trip" aria-labelledby="${titleId}" data-trip-id="${escapeHtml(trip.id)}">
           <span class="row-accent" aria-hidden="true"></span>
           <div class="row-body">
-          <div class="row-info">
-            <strong><span class="row-flag-wrap" aria-hidden="true"><span class="row-flag cc-flag">${flag}</span></span> ${escapeHtml(trip.countryName)}</strong>
-            <div class="trip-dates trip-dates--log" role="group" aria-label="Entry and exit dates">
-              <time class="date-pill date-pill--log" datetime="${escapeHtml(trip.entryDate)}"><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${formatDisplayDate(trip.entryDate)}</span></time>
-              <span class="trip-dates-arrow" aria-hidden="true">→</span>
-              ${trip.exitDate
-                ? `<time class="date-pill date-pill--log" datetime="${escapeHtml(trip.exitDate)}"><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${exitLabel}</span></time>`
-                : `<span class="date-pill date-pill--log date-pill--open"${exitOpenAria}><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${exitLabel}</span></span>`}
+            <div class="row-info">
+              <h3 class="trip-card-title" id="${titleId}">
+                <span class="row-flag-wrap" aria-hidden="true"><span class="row-flag cc-flag">${flag}</span></span>
+                <span class="trip-card-title__name">${escapeHtml(trip.countryName)}</span>
+              </h3>
+              <div class="trip-dates trip-dates--log" role="group" aria-label="Entry and exit dates" aria-describedby="${titleId}">
+                <time class="date-pill date-pill--log" datetime="${escapeHtml(trip.entryDate)}"><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${formatDisplayDate(trip.entryDate)}</span></time>
+                <span class="trip-dates-arrow" aria-hidden="true">→</span>
+                ${trip.exitDate
+                  ? `<time class="date-pill date-pill--log" datetime="${escapeHtml(trip.exitDate)}"><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${exitLabel}</span></time>`
+                  : `<span class="date-pill date-pill--log date-pill--open"${exitOpenAria}><span class="date-pill__accent" aria-hidden="true"></span><span class="date-pill__text">${exitLabel}</span></span>`}
+              </div>
+              ${note ? `<p class="trip-note">${escapeHtml(note)}</p>` : ''}
             </div>
-            ${note ? `<p class="trip-note">${escapeHtml(note)}</p>` : ''}
+            <div class="row-meta">
+              <span class="trip-days" aria-label="${days} days in ${escapeHtml(trip.countryName)}"><span aria-hidden="true">${days}d</span></span>
+              <button class="row-remove-button" type="button" data-open-trip-remove="${escapeHtml(trip.id)}" title="Remove trip" aria-label="Remove trip to ${escapeHtml(trip.countryName)}">
+                <span aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
+                </span>
+                <span>Remove</span>
+              </button>
+            </div>
           </div>
-          <div class="row-meta">
-            <span class="trip-days" aria-label="${days} days in ${escapeHtml(trip.countryName)}"><span aria-hidden="true">${days}d</span></span>
-            <button class="row-remove-button" type="button" data-open-trip-remove="${escapeHtml(trip.id)}" title="Remove trip" aria-label="Remove trip to ${escapeHtml(trip.countryName)}">
-              <span aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
-              </span>
-              <span>Remove</span>
-            </button>
-          </div>
-          </div>
-        </article>`
+        </article>
+      </li>`
     })
     .join('')
 }

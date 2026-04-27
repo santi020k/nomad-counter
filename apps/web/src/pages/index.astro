@@ -201,9 +201,11 @@ const websiteJsonLd = {
                 </label>
               </div>
             </div>
-            <div id="trip-list" class="list trip-log-list" aria-labelledby="trip-log-heading">
-              <p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>
-            </div>
+            <ul id="trip-list" class="list trip-log-list" aria-labelledby="trip-log-heading">
+              <li class="trip-log-empty-item">
+                <p class="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>
+              </li>
+            </ul>
           </section>
         </div>
 
@@ -926,12 +928,29 @@ const websiteJsonLd = {
     flex-shrink: 0;
   }
 
-  .trip-log-list:not(:empty) {
+  .trip-log-list {
+    list-style: none;
+    margin: 0;
+    padding-inline-start: 0;
+  }
+
+  .trip-log-list:has(.trip-log-item) {
     gap: 12px;
   }
 
-  .trip-log-empty {
+  .trip-log-item,
+  .trip-log-empty-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .trip-log-empty-item {
     grid-column: 1 / -1;
+    list-style: none;
+  }
+
+  .trip-log-empty-item .trip-log-empty {
+    margin: 0;
   }
 
   .summary-heading {
@@ -1871,6 +1890,22 @@ const websiteJsonLd = {
     font-weight: 700;
   }
 
+  #trip-list :global(.trip-card-title) {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  #trip-list :global(.trip-card-title__name) {
+    min-width: 0;
+  }
+
   .row-flag {
     font-size: 1.2rem;
     line-height: 1;
@@ -1882,6 +1917,11 @@ const websiteJsonLd = {
     color: color-mix(in srgb, var(--muted) 82%, var(--text));
     font-size: 0.8rem;
     line-height: 1.5;
+    word-break: break-word;
+  }
+
+  #trip-list :global(.row-trip) {
+    min-height: 3.25rem;
   }
 
   .tracked-meta {
