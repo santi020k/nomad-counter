@@ -1,6 +1,6 @@
 ---
 name: Testing Infrastructure
-description: Guidelines for writing and running Vitest unit tests and Playwright E2E tests.
+description: Guidelines for writing and running Playwright tests and future focused unit tests in Nomad Counter.
 ---
 
 # Testing Skill
@@ -9,28 +9,26 @@ Use this skill when adding new features or fixing bugs to ensure regression test
 
 ## Test Types
 
-### 1. Unit Tests (Vitest)
+### 1. E2E Tests (Playwright)
 
-- **Location**: `src/**/__tests__/*.test.ts`
-- **Purpose**: Test utility functions and pure logic.
-- **Mocking**:
-  - Virtual modules like `astro:env/server` are mocked in `vitest.config.ts`.
-  - Use `vi.mock()` in `src/test-setup.ts` or individual test files for other dependencies.
+- **Location**: `apps/web/tests/*.spec.ts`
+- **Purpose**: Test public UI, accessibility, SEO metadata, and guest-first counter flows.
 - **Commands**:
-  - `pnpm run test`: Run all unit tests once.
-  - `pnpm run test:watch`: Run tests in watch mode.
+  - `pnpm --filter @nomad-counter/web test`: Run web Playwright tests.
+  - `pnpm test`: Run the workspace test pipeline.
 
-### 2. E2E Tests (Playwright)
+### 2. Future Unit Tests
 
-- **Location**: `tests/*.spec.ts`
-- **Purpose**: Test user flows, navigation, and cross-browser compatibility.
+- **Likely locations**:
+  - `apps/web/src/**/*.test.ts` for web date helpers and UI logic.
+  - `apps/api/src/**/*.test.ts` for API date math and route helpers.
+- **Purpose**: Test pure date/counting logic without requiring a browser.
 - **Commands**:
-  - `pnpm run test:e2e`: Run Playwright tests.
-  - `pnpm run test:e2e:ui`: Open Playwright UI for interactive debugging.
+  - Add scripts before relying on them; this repo currently has Playwright tests as the active suite.
 
 ## Best Practices
 
-- **Isolation**: Pure utility functions should be tested in isolation in `src/utils/__tests__/`.
+- **Isolation**: Pure utility functions should be tested close to their implementation.
 - **Naming**: Use descriptive `describe` and `it`/`test` blocks.
-- **Timezones**: When testing dates, use ISO strings with time components (e.g., `2024-01-01T12:00:00`) to avoid local timezone shifts during parsing.
+- **Timezones**: Use ISO `YYYY-MM-DD` strings and existing helpers. Do not introduce ad hoc `Date` arithmetic for residency counts.
 - **Astro Components**: For component testing, prefer E2E tests for now as they validate the full rendered output in a real browser.

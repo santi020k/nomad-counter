@@ -1,22 +1,22 @@
 ---
 name: Add New Content
-description: Guidelines and steps for adding new blog posts or projects to the site.
+description: Guidelines for adding future static content to Nomad Counter.
 ---
 
 # Add New Content Skill
 
-Use this skill when you need to create a new content entry in the `src/content/` directory.
+Use this skill only if Nomad Counter grows static content such as docs, help pages, or guides. The app does not currently use Astro content collections.
 
 ## Prerequisite
 
-Check the collection schema defined in `src/content/config.ts` to ensure you provide all required fields.
+Check the current app structure first. If content collections are introduced, define the schema before adding entries.
 
 ## Steps
 
 ### 1. Create the File
 
-- **Blog Posts**: Create a new `.md` or `.mdx` file in `src/content/post/`.
-- **Projects**: Create a new `.md` or `.mdx` file in `src/content/project/`.
+- Prefer simple `.astro` pages under `apps/web/src/pages/` for small static pages.
+- If a real content system is needed, create `apps/web/src/content.config.ts` and typed collections deliberately.
 - Filename convention: `kebab-case-title.md`.
 
 ### 2. Define Frontmatter
@@ -40,6 +40,6 @@ tags: ["tag1", "tag2"]
 
 ### 4. Verify
 
-- Run `npm run dev` to preview the new content.
+- Run `pnpm --filter @nomad-counter/web dev` to preview the new content.
 - Check for accessibility and proper formatting.
 - Ensure the build passes without errors.

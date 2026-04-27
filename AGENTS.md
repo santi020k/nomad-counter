@@ -91,6 +91,17 @@ pnpm spellcheck
 
 For UI changes, also inspect at mobile and desktop widths.
 
+## Project Skills
+
+Project-local skills live in `.agent/skills/`. They were copied from the `unsaid` workflow and adapted for Nomad Counter where the app differs:
+
+- `seo`, `accessibility`, `testing`, and `maintenance` for quality workflows.
+- `web-design`, `ui-ux-pro-max`, `creating-components`, and accessibility lint skills for UI implementation and review.
+- `adding-pages`, `add-content`, and `content-collections` for future static pages or structured content.
+- `automation-scripts` for generated assets and project utilities.
+
+Prefer these local skills before inventing a new workflow.
+
 ## Deployment Notes
 
 - Web deploys to Cloudflare Pages.
@@ -104,5 +115,5 @@ For UI changes, also inspect at mobile and desktop widths.
 - `README.md`: project setup and deployment.
 - `docs/brand-guidelines.md`: brand, palette, tone, logo use.
 - `docs/ai-collaboration.md`: AI workflow and prompting notes.
-- `.agent/skills/seo/SKILL.md`: SEO checklist copied from the `unsaid` workflow and adapted for this app.
+- `.agent/skills/`: project-local workflows copied from `unsaid` and adapted for this app.
 - `llms.txt`: compact LLM-readable project brief.

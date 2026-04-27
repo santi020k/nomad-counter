@@ -144,11 +144,11 @@ At the end, provide:
 - Use `class:list` for conditional classes
 - Ensure `lang` attribute on `<html>` element
 
-### Alpine.js
-- Add `x-on:keydown.escape` for dismissible elements
-- Use `x-trap` for focus trapping in modals
-- Implement `aria-expanded`, `aria-controls` for toggles
-- Ensure `role` and `aria-*` attributes are set correctly alongside Alpine state
+### Vanilla TypeScript
+- Add Escape key handling for dismissible elements
+- Implement focus trapping for true modals
+- Keep `aria-expanded` and `aria-controls` synchronized for toggles
+- Ensure `role` and `aria-*` attributes are set correctly alongside DOM state
 
 ### HTML/CSS
 - Use semantic HTML5 elements

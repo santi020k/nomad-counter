@@ -1,29 +1,26 @@
 ---
 name: Content Collections Architecture
-description: Understanding the Astro Content Collections configuration, Zod schemas, and data querying.
+description: Guidance for introducing Astro Content Collections if Nomad Counter needs structured docs/content.
 ---
 
 # Content Collections Skill
 
-Use this skill when modifying the data structure of markdown/MDX content or when fetching content for display.
+Use this skill only if Nomad Counter introduces structured markdown/MDX content. It currently does not use Astro Content Collections.
 
 ## Architecture
 
-This project uses Astro Content Collections defined in `src/content.config.ts`. The schema uses Zod (`astro:content`'s exported `z`) to ensure strict typing and validation.
+If added, Astro Content Collections should live in `apps/web/src/content.config.ts`. The schema uses Zod (`astro:content`'s exported `z`) to ensure strict typing and validation.
 
-Available collections:
+Possible future collections:
 
-- `post`: Blog posts (`src/content/post/`)
-- `project`: Portfolio projects (`src/content/project/`)
-- `note`: Short-form notes (`src/content/note/`)
-- `series`: Post series categorizations (`src/content/series/`)
-- `types`: Project type categorizations (`src/content/types/`)
+- `guide`: Tax-residency tracking explainers (`apps/web/src/content/guide/`)
+- `changelog`: Product updates (`apps/web/src/content/changelog/`)
 
 ## Modifying a Schema
 
 When adding a new frontmatter field to a collection type:
 
-1. Open `src/content.config.ts`.
+1. Open `apps/web/src/content.config.ts`.
 2. Locate the relevant `defineCollection` block.
 3. Add the field using Zod validation.
 
@@ -32,7 +29,7 @@ When adding a new frontmatter field to a collection type:
       featured: z.boolean().default(false).optional()
     ```
 
-4. If the field is a reference to another collection or a complex type, consider using `.transform()` to sanitize or format the data on load. Wait for `npm run check` to verify types.
+4. If the field is a reference to another collection or a complex type, consider using `.transform()` to sanitize or format the data on load. Run `pnpm --filter @nomad-counter/web check` to verify types.
 
 ## Fetching Content
 

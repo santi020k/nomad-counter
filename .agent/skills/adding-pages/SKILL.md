@@ -11,46 +11,45 @@ Use this skill to create a new standalone route/page in the application.
 
 ### 1. Create the Route
 
-- Add a new `.astro` file in `src/pages/` (e.g., `src/pages/about.astro`).
+- Add a new `.astro` file in `apps/web/src/pages/` (e.g., `apps/web/src/pages/privacy.astro`).
 - Use file-based routing: the filename becomes the URL path (`/about/`).
 
 ### 2. Implement the Base Layout
 
-Every major page should wrap its content with the `Base.astro` layout to ensure consistent headers, footers, meta tags, and transitions.
+Nomad Counter does not currently have one universal app layout. Match the closest existing pattern:
+
+- Public app experience: follow `apps/web/src/pages/index.astro`.
+- Legal/static pages: use `apps/web/src/layouts/LegalPage.astro`.
+- Shared footer: use `apps/web/src/components/SiteFooter.astro`.
 
 ```astro
 ---
-import BaseLayout from '@/layouts/Base.astro'
+import LegalPage from '@/layouts/LegalPage.astro'
 
-const meta = {
-  title: 'About Me',
-  description: 'Learn more about my background and experience.'
-}
+const title = 'Privacy policy'
+const description = 'How Nomad Counter handles guest-first data.'
 ---
 
-<BaseLayout meta={meta}>
-  <div class="prose mt-8 max-w-none">
-    <h1 class="title">About Me</h1>
-    <p>Welcome to my page...</p>
-  </div>
-</BaseLayout>
+<LegalPage title={title} description={description}>
+  <section>
+    <h2>Summary</h2>
+    <p>Page content.</p>
+  </section>
+</LegalPage>
 ```
 
 ### 3. Update Site Navigation
 
 If the new page should be linked in the header/footer menus:
 
-- Open `src/site.config.ts`.
-- Add the new route to the `menuLinks` array:
-
-  ```any
-  export const menuLinks: { path: string, title: string }[] = [
-    { path: '/', title: 'Home' },
-    { path: '/portfolio/', title: 'Portfolio' },
-    { path: '/about/', title: 'About' }, // <--- New link
-  ]
-  ```
+- Update the relevant page/component directly. Current navigation lives in page markup and `SiteFooter.astro`, not in a central `site.config.ts`.
+- Keep the first screen focused on the counter experience. Do not turn the homepage into a detached marketing landing page.
 
 ### 4. Verify
 
-Ensure the page builds without errors and functions correctly with view transitions (`<ClientRouter />` is active in `BaseLayout`). Validate that the `siteConfig` updates are reflected site-wide.
+Ensure the page builds without errors:
+
+```sh
+pnpm --filter @nomad-counter/web check
+pnpm --filter @nomad-counter/web build
+```

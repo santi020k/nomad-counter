@@ -1,19 +1,19 @@
 ---
 name: marketing
-description: Marketing copy, content strategy, and growth for this Astro personal/portfolio website. Use this skill for writing landing page copy, blog post headlines, CTAs, project descriptions, about page content, social media posts, email newsletter content, and any task aimed at attracting visitors, communicating value, or converting readers. Trigger on mentions of copy, landing page, headline, CTA, call to action, newsletter, social media, marketing, brand voice, about page, or converting visitors.
+description: Marketing copy, product copy, and growth for Nomad Counter. Use this skill for homepage copy, CTAs, legal/support copy, product messaging, social posts, and any task aimed at communicating value or converting visitors.
 ---
 
-# Marketing Skill — santi020k Website
+# Marketing Skill — Nomad Counter
 
-This is a personal/portfolio website for a developer (santi020k). The brand voice is professional but approachable — knowledgeable without being arrogant, and human without being casual. Think "senior developer sharing what they know," not "corporate marketing speak."
+Nomad Counter is a personal travel-day tracker for tax residency exposure. The brand voice is calm, precise, travel-aware, and trustworthy. It must be practical and cautious, and it must never imply tax, legal, accounting, immigration, or residency advice.
 
 ---
 
 ## Brand Voice Guidelines
 
 - **Tone**: Direct, confident, helpful. Avoid filler phrases like "In today's fast-paced world..." or "Are you tired of...".
-- **Person**: Write in first person for personal pages (About, homepage hero). Use second person ("you") when addressing readers in blog posts.
-- **Technical depth**: Assume the reader is a developer or technically literate. Don't over-explain basics, but do give context for niche decisions.
+- **Person**: Use second person sparingly for direct user benefit. Keep product copy focused on the counter workflow.
+- **Domain caution**: Say "residency exposure," "threshold," and "common 183-day signal." Avoid promising compliance, certainty, or professional advice.
 - **Length**: Be concise. Cut adverbs. Cut adjectives that don't earn their place. A short punchy sentence beats a long winding one.
 
 ---
@@ -68,7 +68,7 @@ Each project description should answer: **What does it do, why does it matter, a
 Strong headlines are either:
 - **Specific** ("How I reduced my Astro build time by 40%")
 - **Useful** ("The Tailwind class ordering guide I wish I had")
-- **Surprising** ("Alpine.js doesn't need a bundler — and that's the point")
+- **Surprising** ("vanilla TypeScript doesn't need a bundler — and that's the point")
 
 Avoid vague headlines like "Thoughts on React" or "Some useful CSS tricks."
 
@@ -87,16 +87,17 @@ Every page should have at most **one primary CTA**. Make it verb-first and speci
 
 | Instead of... | Use... |
 |---|---|
-| Learn more | Read the full post |
+| Learn more | Review the details |
 | Click here | See the source code |
 | Contact me | Send me a message |
 | Check it out | Try the live demo |
-| Subscribe | Get new posts by email |
+| Subscribe | Save my trips |
 
-### Newsletter / RSS opt-in copy
-Since this site has an RSS feed (`@astrojs/rss`), promote it to developer readers who use RSS:
+### Account Sync CTA Copy
 
-> "I publish irregularly — follow via [RSS](/feed.xml) so you don't miss it."
+Nomad Counter is guest-first. Account copy should make sync optional:
+
+> "Use the counter now. Enter your email only when you want to sync trips across devices."
 
 If adding email capture, keep the ask minimal: just an email field, one sentence of benefit, no popups.
 
@@ -104,7 +105,7 @@ If adding email capture, keep the ask minimal: just an email field, one sentence
 
 ## Social Media (Sharing & Promotion)
 
-When writing social copy to promote a new blog post or project, use this format:
+When writing social copy to promote Nomad Counter or a product update, use this format:
 
 **Twitter/X thread opener:**
 ```
@@ -123,7 +124,7 @@ When writing social copy to promote a new blog post or project, use this format:
 
 [Practical takeaway for other developers]
 
-[Link to the full post]
+[Link to the app or source]
 ```
 
 **Post timing**: Tuesday–Thursday mornings (9–11am local) get the most developer audience engagement.
@@ -133,7 +134,7 @@ When writing social copy to promote a new blog post or project, use this format:
 ## Content Strategy for Blog
 
 **Content pillars** (what to write about):
-1. **Tutorials & how-tos** — step-by-step guides using the site's actual tech stack (Astro, Alpine.js, Tailwind)
+1. **Tutorials & how-tos** — step-by-step guides using the site's actual tech stack (Astro, vanilla TypeScript, Tailwind)
 2. **Case studies** — what was built, why, and what was learned
 3. **Opinions & takes** — considered positions on tooling, patterns, or industry topics
 4. **Project updates** — what's being built and what's interesting about it
@@ -146,7 +147,7 @@ When writing social copy to promote a new blog post or project, use this format:
 
 ## Measuring Success
 
-Given the site uses `@vercel/analytics`, track:
+If analytics are added later, track:
 - **Engagement**: Time on page, scroll depth (via custom events if needed)
 - **Top entry pages**: Which posts/pages bring in new visitors
 - **Referrers**: Where traffic comes from (search, social, direct)

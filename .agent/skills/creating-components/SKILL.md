@@ -1,18 +1,18 @@
 ---
 name: Creating Components
-description: Guidelines for creating reusable Astro components, accepting props, and applying Tailwind CSS styles.
+description: Guidelines for creating reusable Astro components, accepting props, and matching Nomad Counter styles.
 ---
 
 # Creating Components Skill
 
-Use this skill when tasked with building a new UI component or refactoring an existing one in the `src/components/` directory.
+Use this skill when tasked with building a new UI component or refactoring an existing one in `apps/web/src/components/`.
 
 ## Best Practices
 
 ### 1. Component Placement
 
-- Place generic UI elements (buttons, badges) directly in `src/components/`.
-- If the component belongs to a specific feature or layout section, nest it appropriately (e.g., `src/components/blog/`, `src/components/layout/`).
+- Place generic UI elements directly in `apps/web/src/components/`.
+- If the component belongs to a specific feature or layout section, nest it appropriately.
 
 ### 2. File Structure
 
@@ -21,8 +21,6 @@ An `.astro` file consists of two main parts: the Component Script (between `---`
 ```astro
 ---
 // Component Script: Imports and Logic
-import { Icon } from 'astro-icon/components'
-
 // Always define expected props using a TypeScript interface
 interface Props {
   title: string
@@ -37,21 +35,21 @@ const { title, isActive = false } = Astro.props
   class="flex items-center rounded-lg p-4"
   class:list={[{ 'bg-blue-500 text-white': isActive }, { 'bg-gray-100': !isActive }]}
 >
-  <Icon name="mdi:star" class="mr-2 size-6" />
   <span>{title}</span>
 </div>
 ```
 
 ### 3. Styling Rules
 
-- **Tailwind Utility Classes**: Prefer standard utility classes. Use `class:list` for conditional styling.
-- **Icons**: Use the `astro-icon` integration (`<Icon name="collection:icon-name" />`).
-- **CSS Formatting**: When applying many Tailwind classes, format them on multiple lines grouped by purpose (layout, spacing, typography, colors, interactions) to improve readability. Do not create excessively long single-line class strings.
+- **Project CSS**: Prefer existing CSS variables from `apps/web/src/styles/global.css` and page-local/component-local styles.
+- **Tailwind**: Tailwind 4 is available, but this app currently leans on semantic CSS classes and custom properties.
+- **Icons**: Use existing brand assets or small inline SVGs. Do not add an icon package just for one icon.
+- **Formatting**: Keep class/style strings readable and scoped. Avoid unrelated design-system rewrites.
 
 ### 4. Interactive Components
 
-If a component requires client-side interactivity, you have options:
+If a component requires client-side interactivity:
 
-- **Alpine.js**: For lightweight interactions (dropdowns, modals), use Alpine attributes (e.g., `x-data`, `x-show`) directly in the `.astro` HTML.
-- **Client Directives**: If using a framework component (e.g., React, though this project primarily uses Astro/Alpine), remember to use `client:load`, `client:visible`, etc.
-- **Inline Scripts**: `<script>` tags in Astro components are bundled and run on the client. Use them for complex vanilla JS logic if Alpine is insufficient.
+- Prefer vanilla TypeScript in `apps/web/src/lib/app.ts` for app behavior.
+- Use Astro `<script>` blocks for page-local progressive enhancement.
+- Do not make the counter require sign-in or client JavaScript for basic content visibility.

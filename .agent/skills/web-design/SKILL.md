@@ -1,43 +1,37 @@
 ---
 name: web-design
-description: UI/UX design, visual design system, and web animations for this Astro + Alpine.js + Tailwind v4 website. Use this skill when designing or refining components, building animations and transitions, working on the design system (colors, typography, spacing), implementing scroll-triggered effects, micro-interactions, hover states, page transitions, or any task about how the site looks and feels. Trigger on mentions of design, animation, transition, hover effect, scroll animation, micro-interaction, UI component design, typography, color palette, layout, dark mode, or visual polish.
+description: UI/UX design, visual design system, and web animations for this Astro + vanilla TypeScript + Tailwind v4 website. Use this skill when designing or refining components, building animations and transitions, working on the design system (colors, typography, spacing), implementing scroll-triggered effects, micro-interactions, hover states, page transitions, or any task about how the site looks and feels. Trigger on mentions of design, animation, transition, hover effect, scroll animation, micro-interaction, UI component design, typography, color palette, layout, dark mode, or visual polish.
 ---
 
-# Web Design + Animations Skill — santi020k Website
+# Web Design + Animations Skill — Nomad Counter
 
-Stack: **Astro 6 + Alpine.js + Tailwind CSS v4**. Design tokens live in `src/styles/global.css` under `@theme`. All animations should respect `prefers-reduced-motion` (see Accessibility skill).
+Stack: **Astro 6 + vanilla TypeScript + Tailwind CSS v4**. Design tokens live in `apps/web/src/styles/global.css` as CSS custom properties. All animations should respect `prefers-reduced-motion` (see Accessibility skill).
 
 ---
 
 ## Design System
 
-### Tokens — `src/styles/global.css`
+### Tokens — `apps/web/src/styles/global.css`
 
-All custom colors, spacing, fonts, and effects are defined in the `@theme` block. This is the Tailwind v4 way — no `tailwind.config.js` needed.
+Core colors, spacing, radii, shadows, and effects are defined as CSS custom properties on `:root`, with dark-mode overrides in `@media (prefers-color-scheme: dark)`.
 
 ```css
-@theme {
-  /* Colors */
-  --color-accent-base: oklch(65% 0.2 250);
-  --color-accent-subtle: oklch(65% 0.2 250 / 15%);
-  --color-surface: oklch(98% 0 0);
-  --color-surface-raised: oklch(96% 0 0);
-  --color-muted: oklch(50% 0 0);
-
-  /* Typography */
-  --font-sans: 'Inter Variable', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', monospace;
-
-  /* Shadows */
-  --shadow-soft: 0 2px 8px 0 oklch(0% 0 0 / 8%);
-  --shadow-medium: 0 4px 24px 0 oklch(0% 0 0 / 12%);
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #471aa0;
+  --radius: 8px;
+  --shadow-sm: 0 2px 8px rgb(71 26 160 / 8%);
 }
 
-/* Dark mode overrides using data-theme attribute */
-[data-theme="dark"] {
-  --color-surface: oklch(12% 0 0);
-  --color-surface-raised: oklch(16% 0 0);
-  --color-muted: oklch(60% 0 0);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17122a;
+    --surface: #21183c;
+    --text: #ffffff;
+  }
 }
 ```
 
@@ -72,7 +66,7 @@ Stick to the Tailwind scale (4px base unit). For layout spacing, prefer:
 
 ### Cards
 
-A consistent card pattern used across projects, blog posts, and other listings:
+A consistent card pattern for repeated items, summaries, legal sections, and compact tool surfaces:
 
 ```astro
 <article class="
@@ -181,48 +175,13 @@ For lists that should animate in one item at a time, use CSS custom property del
 
 ---
 
-## Alpine.js Transitions
+## Vanilla TypeScript Transitions
 
-Alpine.js `x-transition` is the easiest way to animate show/hide state. Always pair with CSS custom properties for tweakable values.
+Use CSS classes and attributes for state, then toggle them with small DOM scripts. Keep essential content visible without JavaScript where possible.
 
-### Basic fade
-```html
-<div
-  x-show="open"
-  x-transition:enter="transition-all duration-200 ease-out"
-  x-transition:enter-start="opacity-0 scale-95"
-  x-transition:enter-end="opacity-100 scale-100"
-  x-transition:leave="transition-all duration-150 ease-in"
-  x-transition:leave-start="opacity-100 scale-100"
-  x-transition:leave-end="opacity-0 scale-95"
->
-  <!-- content -->
-</div>
-```
-
-### Slide from top (dropdown)
-```html
-<div
-  x-show="open"
-  x-transition:enter="transition-all duration-200 ease-out"
-  x-transition:enter-start="opacity-0 -translate-y-2"
-  x-transition:enter-end="opacity-100 translate-y-0"
-  x-transition:leave="transition-all duration-150 ease-in"
-  x-transition:leave-start="opacity-100 translate-y-0"
-  x-transition:leave-end="opacity-0 -translate-y-2"
->
-  Dropdown content
-</div>
-```
-
-### Respecting reduced motion in Alpine
-```html
-<div
-  x-show="open"
-  :class="prefersReducedMotion ? '' : 'transition-all duration-200 ease-out'"
-  x-data="{ prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches }"
->
-```
+- Pair `[hidden]`, `aria-expanded`, and class toggles deliberately.
+- Use CSS custom properties for tuneable animation values.
+- Wrap motion in `@media (prefers-reduced-motion: no-preference)`.
 
 ---
 
@@ -339,30 +298,7 @@ All transitions should use `duration-150` to `duration-200` — snappy feels bet
 
 ## Dark Mode
 
-The site uses `data-theme="dark"` on the root `<html>` element. Alpine.js manages the toggle:
-
-```html
-<html
-  x-data="{ theme: localStorage.getItem('theme') ?? 'light' }"
-  :data-theme="theme"
-  x-init="$watch('theme', val => localStorage.setItem('theme', val))"
->
-```
-
-Dark mode toggle button:
-```html
-<button
-  type="button"
-  @click="theme = theme === 'dark' ? 'light' : 'dark'"
-  aria-label="Toggle dark mode"
-  :aria-pressed="theme === 'dark'"
->
-  <Icon name="mdi:weather-sunny" aria-hidden="true" x-show="theme === 'dark'" />
-  <Icon name="mdi:weather-night" aria-hidden="true" x-show="theme === 'light'" />
-</button>
-```
-
-When designing components, always test both light and dark variants. Define colors using CSS variables in `@theme` so they automatically switch.
+The site currently follows `prefers-color-scheme` in `apps/web/src/styles/global.css`. When designing components, test both light and dark variants and define colors through existing CSS variables so they automatically switch.
 
 ---
 

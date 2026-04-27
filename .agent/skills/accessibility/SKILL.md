@@ -1,9 +1,9 @@
 ---
 name: accessibility
-description: Web accessibility (a11y) for this Astro + Alpine.js + Tailwind website. Use this skill when auditing pages for accessibility, adding ARIA attributes, fixing keyboard navigation, improving color contrast, writing semantic HTML, making interactive Alpine.js components accessible, or any task related to WCAG compliance, screen reader compatibility, or inclusive design. Trigger on mentions of accessibility, a11y, WCAG, ARIA, screen reader, keyboard navigation, focus management, color contrast, or inclusive design.
+description: Web accessibility (a11y) for this Astro + vanilla TypeScript + Tailwind website. Use this skill when auditing pages for accessibility, adding ARIA attributes, fixing keyboard navigation, improving color contrast, writing semantic HTML, making interactive vanilla TypeScript components accessible, or any task related to WCAG compliance, screen reader compatibility, or inclusive design. Trigger on mentions of accessibility, a11y, WCAG, ARIA, screen reader, keyboard navigation, focus management, color contrast, or inclusive design.
 ---
 
-# Accessibility Skill — santi020k Website
+# Accessibility Skill — Nomad Counter
 
 Target: **WCAG 2.2 Level AA** conformance throughout the site. Accessibility is not an audit checkbox — it makes the site better for everyone (better keyboard nav, better SEO, better mobile UX).
 
@@ -88,104 +88,50 @@ Every interactive element must be keyboard reachable and operable.
 
 ---
 
-## Alpine.js Accessible Patterns
+## Vanilla TypeScript Accessible Patterns
 
-Alpine.js components require manual ARIA since they're custom widgets. Here are the correct patterns:
+Vanilla TypeScript components require manual ARIA when they become custom widgets. Prefer native elements first, then wire state with plain DOM APIs in `apps/web/src/lib/app.ts` or page-local scripts.
 
 ### Disclosure (show/hide)
-```html
-<div x-data="{ open: false }">
-  <button
-    type="button"
-    :aria-expanded="open.toString()"
-    aria-controls="panel-id"
-    @click="open = !open"
-  >
-    Toggle section
-  </button>
-  <div id="panel-id" x-show="open">
-    Content here
-  </div>
+```astro
+<button type="button" aria-expanded="false" aria-controls="panel-id" data-disclosure>
+  Toggle section
+</button>
+<div id="panel-id" hidden>
+  Content here
 </div>
+
+<script>
+  document.querySelectorAll('[data-disclosure]').forEach(button => {
+    const controls = button.getAttribute('aria-controls')
+    const panel = controls ? document.getElementById(controls) : null
+
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') === 'true'
+
+      button.setAttribute('aria-expanded', String(!open))
+
+      if (panel) {
+        panel.hidden = open
+      }
+    })
+  })
+</script>
 ```
 
 ### Modal / Dialog
-```html
-<div
-  x-data="{ open: false }"
-  @keydown.escape.window="open = false"
->
-  <button type="button" @click="open = true" aria-haspopup="dialog">
-    Open dialog
-  </button>
-
-  <div
-    x-show="open"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="dialog-title"
-    x-trap.noscroll="open"
-    @click.outside="open = false"
-  >
-    <h2 id="dialog-title">Dialog heading</h2>
-    <!-- content -->
-    <button type="button" @click="open = false" aria-label="Close dialog">
-      <Icon name="mdi:close" aria-hidden="true" />
-    </button>
-  </div>
-</div>
-```
-
-Note: `x-trap` (focus trap) requires the `@alpinejs/focus` plugin. Install it if not already present.
+- Prefer the native `<dialog>` element for simple dialogs.
+- Set `aria-labelledby`, provide a visible heading, and return focus to the opener when closing.
+- Trap focus only when a true modal is open.
 
 ### Tabs
-```html
-<div x-data="{ activeTab: 'tab1' }" role="tablist" aria-label="Section tabs">
-  <button
-    role="tab"
-    :aria-selected="activeTab === 'tab1'"
-    :tabindex="activeTab === 'tab1' ? 0 : -1"
-    @click="activeTab = 'tab1'"
-    @keydown.arrow-right="activeTab = 'tab2'"
-    id="tab-tab1"
-    aria-controls="panel-tab1"
-  >
-    Tab 1
-  </button>
-  <!-- more tabs... -->
-</div>
-
-<div
-  role="tabpanel"
-  id="panel-tab1"
-  aria-labelledby="tab-tab1"
-  x-show="activeTab === 'tab1'"
->
-  Tab 1 content
-</div>
-```
+- Use `role="tablist"`, `role="tab"`, `aria-selected`, roving `tabindex`, and arrow-key navigation.
+- Keep the selected panel visible without requiring animation to reveal essential content.
 
 ### Navigation with mobile toggle
-```html
-<nav aria-label="Main navigation">
-  <button
-    type="button"
-    aria-expanded="false"
-    aria-controls="nav-menu"
-    x-bind:aria-expanded="menuOpen.toString()"
-    @click="menuOpen = !menuOpen"
-    class="md:hidden"
-  >
-    <span class="sr-only">Toggle navigation</span>
-    <Icon name="mdi:menu" aria-hidden="true" />
-  </button>
-
-  <ul id="nav-menu" x-show="menuOpen || isDesktop">
-    <li><a href="/">Home</a></li>
-    <!-- ... -->
-  </ul>
-</nav>
-```
+- Use a real `<button>` for menu toggles.
+- Keep `aria-expanded` synchronized with visibility.
+- Ensure links remain reachable when CSS or JavaScript fails.
 
 ---
 
@@ -196,7 +142,7 @@ WCAG AA requires:
 - **3:1** contrast ratio for large text (≥ 18px or ≥ 14px bold)
 - **3:1** for UI components and focus indicators
 
-When defining colors in `global.css` with the `@theme` block, test them against your background colors before committing. Use tools like:
+When defining colors in `apps/web/src/styles/global.css`, test them against your background colors before committing. Use tools like:
 - [coolors.co/contrast-checker](https://coolors.co/contrast-checker)
 - Chrome DevTools > Accessibility panel
 - axe browser extension
@@ -219,7 +165,7 @@ Don't convey information by color alone — always pair color with an icon, labe
   aria-describedby="email-hint email-error"
 />
 <p id="email-hint" class="text-muted text-sm">We'll never share your email.</p>
-<p id="email-error" role="alert" class="text-sm text-red-600" x-show="hasError">
+<p id="email-error" role="alert" class="text-sm text-red-600" hidden>
   Please enter a valid email address.
 </p>
 ```
@@ -230,7 +176,7 @@ Use `role="alert"` or `aria-live="polite"` for dynamic error messages so screen 
 
 ## Live Regions & Dynamic Content
 
-When content updates dynamically (Alpine.js shows/hides, notifications appear, etc.), screen readers need to be notified:
+When content updates dynamically (vanilla TypeScript shows/hides, notifications appear, etc.), screen readers need to be notified:
 
 ```html
 <!-- Polite: announces when user is idle (most cases) -->
@@ -300,7 +246,7 @@ Always respect `prefers-reduced-motion`. In Tailwind, use the `motion-safe:` and
 </div>
 ```
 
-In Alpine.js transitions, check the media query:
+In vanilla TypeScript transitions, check the media query:
 ```js
 // Disable transitions for users who prefer reduced motion
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
