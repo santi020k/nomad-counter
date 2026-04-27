@@ -10,6 +10,7 @@ const brandDir = path.join(root, 'assets/brand')
 const mark = path.join(brandDir, 'logo-mark.svg')
 const lightLogo = path.join(brandDir, 'logo-light.svg')
 const darkLogo = path.join(brandDir, 'logo-dark.svg')
+const wallpaper = path.join(brandDir, 'wallpapers/wallpaper-3-desktop.webp')
 
 await fs.mkdir(publicDir, { recursive: true })
 await fs.copyFile(mark, path.join(publicDir, 'favicon.svg'))
@@ -35,23 +36,19 @@ const generateOgImage = async (filename, title, subtitle) => {
   const safeTitle = escapeXml(title)
   const safeSubtitle = escapeXml(subtitle)
   
-  return sharp({
-    create: {
-      width: 1200,
-      height: 630,
-      channels: 4,
-      background: '#f8fafc'
-    }
-  })
+  const titleFontSize = title.length > 35 ? 42 : 48
+  
+  return sharp(wallpaper)
+    .resize(1200, 630, { fit: 'cover' })
     .composite([
-      { input: await sharp(lightLogo).resize(620).png().toBuffer(), left: 96, top: 96 },
+      { input: await sharp(lightLogo).resize(520).png().toBuffer(), left: 96, top: 96 },
       {
         input: Buffer.from(`<svg width="1008" height="240">
-          <text x="0" y="64" font-family="Inter,Arial,sans-serif" font-size="52" font-weight="800" fill="#1F2937">${safeTitle}</text>
-          <text x="0" y="128" font-family="Inter,Arial,sans-serif" font-size="32" fill="#6B7280">${safeSubtitle}</text>
+          <text x="0" y="64" font-family="Inter,Arial,sans-serif" font-size="${titleFontSize}" font-weight="800" fill="#1F2937">${safeTitle}</text>
+          <text x="0" y="120" font-family="Inter,Arial,sans-serif" font-size="28" fill="#6B7280">${safeSubtitle}</text>
         </svg>`),
         left: 96,
-        top: 330
+        top: 340
       }
     ])
     .png()
