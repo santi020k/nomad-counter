@@ -131,6 +131,7 @@ const currentWindow = () => {
 }
 
 const inclusiveDays = (startDate: string, endDate: string) => differenceInCalendarDays(parseISO(endDate), parseISO(startDate)) + 1
+const formatDisplayDate = (date: string) => format(parseISO(date), 'MMM d, yyyy')
 
 const overlapDays = (trip: Trip, startDate: string, endDate: string) => {
   const exitDate = trip.exitDate ?? format(new Date(), 'yyyy-MM-dd')
@@ -176,7 +177,7 @@ const summarizeLocal = () => {
     })
     .sort((a, b) => b.daysPresent - a.daysPresent || a.countryName.localeCompare(b.countryName))
 
-  state.windowLabel = `${window.startDate} to ${window.endDate}`
+  state.windowLabel = `${formatDisplayDate(window.startDate)} to ${formatDisplayDate(window.endDate)}`
 }
 
 const renderAuth = () => {
@@ -207,15 +208,18 @@ const renderSummary = () => {
 
   target.innerHTML = state.summary.map(country => {
     const progress = Math.min(100, Math.round((country.daysPresent / country.thresholdDays) * 100))
+    const statusText = country.daysRemaining <= 0
+      ? `${Math.abs(country.daysRemaining)} days over threshold`
+      : `${country.daysRemaining} days remaining`
 
     return `<article class="country-card" data-level="${country.exposureLevel}">
-      <div>
+      <div class="cc-header">
         <strong>${country.countryName}</strong>
-        <span>${country.countryCode}</span>
+        <span class="cc-code">${country.countryCode}</span>
       </div>
-      <p><b>${country.daysPresent}</b> / ${country.thresholdDays} days</p>
-      <div class="meter"><i style="width:${progress}%"></i></div>
-      <small>${country.daysRemaining <= 0 ? `${Math.abs(country.daysRemaining)} days over threshold` : `${country.daysRemaining} days remaining`}</small>
+      <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
+      <div class="meter"><i style="--w:${progress}%"></i></div>
+      <p class="cc-status">${statusText}</p>
     </article>`
   }).join('')
 }
@@ -231,13 +235,21 @@ const renderTrips = () => {
     ? '<p class="muted empty-state">No trips yet. Add your first stay or import a CSV.</p>'
     : state.trips
       .sort((a, b) => b.entryDate.localeCompare(a.entryDate))
-      .map(trip => `<article class="row">
-        <div>
-          <strong>${trip.countryName}</strong>
-          <span>${format(parseISO(trip.entryDate), 'MMM d, yyyy')} to ${trip.exitDate ? format(parseISO(trip.exitDate), 'MMM d, yyyy') : 'present'}</span>
-        </div>
-        <button class="icon-button" data-delete-trip="${trip.id}" title="Delete trip" aria-label="Delete trip">×</button>
-      </article>`)
+      .map(trip => {
+        const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
+        const days = inclusiveDays(trip.entryDate, trip.exitDate ?? format(new Date(), 'yyyy-MM-dd'))
+
+        return `<article class="row">
+          <div class="row-info">
+            <strong>${trip.countryName}</strong>
+            <span>${formatDisplayDate(trip.entryDate)} → ${exitLabel}</span>
+          </div>
+          <div class="row-meta">
+            <span class="trip-days">${days}d</span>
+            <button class="icon-button" data-delete-trip="${trip.id}" title="Delete trip" aria-label="Delete trip">×</button>
+          </div>
+        </article>`
+      })
       .join('')
 }
 
