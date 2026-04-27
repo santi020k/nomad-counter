@@ -735,32 +735,40 @@ const renderAuth = () => {
   }
 }
 
-const renderSummary = () => {
-  const target = $('#summary-list')
+const summaryEmptyStateMarkup = '<p class="muted empty-state">Add a trip to see your residency exposure by country.</p>'
+const summaryDonutRadius = 15.5
+const summaryDonutCircumference = 2 * Math.PI * summaryDonutRadius
 
-  if (!target) {
-    return
+const summaryProgressPercent = (country: CountrySummary) => {
+  if (country.thresholdDays <= 0) {
+    return 0
   }
 
-  $('#window-label')!.textContent = state.windowLabel
+  return Math.min(100, Math.round((country.daysPresent / country.thresholdDays) * 100))
+}
 
-  if (state.summary.length === 0) {
-    target.innerHTML = '<p class="muted empty-state">Add a trip to see your residency exposure instantly.</p>'
+const summaryStatusText = (country: CountrySummary) => country.daysRemaining <= 0
+  ? `${Math.abs(country.daysRemaining)} days over threshold`
+  : `${country.daysRemaining} days remaining`
 
-    return
+const summaryLevelLabel = (level: ExposureLevel) => {
+  if (level === 'exceeded') {
+    return 'Exceeded'
   }
 
-  target.innerHTML = state.summary.map(country => {
-    const progress = Math.min(100, Math.round((country.daysPresent / country.thresholdDays) * 100))
-    const statusText = country.daysRemaining <= 0
-      ? `${Math.abs(country.daysRemaining)} days over threshold`
-      : `${country.daysRemaining} days remaining`
-    const flag = countryCodeToFlagEmoji(country.countryCode)
-    const donutR = 15.5
-    const donutC = 2 * Math.PI * donutR
-    const dashOffset = donutC * (1 - progress / 100)
+  if (level === 'warning') {
+    return 'Near limit'
+  }
 
-    return `<article class="country-card" data-level="${country.exposureLevel}">
+  return 'On track'
+}
+
+const renderCountryCard = (country: CountrySummary) => {
+  const progress = summaryProgressPercent(country)
+  const dashOffset = summaryDonutCircumference * (1 - progress / 100)
+  const flag = countryCodeToFlagEmoji(country.countryCode)
+
+  return `<article class="country-card" data-level="${country.exposureLevel}">
       <div class="cc-top">
         <div class="cc-flag-wrap" aria-hidden="true"><span class="cc-flag">${flag}</span></div>
         <div class="cc-main">
@@ -768,22 +776,67 @@ const renderSummary = () => {
             <strong>${escapeHtml(country.countryName)}</strong>
             <span class="cc-code">${escapeHtml(country.countryCode)}</span>
           </div>
-          <div class="cc-count-row">
-            <svg class="cc-donut" width="44" height="44" viewBox="0 0 40 40" aria-hidden="true">
-              <circle class="cc-donut-track" cx="20" cy="20" r="${String(donutR)}" fill="none" stroke-width="3.25" />
-              <circle class="cc-donut-arc" cx="20" cy="20" r="${String(donutR)}" fill="none" stroke-width="3.25" stroke-linecap="round"
-                stroke-dasharray="${String(donutC)}"
-                stroke-dashoffset="${String(dashOffset)}"
-                transform="rotate(-90 20 20)" />
-            </svg>
-            <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
-          </div>
+          <p class="cc-threshold">Threshold ${country.thresholdDays} days</p>
         </div>
       </div>
-      <div class="meter" role="progressbar" aria-valuenow="${country.daysPresent}" aria-valuemin="0" aria-valuemax="${country.thresholdDays}"><i style="--w:${progress}%"></i></div>
-      <p class="cc-status">${statusText}</p>
+      <div class="cc-count-row">
+        <svg class="cc-donut" width="44" height="44" viewBox="0 0 40 40" aria-hidden="true">
+          <circle
+            class="cc-donut-track"
+            cx="20"
+            cy="20"
+            r="${String(summaryDonutRadius)}"
+            fill="none"
+            stroke-width="3.25"
+          />
+          <circle
+            class="cc-donut-arc"
+            cx="20"
+            cy="20"
+            r="${String(summaryDonutRadius)}"
+            fill="none"
+            stroke-width="3.25"
+            stroke-linecap="round"
+            stroke-dasharray="${String(summaryDonutCircumference)}"
+            stroke-dashoffset="${String(dashOffset)}"
+            transform="rotate(-90 20 20)"
+          />
+        </svg>
+        <div class="cc-count"><b>${country.daysPresent}</b><span>/ ${country.thresholdDays}</span></div>
+        <span class="cc-level-pill">${summaryLevelLabel(country.exposureLevel)}</span>
+      </div>
+      <div
+        class="meter"
+        role="progressbar"
+        aria-valuenow="${country.daysPresent}"
+        aria-valuemin="0"
+        aria-valuemax="${country.thresholdDays}"
+      >
+        <i style="--w:${progress}%"></i>
+      </div>
+      <p class="cc-status">${summaryStatusText(country)}</p>
     </article>`
-  }).join('')
+}
+
+const renderSummary = () => {
+  const target = $('#summary-list')
+  const windowLabel = $('#window-label')
+
+  if (!target) {
+    return
+  }
+
+  if (windowLabel) {
+    windowLabel.textContent = state.windowLabel
+  }
+
+  if (state.summary.length === 0) {
+    target.innerHTML = summaryEmptyStateMarkup
+
+    return
+  }
+
+  target.innerHTML = state.summary.map(renderCountryCard).join('')
 }
 
 const renderTrips = () => {

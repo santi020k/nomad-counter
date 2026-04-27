@@ -150,18 +150,18 @@ const websiteJsonLd = {
       <section id="counter" class="app-grid" aria-label="Nomad Counter app" data-animate>
         <div class="dashboard">
           <section class="panel summary-panel">
-            <div class="panel-heading">
+            <div class="panel-heading summary-heading">
               <div class="panel-title-stack">
                 <span class="panel-icon panel-icon--chart" aria-hidden="true">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18" /><path d="M7 16l4-4 4 4 6-7" /></svg>
                 </span>
-                <div>
+                <div class="summary-title-content">
                   <p class="eyebrow">Exposure</p>
-                  <h2>Country day counts</h2>
+                  <h2 id="summary-panel-heading">Country day counts</h2>
                   <p id="window-label" class="muted window-label">Current calendar year</p>
                 </div>
               </div>
-              <div class="field compact">
+              <div class="field compact summary-window">
                 <label for="window-mode">Window</label>
                 <SelectControl id="window-mode" aria-describedby="window-help">
                   <option value="calendar-year">Calendar year</option>
@@ -170,9 +170,16 @@ const websiteJsonLd = {
                 <small id="window-help">Choose the date range used for exposure counts.</small>
               </div>
             </div>
-            <div id="summary-list" class="summary-list">
-              <p class="muted empty-state">Add a trip to see your residency exposure by country.</p>
-            </div>
+            <ul
+              id="summary-list"
+              class="summary-list"
+              role="list"
+              aria-labelledby="summary-panel-heading"
+            >
+              <li class="summary-list-empty">
+                <p class="muted empty-state">Add a trip to see your residency exposure by country.</p>
+              </li>
+            </ul>
             <p class="rule">
               Counting rule: any calendar day with presence in a country counts as one full day. Entry and exit dates are inclusive. This is a tracking aid, not tax advice.
             </p>
@@ -836,6 +843,47 @@ const websiteJsonLd = {
     min-width: 0;
   }
 
+  .summary-panel {
+    padding: 18px;
+    background:
+      linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--accent) 4%, transparent),
+        transparent 44%
+      ),
+      var(--surface);
+  }
+
+  .summary-heading {
+    margin-bottom: 16px;
+    gap: 14px;
+  }
+
+  .summary-title-content {
+    display: grid;
+    gap: 2px;
+  }
+
+  .summary-title-content h2 {
+    letter-spacing: -0.015em;
+  }
+
+  .summary-window {
+    display: grid;
+    gap: 6px;
+    min-width: 220px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+    background: color-mix(in srgb, var(--surface-strong) 86%, transparent);
+  }
+
+  .summary-window small {
+    margin-top: 2px;
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+
   .panel-icon {
     display: grid;
     flex-shrink: 0;
@@ -930,95 +978,74 @@ const websiteJsonLd = {
   /* ── Country summary cards ──────────────── */
   .summary-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
     gap: 12px;
   }
 
   .country-card {
     position: relative;
     display: grid;
-    gap: 10px;
-    border: 1px solid var(--line);
+    gap: 12px;
+    border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
     border-radius: var(--radius-lg);
-    padding: 16px;
-    background: var(--surface-strong);
-    overflow: hidden;
+    padding: 14px;
+    background:
+      linear-gradient(155deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 44%),
+      var(--surface-strong);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .country-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 4%, transparent) 0%, transparent 60%);
-    pointer-events: none;
   }
 
   .country-card::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0 0 auto 0;
     height: 3px;
+    border-radius: inherit;
     background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    opacity: 0.7;
   }
 
   .country-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
-    border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
-  }
-
-  .country-card:hover::after {
-    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
   }
 
   .country-card[data-level="warning"] {
-    border-color: color-mix(in srgb, var(--warn) 50%, var(--line));
+    border-color: color-mix(in srgb, var(--warn) 54%, var(--line));
   }
 
   .country-card[data-level="warning"]::after {
-    background: var(--warn);
-    opacity: 1;
+    background: linear-gradient(90deg, var(--warn), color-mix(in srgb, var(--warn) 64%, var(--accent-soft)));
   }
 
   .country-card[data-level="exceeded"] {
-    border-color: color-mix(in srgb, var(--danger) 50%, var(--line));
+    border-color: color-mix(in srgb, var(--danger) 56%, var(--line));
   }
 
   .country-card[data-level="exceeded"]::after {
-    background: var(--danger);
-    opacity: 1;
+    background: linear-gradient(90deg, var(--danger), color-mix(in srgb, var(--danger) 64%, var(--accent-soft)));
   }
 
   .cc-top {
     position: relative;
-    z-index: 1;
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
+    z-index: 1;
   }
 
   .cc-flag-wrap {
     display: grid;
     flex-shrink: 0;
     place-items: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 16px;
-    background: linear-gradient(
-      155deg,
-      color-mix(in srgb, var(--accent) 28%, var(--surface-strong)),
-      var(--surface-strong)
-    );
-    border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
-    box-shadow:
-      0 6px 20px color-mix(in srgb, var(--accent) 18%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 12%, transparent);
-    font-size: 1.75rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent) 15%, var(--surface-strong));
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 14%, transparent);
+    font-size: 1.5rem;
     line-height: 1;
   }
 
@@ -1027,26 +1054,62 @@ const websiteJsonLd = {
   }
 
   .country-card[data-level="warning"] .cc-flag-wrap {
-    border-color: color-mix(in srgb, var(--warn) 45%, var(--line));
-    box-shadow: 0 6px 20px color-mix(in srgb, var(--warn) 14%, transparent);
+    border-color: color-mix(in srgb, var(--warn) 48%, var(--line));
+    background: color-mix(in srgb, var(--warn) 10%, var(--surface-strong));
   }
 
   .country-card[data-level="exceeded"] .cc-flag-wrap {
-    border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
-    box-shadow: 0 6px 20px color-mix(in srgb, var(--danger) 14%, transparent);
+    border-color: color-mix(in srgb, var(--danger) 48%, var(--line));
+    background: color-mix(in srgb, var(--danger) 10%, var(--surface-strong));
   }
 
   .cc-main {
     flex: 1;
     min-width: 0;
     display: grid;
+    gap: 6px;
+  }
+
+  .cc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 8px;
+  }
+
+  .cc-header strong {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .cc-code {
+    display: inline-block;
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+    border-radius: 6px;
+    padding: 2px 6px;
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+    color: color-mix(in srgb, var(--accent) 86%, var(--text));
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  .cc-threshold {
+    margin: 0;
+    color: color-mix(in srgb, var(--muted) 88%, var(--text));
+    font-size: 0.78rem;
+    line-height: 1.35;
   }
 
   .cc-count-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+    background: color-mix(in srgb, var(--surface) 65%, transparent);
   }
 
   .cc-donut {
@@ -1070,54 +1133,52 @@ const websiteJsonLd = {
     stroke: var(--danger);
   }
 
-  .cc-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .cc-header strong {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: var(--text);
-  }
-
-  .cc-code {
-    display: inline-block;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 2px 6px;
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    color: color-mix(in srgb, var(--accent) 90%, var(--text));
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-  }
-
   .cc-count {
     display: flex;
     align-items: baseline;
     gap: 6px;
     margin: 0;
+    flex: 1;
+    min-width: 0;
   }
 
   .cc-count b {
-    font-size: 2.6rem;
+    font-size: 2.25rem;
     line-height: 1;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text);
   }
 
   .cc-count span {
     color: var(--muted);
-    font-size: 0.88rem;
+    font-size: 0.84rem;
+  }
+
+  .cc-level-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: color-mix(in srgb, var(--accent) 85%, var(--text));
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .country-card[data-level="warning"] .cc-level-pill {
+    border-color: color-mix(in srgb, var(--warn) 48%, var(--line));
+    background: color-mix(in srgb, var(--warn) 14%, transparent);
+    color: color-mix(in srgb, var(--warn) 85%, var(--text));
+  }
+
+  .country-card[data-level="exceeded"] .cc-level-pill {
+    border-color: color-mix(in srgb, var(--danger) 48%, var(--line));
+    background: color-mix(in srgb, var(--danger) 14%, transparent);
+    color: color-mix(in srgb, var(--danger) 90%, var(--text));
   }
 
   .cc-status {
@@ -1138,12 +1199,10 @@ const websiteJsonLd = {
   /* ── Progress meter ─────────────────────── */
   .meter {
     position: relative;
-    z-index: 1;
     overflow: hidden;
-    height: 10px;
+    height: 8px;
     border-radius: 999px;
     background: color-mix(in srgb, var(--line) 78%, transparent);
-    box-shadow: inset 0 1px 2px color-mix(in srgb, black 12%, transparent);
   }
 
   .meter i {
@@ -1151,8 +1210,8 @@ const websiteJsonLd = {
     height: 100%;
     width: var(--w, 0%);
     border-radius: inherit;
-    background: linear-gradient(90deg, var(--accent), var(--accent-soft), color-mix(in srgb, var(--accent-soft) 70%, white));
-    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 35%, transparent);
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
     animation: meter-grow 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
@@ -1618,6 +1677,11 @@ const websiteJsonLd = {
       flex-direction: column;
     }
 
+    .summary-window {
+      width: 100%;
+      min-width: 0;
+    }
+
     .marketing-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1666,6 +1730,20 @@ const websiteJsonLd = {
 
     .row-meta {
       align-self: flex-start;
+    }
+
+    .cc-count-row {
+      gap: 8px;
+      padding: 6px 8px;
+    }
+
+    .cc-count b {
+      font-size: 2rem;
+    }
+
+    .cc-level-pill {
+      font-size: 0.66rem;
+      padding-inline: 7px;
     }
   }
 
