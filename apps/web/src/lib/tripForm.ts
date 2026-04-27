@@ -45,13 +45,13 @@ const isValidIsoDateString = (value: string): boolean => {
 
 const todayYmd = (): string => format(new Date(), 'yyyy-MM-dd')
 
-export interface TripFormInput {
+interface TripFormInput {
   entryDate: string
   exitDate: string
   openEnded: boolean
 }
 
-export type TripFormResult = { ok: true, exitDate: string | null, hint?: string } | {
+type TripFormResult = { ok: true, exitDate: string | null, hint?: string } | {
   ok: false
   error: string
 }
