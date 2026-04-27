@@ -31,6 +31,7 @@
     ".astro",
     ".turbo",
     ".wrangler",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    ".agent"
   ]
 }
