@@ -24,9 +24,17 @@ const matchesAllowedNode = (
   return matchesHtml && matchesTarget
 }
 
+type ConfigureAxe = (builder: AxeBuilder) => AxeBuilder
+
+/**
+ * Runs axe-core after finite CSS animations settle (avoids false color-contrast
+ * from mid-fade compositing), then fails if any violation remains outside the
+ * optional allowlist.
+ */
 export const expectNoUnexpectedAccessibilityViolations = async (
   page: Page,
-  allowedViolations: AllowedViolation[] = []
+  allowedViolations: AllowedViolation[] = [],
+  configureAxe?: ConfigureAxe
 ) => {
   await page.evaluate(async () => {
     await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -38,9 +46,23 @@ export const expectNoUnexpectedAccessibilityViolations = async (
     )
 
     await Promise.all(finiteAnimations.map(animation => animation.finished.catch(() => undefined)))
+
+    // Force all animated elements to be visible for the accessibility scan
+    document.querySelectorAll('[data-animate], [data-stagger] > *').forEach(el => {
+      if (el instanceof HTMLElement) {
+        el.style.opacity = '1'
+        el.style.transform = 'none'
+        el.style.transition = 'none'
+        el.classList.add('is-visible')
+      }
+    })
   })
 
-  const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
+  let builder = new AxeBuilder({ page })
+
+  builder = configureAxe ? configureAxe(builder) : builder
+
+  const accessibilityScanResults = await builder.analyze()
 
   const unexpectedViolations = accessibilityScanResults.violations.flatMap(violation => {
     const unexpectedNodes = violation.nodes.filter(

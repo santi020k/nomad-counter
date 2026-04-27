@@ -23,7 +23,8 @@
     "lighthouse": "pnpm --filter @nomad-counter/web run lighthouse && pnpm --filter @nomad-counter/web run lighthouse:mobile",
     "prepare": "husky",
     "pre-commit": "lint-staged --quiet",
-    "pre-push": "pnpm run spellcheck && pnpm run knip && pnpm turbo run lint check",
+    "pre-push": "pnpm run spellcheck && pnpm run knip && pnpm run accesslint && pnpm turbo run lint check",
+    "accesslint": "pnpm --filter @nomad-counter/web test tests/accessibility.spec.ts",
     "commit": "cz"
   },
   "devDependencies": {

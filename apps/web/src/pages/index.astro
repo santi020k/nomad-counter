@@ -1,5 +1,6 @@
 ---
 import SiteFooter from '@/components/SiteFooter.astro'
+import SEO from '@/components/SEO.astro'
 import '@/styles/global.css'
 
 const title = 'Nomad Counter'
@@ -31,33 +32,8 @@ const websiteJsonLd = {
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={siteUrl} />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-16.png" sizes="16x16" />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" />
-    <link rel="icon" href="/favicon-48.png" sizes="48x48" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#471aa0" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#471aa0" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={siteUrl} />
-    <meta property="og:site_name" content={title} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://nomad.santi020k.com/og-image.png" />
-    <meta property="og:image:alt" content="Nomad Counter 183-day residency exposure tracker preview" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://nomad.santi020k.com/og-image.png" />
+    <SEO />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
-    <title>{title}</title>
   </head>
   <body data-authenticated="false">
     <a class="skip-link" href="#main-content">Skip to counter</a>
@@ -108,14 +84,14 @@ const websiteJsonLd = {
           <p id="sync-state" class="sync-state">Guest mode. Your data stays in this browser until you save it to an account.</p>
           <h2>Save to your account</h2>
           <p class="muted">Use the counter now. Enter your email only when you want to sync trips across devices.</p>
-          <label class="field">
-            <span>Email</span>
-            <input name="email" type="email" autocomplete="email" required />
-          </label>
-          <label id="code-field" class="field" hidden>
-            <span>Email code</span>
-            <input name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" />
-          </label>
+          <div class="field">
+            <label for="login-email">Email</label>
+            <input id="login-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div id="code-field" class="field" hidden>
+            <label for="login-code">Email code</label>
+            <input id="login-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" />
+          </div>
           <button class="btn" type="submit">Email me a code</button>
           <p id="status" role="status" aria-live="polite"></p>
         </form>
@@ -130,14 +106,14 @@ const websiteJsonLd = {
                 <h2>Country day counts</h2>
                 <p id="window-label" class="muted" style="margin:4px 0 0; font-size:0.82rem;">Current calendar year</p>
               </div>
-              <label class="field compact">
-                <span>Window</span>
+              <div class="field compact">
+                <label for="window-mode">Window</label>
                 <select id="window-mode" aria-describedby="window-help">
                   <option value="calendar-year">Calendar year</option>
                   <option value="rolling-365">Rolling 365 days</option>
                 </select>
                 <small id="window-help">Choose the date range used for exposure counts.</small>
-              </label>
+              </div>
             </div>
             <div id="summary-list" class="summary-list">
               <p class="muted empty-state">Add a trip to see your residency exposure by country.</p>
@@ -170,47 +146,47 @@ const websiteJsonLd = {
         <div class="sidebar">
           <form id="trip-form" class="panel form-panel">
             <h2>Add trip</h2>
-            <label class="field">
-              <span>Country</span>
+            <div class="field">
+              <label for="trip-country">Country</label>
               <select id="trip-country" name="countryCode"></select>
-            </label>
+            </div>
             <div class="grid-fit">
-              <label class="field">
-                <span>Entry date</span>
-                <input name="entryDate" type="date" required />
-              </label>
-              <label class="field">
-                <span>Exit date</span>
-                <input name="exitDate" type="date" />
-              </label>
+              <div class="field">
+                <label for="trip-entry">Entry date</label>
+                <input id="trip-entry" name="entryDate" type="date" required />
+              </div>
+              <div class="field">
+                <label for="trip-exit">Exit date</label>
+                <input id="trip-exit" name="exitDate" type="date" />
+              </div>
             </div>
             <label class="check">
               <input name="openEnded" type="checkbox" />
               <span>Currently there</span>
             </label>
-            <label class="field">
-              <span>Note</span>
-              <textarea name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help"></textarea>
+            <div class="field">
+              <label for="trip-note">Note</label>
+              <textarea id="trip-note" name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help"></textarea>
               <small id="trip-note-help">Avoid sensitive tax, immigration, or identity details.</small>
-            </label>
+            </div>
             <button class="btn" type="submit">Add trip</button>
           </form>
 
           <form id="home-country-form" class="panel form-panel">
             <h2>Tracked country</h2>
-            <label class="field">
-              <span>Country</span>
+            <div class="field">
+              <label for="home-country">Country</label>
               <select id="home-country" name="countryCode"></select>
-            </label>
+            </div>
             <div class="grid-fit">
-              <label class="field">
-                <span>Threshold</span>
-                <input name="thresholdDays" type="number" min="1" max="366" value="183" required aria-describedby="threshold-help" />
-              </label>
-              <label class="field">
-                <span>Warning</span>
-                <input name="warningDays" type="number" min="0" max="90" value="14" required aria-describedby="warning-help" />
-              </label>
+              <div class="field">
+                <label for="threshold-days">Threshold</label>
+                <input id="threshold-days" name="thresholdDays" type="number" min="1" max="366" value="183" required aria-describedby="threshold-help" />
+              </div>
+              <div class="field">
+                <label for="warning-days">Warning</label>
+                <input id="warning-days" name="warningDays" type="number" min="0" max="90" value="14" required aria-describedby="warning-help" />
+              </div>
             </div>
             <p class="form-help">
               <span id="threshold-help">Threshold is the day limit you want to watch.</span>
@@ -1045,40 +1021,6 @@ const websiteJsonLd = {
     to {
       opacity: 1;
       transform: none;
-    }
-  }
-
-  @keyframes content-enter {
-    from {
-      opacity: 0;
-      transform: translateY(18px);
-    }
-
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    [data-animate] {
-      animation: content-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    [data-animate]:nth-of-type(2) {
-      animation-delay: 80ms;
-    }
-
-    [data-stagger] > * {
-      animation: content-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    [data-stagger] > *:nth-child(2) {
-      animation-delay: 80ms;
-    }
-
-    [data-stagger] > *:nth-child(3) {
-      animation-delay: 160ms;
     }
   }
 

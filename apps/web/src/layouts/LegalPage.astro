@@ -1,5 +1,6 @@
 ---
 import SiteFooter from '@/components/SiteFooter.astro'
+import SEO from '@/components/SEO.astro'
 import '@/styles/global.css'
 
 interface Props {
@@ -15,26 +16,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#471aa0" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content="Nomad Counter" />
-    <meta property="og:title" content={`${title} — Nomad Counter`} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://nomad.santi020k.com/og-image.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${title} — Nomad Counter`} />
-    <meta name="twitter:description" content={description} />
-    <title>{title} — Nomad Counter</title>
+    <SEO title={title} description={description} ogImage="/og-legal.png" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
