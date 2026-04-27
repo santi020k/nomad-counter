@@ -15,7 +15,7 @@
     "deploy": "wrangler pages deploy dist --project-name=nomad-counter",
     "deploy:preview": "wrangler pages deploy dist --project-name=nomad-counter --branch=$WORKERS_CI_BRANCH",
     "preview": "astro preview",
-    "generate:assets": "node scripts/generate-assets.mjs",
+    "generate:assets": "node scripts/generate-assets.mjs && node scripts/generate-banners.mjs && node scripts/generate-wallpapers.mjs",
     "prelint": "astro sync",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix --quiet",
