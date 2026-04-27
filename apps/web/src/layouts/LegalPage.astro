@@ -143,41 +143,41 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
     gap: 14px;
   }
 
-  .legal-content section {
+  .legal-content :global(section) {
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 20px;
     background: color-mix(in srgb, var(--surface) 88%, transparent);
   }
 
-  .legal-content h2 {
+  .legal-content :global(h2) {
     margin: 0 0 10px;
     color: var(--text);
     font-size: 1.08rem;
   }
 
-  .legal-content p,
-  .legal-content ul {
+  .legal-content :global(p),
+  .legal-content :global(ul) {
     margin: 0;
     color: var(--muted);
     line-height: 1.7;
   }
 
-  .legal-content ul {
+  .legal-content :global(ul) {
     padding-left: 20px;
   }
 
-  .legal-content li + li {
+  .legal-content :global(li + li) {
     margin-top: 8px;
   }
 
-  .legal-content a {
+  .legal-content :global(a) {
     color: var(--accent);
     font-weight: 700;
     text-decoration: none;
   }
 
-  .legal-content a:hover {
+  .legal-content :global(a:hover) {
     text-decoration: underline;
   }
 

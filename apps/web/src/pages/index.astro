@@ -64,8 +64,9 @@ const websiteJsonLd = {
           </picture>
         </a>
         <div class="nav-actions">
-          <a class="btn secondary" href="/stats">Stats</a>
-          <span class="api-pill" title="API endpoint">{apiUrl}</span>
+          <a class="nav-link" href="/stats">Stats</a>
+          <div class="nav-sep" aria-hidden="true"></div>
+          <a class="btn nav-cta" href="#counter">Start counting</a>
         </div>
       </nav>
     </header>
@@ -269,20 +270,38 @@ const websiteJsonLd = {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
-  .api-pill {
-    max-width: 260px;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 7px 12px;
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: var(--radius);
     color: var(--muted);
-    font-size: 0.78rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    background: color-mix(in srgb, var(--surface) 60%, transparent);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+
+  .nav-sep {
+    width: 1px;
+    height: 22px;
+    background: var(--line);
+    flex-shrink: 0;
+  }
+
+  .nav-cta {
+    font-size: 0.88rem;
+    min-height: 40px;
+    padding: 0 16px;
   }
 
   /* ── Shell ──────────────────────────────── */
@@ -395,15 +414,29 @@ const websiteJsonLd = {
   }
 
   .sync-state {
-    width: fit-content;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
     margin: 0;
-    border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
-    border-radius: 999px;
-    padding: 5px 12px;
-    background: color-mix(in srgb, var(--accent) 6%, transparent);
-    color: color-mix(in srgb, var(--accent) 80%, var(--muted));
-    font-size: 0.78rem;
-    font-weight: 700;
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--line));
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .sync-state::before {
+    content: '';
+    flex-shrink: 0;
+    margin-top: 3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.7;
   }
 
   #status {
@@ -637,7 +670,7 @@ const websiteJsonLd = {
     border-radius: var(--radius);
     background: color-mix(in srgb, var(--accent) 5%, transparent);
     border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
-    color: var(--muted);
+    color: color-mix(in srgb, var(--muted) 70%, var(--text));
     font-size: 0.85rem;
     line-height: 1.55;
   }
@@ -868,14 +901,17 @@ const websiteJsonLd = {
     border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
   }
 
-  .faq p {
+  .faq .eyebrow {
+    margin-bottom: 6px;
+  }
+
+  .faq details p {
     margin: 0;
-    padding: 0 18px 18px;
+    padding: 14px 18px 18px;
     color: var(--muted);
     line-height: 1.65;
     font-size: 0.95rem;
     border-top: 1px solid var(--line);
-    padding-top: 14px;
   }
 
   /* ── Responsive ─────────────────────────── */
@@ -909,13 +945,12 @@ const websiteJsonLd = {
       justify-content: flex-end;
     }
 
-    .api-pill {
+    .nav-link {
       display: none;
     }
 
-    .sync-state {
-      width: 100%;
-      border-radius: 8px;
+    .nav-sep {
+      display: none;
     }
   }
 
