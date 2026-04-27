@@ -1,0 +1,14 @@
+---
+type Props = astroHTML.JSX.SelectHTMLAttributes
+
+const {
+  class: className = '',
+  ...rest
+} = Astro.props as Props & { class?: string }
+
+const classes = ['ui-select', className].filter(Boolean).join(' ')
+---
+
+<select class={classes} {...rest}>
+  <slot />
+</select>

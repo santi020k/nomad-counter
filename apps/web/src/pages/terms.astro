@@ -1,0 +1,77 @@
+---
+import LegalPage from '@/layouts/LegalPage.astro'
+
+const repositoryUrl = 'https://github.com/santi020k/nomad-counter'
+const licenseUrl = `${repositoryUrl}/blob/main/LICENSE`
+---
+
+<LegalPage
+  title="Terms of use"
+  description="The rules and limitations for using Nomad Counter, including the important reminder that the app is not tax, legal, or immigration advice."
+>
+  <section>
+    <h2>Acceptance</h2>
+    <p>
+      By using Nomad Counter, including the website and related API, you agree to these terms. If you do not agree,
+      do not use the service.
+    </p>
+  </section>
+
+  <section>
+    <h2>The service</h2>
+    <p>
+      Nomad Counter helps you record travel dates, count inclusive calendar days by country, and compare those counts
+      with configurable thresholds. The default 183-day threshold is a common signal, not a universal rule.
+    </p>
+  </section>
+
+  <section>
+    <h2>Not professional advice</h2>
+    <p>
+      Nomad Counter is an informational tracking tool only. It is not tax, legal, accounting, immigration, or residency
+      advice. Country rules vary, change, and often depend on facts the app cannot know. Confirm your situation with a
+      qualified professional before making decisions.
+    </p>
+  </section>
+
+  <section>
+    <h2>Your records</h2>
+    <p>
+      You are responsible for the accuracy of dates, countries, thresholds, notes, imports, and exports you add to the
+      app. Keep independent records and source documents outside Nomad Counter when they matter.
+    </p>
+  </section>
+
+  <section>
+    <h2>Availability and changes</h2>
+    <p>
+      The service may change, break, or become unavailable. Features may be updated or removed, and these terms may be
+      revised as the project evolves.
+    </p>
+  </section>
+
+  <section>
+    <h2>Limitation of liability</h2>
+    <p>
+      To the extent allowed by law, the maintainers and hosts are not liable for losses arising from use of the service,
+      including incorrect counts, missing data, sync issues, downtime, or decisions made from app output.
+    </p>
+  </section>
+
+  <section>
+    <h2>Software license</h2>
+    <p>
+      The source code for the project, when made available, is provided under the
+      <a href={licenseUrl} rel="noopener noreferrer" target="_blank">MIT License</a>.
+      These terms apply to use of this running service.
+    </p>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p>
+      Technical discussion, issues, and contribution context can happen on
+      <a href={repositoryUrl} rel="noopener noreferrer" target="_blank">GitHub</a>.
+    </p>
+  </section>
+</LegalPage>

@@ -1,0 +1,38 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "accesslint",
+    "Astro",
+    "autorun",
+    "Cloudflare",
+    "Dedupe",
+    "Drizzle",
+    "fenix",
+    "Hono",
+    "iCal",
+    "lhci",
+    "libSQL",
+    "lighthouserc",
+    "llms",
+    "passwordless",
+    "Santi",
+    "Santiago",
+    "SRT",
+    "Supabase",
+    "Turso",
+    "webmanifest",
+    "wordmark",
+    "workerd",
+    "Wrangler"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    ".astro",
+    ".turbo",
+    ".wrangler",
+    "pnpm-lock.yaml",
+    ".agent"
+  ]
+}

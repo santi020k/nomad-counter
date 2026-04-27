@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".astro/**"],
+      "env": ["PUBLIC_API_URL"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "inputs": ["**/*.{ts,tsx,js,mjs,cjs,astro}", "eslint.config.js", "tsconfig.json"]
+    },
+    "check": {
+      "dependsOn": ["^build"],
+      "inputs": ["**/*.{ts,tsx,js,mjs,cjs,astro,json}", "tsconfig.json"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "outputs": ["playwright-report/**", "test-results/**", "coverage/**"]
+    },
+    "deploy": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "passThroughEnv": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"]
+    }
+  }
+}

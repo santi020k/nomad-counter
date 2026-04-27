@@ -1,28 +1,11 @@
-# build output
-dist/
-
-# generated types
-.astro/
-
-# dependencies
-node_modules/
-
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# environment variables
+node_modules
+dist
+.astro
+.turbo
+.wrangler
 .env
-.env.production
-
-# macOS-specific files
+.dev.vars
+playwright-report
+test-results
+.lighthouseci
 .DS_Store
-.vercel
-
-# i18n
-astro_tmp_pages_*
-
-# coverage
-coverage

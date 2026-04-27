@@ -1,0 +1,178 @@
+---
+import SiteFooter from '@/components/SiteFooter.astro'
+import SEO from '@/components/SEO.astro'
+import ThemeToggle from '@/components/ThemeToggle.astro'
+import '@/styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+const siteUrl = 'https://nomad.santi020k.com'
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEO title={title} description={description} ogImage="/og-legal.png" canonicalUrl={canonicalUrl} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="topbar">
+      <nav class="shell nav" aria-label="Main">
+        <a href="/" class="brand" aria-label="Nomad Counter home">
+          <picture>
+            <source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
+            <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" />
+          </picture>
+        </a>
+        <div class="nav-actions">
+          <ThemeToggle />
+          <a class="btn secondary" href="/#counter">Counter</a>
+          <a class="btn secondary" href="/stats/">Stats</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="shell legal-shell">
+      <article class="legal-page">
+        <header class="legal-header">
+          <p class="eyebrow">Legal</p>
+          <h1>{title}</h1>
+          <p>{description}</p>
+          <span>Last updated April 27, 2026</span>
+        </header>
+        <div class="legal-content">
+          <slot />
+        </div>
+      </article>
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    box-shadow: 0 1px 0 var(--line), 0 4px 20px color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+
+  .nav {
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand img {
+    display: block;
+    width: 220px;
+    max-width: 48vw;
+    height: auto;
+  }
+
+  .nav-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .legal-shell {
+    padding-block: clamp(42px, 7vw, 86px) 24px;
+  }
+
+  .legal-page {
+    max-width: 780px;
+  }
+
+  .legal-header {
+    margin-bottom: 34px;
+  }
+
+  .legal-header h1 {
+    margin: 0 0 14px;
+    color: var(--text);
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    line-height: 0.95;
+  }
+
+  .legal-header p {
+    max-width: 660px;
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  .legal-header span {
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .legal-content {
+    display: grid;
+    gap: 14px;
+  }
+
+  .legal-content :global(section) {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+  }
+
+  .legal-content :global(h2) {
+    margin: 0 0 10px;
+    color: var(--text);
+    font-size: 1.08rem;
+  }
+
+  .legal-content :global(p),
+  .legal-content :global(ul) {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .legal-content :global(ul) {
+    padding-left: 20px;
+  }
+
+  .legal-content :global(li + li) {
+    margin-top: 8px;
+  }
+
+  .legal-content :global(a) {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .legal-content :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .brand img {
+      width: 148px;
+      max-width: none;
+    }
+
+    .nav-actions {
+      margin-left: auto;
+    }
+  }
+</style>

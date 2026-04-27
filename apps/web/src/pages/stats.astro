@@ -1,0 +1,87 @@
+---
+import SEO from '@/components/SEO.astro'
+import SiteFooter from '@/components/SiteFooter.astro'
+import ThemeToggle from '@/components/ThemeToggle.astro'
+import '@/styles/global.css'
+
+const title = 'Public Stats'
+const description = 'Public Nomad Counter aggregate statistics and platform health.'
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEO title={title} description={description} ogImage="/og-stats.png" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="topbar">
+      <nav class="shell nav" aria-label="Main">
+        <a href="/" class="brand" aria-label="Nomad Counter home">
+          <picture>
+            <source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
+            <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" />
+          </picture>
+        </a>
+        <div class="nav-actions">
+          <ThemeToggle />
+          <a class="btn secondary" href="/#counter">Counter</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="shell" style="padding-block: clamp(42px, 7vw, 86px) 24px;">
+      <section style="max-width: 760px; padding-block: 56px;">
+        <p class="eyebrow">Public stats</p>
+        <h1 style="font-size: clamp(3rem, 8vw, 6rem); line-height: .95; margin-bottom: 24px;">No personal data here.</h1>
+        <p class="muted" style="font-size: 1.15rem; line-height: 1.6;">
+          The API exposes private per-user counts after sign-in. A public aggregate stats page is intentionally stubbed until there is enough non-PII data to publish safely.
+        </p>
+      </section>
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    box-shadow: 0 1px 0 var(--line), 0 4px 20px color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+
+  .nav {
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand img {
+    display: block;
+    width: 220px;
+    max-width: 48vw;
+    height: auto;
+  }
+
+  .nav-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .brand img {
+      width: 148px;
+      max-width: none;
+    }
+  }
+</style>

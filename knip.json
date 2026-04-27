@@ -1,0 +1,22 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/api": {
+      "entry": ["wrangler.toml"]
+    },
+    "apps/web": {
+      "entry": ["src/pages/**/*.astro", "lighthouserc.cjs", "lighthouserc.mobile.cjs"],
+      "ignore": [
+        "src/components/forms/CheckboxControl.astro",
+        "src/components/forms/CountryComboboxField.astro",
+        "src/components/forms/FormField.astro",
+        "src/components/forms/InputControl.astro",
+        "src/components/forms/SelectControl.astro",
+        "src/components/forms/TextareaControl.astro"
+      ]
+    },
+    "packages/db": {
+      "entry": []
+    }
+  }
+}

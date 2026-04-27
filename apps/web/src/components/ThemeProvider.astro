@@ -1,0 +1,40 @@
+{/* Inlined to avoid FOUC. This is a parser blocking script. */}
+<script is:inline>
+  const lightModePref = window.matchMedia('(prefers-color-scheme: light)')
+
+  const getUserPref = () => {
+    const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme')
+    return storedTheme || (lightModePref.matches ? 'light' : 'dark')
+  }
+
+  const setTheme = newTheme => {
+    if (newTheme !== 'light' && newTheme !== 'dark') return
+
+    const root = document.documentElement
+    if (newTheme === root.getAttribute('data-theme')) return
+
+    root.setAttribute('data-theme', newTheme)
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('theme', newTheme)
+    }
+  }
+
+  // initial setup
+  setTheme(getUserPref())
+
+  // View Transitions hook to restore theme
+  document.addEventListener('astro:after-swap', () => setTheme(getUserPref()))
+
+  // listen for theme-change custom event
+  document.addEventListener('theme-change', e => {
+    setTheme(e.detail.theme)
+  })
+
+  // listen for prefers-color-scheme change.
+  lightModePref.addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) {
+      setTheme(e.matches ? 'light' : 'dark')
+    }
+  })
+</script>

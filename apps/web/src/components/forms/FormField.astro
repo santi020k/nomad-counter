@@ -1,0 +1,29 @@
+---
+interface Props {
+  label: string
+  forId: string
+  class?: string
+  hint?: string
+  hintId?: string
+  id?: string
+  hidden?: boolean
+}
+
+const {
+  class: className = '',
+  forId,
+  hint,
+  hintId,
+  hidden = false,
+  id,
+  label
+} = Astro.props as Props
+
+const classes = ['field', className].filter(Boolean).join(' ')
+---
+
+<div id={id} class={classes} hidden={hidden}>
+  <label for={forId}>{label}</label>
+  <slot />
+  {hint ? <small id={hintId} class="field-hint">{hint}</small> : <slot name="hint" />}
+</div>

@@ -1,0 +1,81 @@
+---
+import LegalPage from '@/layouts/LegalPage.astro'
+
+const repositoryUrl = 'https://github.com/santi020k/nomad-counter'
+const authorUrl = 'https://santi020k.com'
+---
+
+<LegalPage
+  title="Privacy policy"
+  description="How Nomad Counter handles local travel data, optional account sync, email-code sign-in, and basic technical operations."
+>
+  <section>
+    <h2>Summary</h2>
+    <p>
+      Nomad Counter is guest-first. You can add trips, tracked countries, thresholds, and notes without signing in.
+      In guest mode, that data stays in your browser storage unless you choose to save it to an account.
+    </p>
+  </section>
+
+  <section>
+    <h2>Data you enter</h2>
+    <p>
+      The app may store country names, country codes, entry dates, exit dates, thresholds, warning ranges, and optional
+      notes. These records are used to calculate calendar-day counts and residency-exposure summaries.
+    </p>
+  </section>
+
+  <section>
+    <h2>Guest mode and local storage</h2>
+    <p>
+      Guest-mode trips and country settings are saved locally in your browser. Clearing browser storage, using another
+      device, or switching browsers may remove or hide that local copy from you.
+    </p>
+  </section>
+
+  <section>
+    <h2>Account sync</h2>
+    <p>
+      If you enter your email to sync data, Nomad Counter creates a short-lived one-time login code. Successful
+      verification creates a session cookie and stores your travel records in the app database so they can sync across
+      devices. Email is used for sign-in and account continuity, not advertising.
+    </p>
+  </section>
+
+  <section>
+    <h2>Email delivery and local development</h2>
+    <p>
+      Production email-code delivery may use Resend when configured. Local development can expose a temporary dev code
+      for testing, but that behavior is not intended for production auth.
+    </p>
+  </section>
+
+  <section>
+    <h2>Infrastructure</h2>
+    <p>
+      Nomad Counter is designed for Cloudflare-native hosting and storage. Like most web services, hosting providers
+      may process short-lived technical data such as IP address, user agent, request path, and error details to deliver
+      the site, protect the service, and troubleshoot issues.
+    </p>
+  </section>
+
+  <section>
+    <h2>Your choices</h2>
+    <ul>
+      <li>Use the counter without signing in if you want data to stay local to the browser.</li>
+      <li>Delete local data by clearing this site’s browser storage.</li>
+      <li>Do not put sensitive tax, immigration, or identity details in optional trip notes.</li>
+      <li>Use the project links to raise privacy questions or request changes.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p>
+      The project is open on
+      <a href={repositoryUrl} rel="noopener noreferrer" target="_blank">GitHub</a>.
+      You can also reach the maintainer through
+      <a href={authorUrl} rel="noopener noreferrer" target="_blank">santi020k.com</a>.
+    </p>
+  </section>
+</LegalPage>

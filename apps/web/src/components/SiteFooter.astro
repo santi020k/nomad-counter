@@ -1,0 +1,194 @@
+---
+const year = new Date().getFullYear()
+const authorUrl = 'https://santi020k.com'
+const repositoryUrl = 'https://github.com/santi020k/nomad-counter'
+
+const links = [
+  { href: '/privacy/', label: 'Privacy' },
+  { href: '/terms/', label: 'Terms' }
+]
+---
+
+<footer class="site-footer shell">
+  <div class="footer-main">
+    <div>
+      <p class="footer-kicker">Nomad Counter</p>
+      <p class="footer-copy">
+        Built by <a href={authorUrl} rel="noopener noreferrer" target="_blank">Santiago Molina</a>.
+        Guest-first travel-day tracking for residency exposure, not tax advice.
+      </p>
+    </div>
+
+    <nav aria-label="Legal">
+      <ul class="footer-links">
+        {links.map(link => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© {year} Nomad Counter. Keep your own records and confirm rules with a qualified advisor.</p>
+    <div class="footer-actions">
+      <a class="footer-action" href={authorUrl} rel="noopener noreferrer me" target="_blank" aria-label="Visit Santiago Molina website">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" />
+          <path d="M3.6 9h16.8" />
+          <path d="M3.6 15h16.8" />
+          <path d="M12 3c2.1 2.3 3.2 5.3 3.2 9s-1.1 6.7-3.2 9c-2.1-2.3-3.2-5.3-3.2-9S9.9 5.3 12 3Z" />
+        </svg>
+        <span>Website</span>
+      </a>
+      <a class="footer-action" href={repositoryUrl} rel="noopener noreferrer" target="_blank" aria-label="View Nomad Counter source code on GitHub">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M9 19c-4.3 1.4-4.3-2.1-6-2.5" />
+          <path d="M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.4 4.4 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.8 11.8 0 0 0-6.2 0C6.6 3.8 5.6 4.1 5.6 4.1a4.4 4.4 0 0 0-.1 3.2A4.7 4.7 0 0 0 4.2 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22" />
+        </svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 40px;
+    padding-block: 32px 48px;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .site-footer::before {
+    content: '';
+    display: block;
+    height: 1px;
+    margin-bottom: 28px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 35%, var(--line)), transparent);
+  }
+
+  .footer-main,
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .footer-main {
+    align-items: start;
+  }
+
+  .footer-bottom {
+    margin-top: 22px;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  .footer-kicker {
+    margin: 0 0 6px;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .footer-copy,
+  .footer-bottom p {
+    max-width: 620px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .footer-links,
+  .footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .footer-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer a {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
+
+  .site-footer a:hover {
+    color: var(--accent-strong);
+  }
+
+  .footer-links a {
+    display: inline-flex;
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+
+  .footer-links a:hover {
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+
+  .footer-action {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0 12px;
+    background: var(--surface-strong);
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .footer-action:hover {
+    border-color: color-mix(in srgb, var(--accent-soft) 60%, var(--line));
+    background: color-mix(in srgb, var(--accent) 4%, var(--surface-strong));
+    transform: translateY(-1px);
+  }
+
+  .footer-action svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-footer a,
+    .footer-action {
+      transition: none;
+    }
+
+    .footer-action:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .footer-main,
+    .footer-bottom {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .footer-links,
+    .footer-actions {
+      justify-content: flex-start;
+    }
+  }
+</style>
