@@ -1,0 +1,119 @@
+.row {
+  position: relative;
+  display: flex;
+  gap: 0;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 46%),
+    color-mix(in srgb, var(--surface-strong) 88%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 9%, transparent);
+  overflow: hidden;
+}
+
+.accent {
+  flex-shrink: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 74%, transparent),
+    color-mix(in srgb, var(--accent-soft) 55%, transparent)
+  );
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 12px 12px 14px;
+}
+
+.info {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.meta {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.flagWrap {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 24px;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+}
+
+.flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.removeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 34px;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--danger) 20%, var(--line));
+  border-radius: var(--radius);
+  padding: 0 10px;
+  background: color-mix(in srgb, var(--danger) 5%, transparent);
+  color: color-mix(in srgb, var(--danger) 78%, var(--text));
+  font-size: 0.78rem;
+  font-weight: 750;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.removeButton:hover {
+  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  color: var(--danger);
+}
+
+.removeButton:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+@media (max-width: 640px) {
+  .body {
+    align-items: flex-start;
+  }
+
+  .meta {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .meta {
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 12px;
+    border-top: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  }
+}

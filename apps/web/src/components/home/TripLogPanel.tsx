@@ -2,6 +2,7 @@ import { iconSvg } from '../../lib/icons'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
 import { formatDisplayDate, inclusiveDays, todayIso } from '../../lib/app/dateMath'
 import type { Trip } from '../../lib/app/types'
+import rowStyles from './Rows.module.css'
 import styles from './TripLogPanel.module.css'
 
 interface TripItemProps {
@@ -17,14 +18,14 @@ function TripItem({ trip, onRemove }: TripItemProps) {
   const note = trip.note?.trim()
 
   return (
-    <li className={`${styles.item} row row-trip`} data-trip-id={trip.id}>
-      <article aria-labelledby={titleId}>
-        <span className="row-accent" aria-hidden="true" />
-        <div className="row-body">
-          <div className="row-info">
+    <li className={styles.item} data-trip-id={trip.id}>
+      <article className={rowStyles.row} aria-labelledby={titleId}>
+        <span className={rowStyles.accent} aria-hidden="true" />
+        <div className={rowStyles.body}>
+          <div className={rowStyles.info}>
             <h3 className={styles.tripTitle} id={titleId}>
-              <span className="row-flag-wrap" aria-hidden="true">
-                <span className={`row-flag ${styles.tripFlag}`}>{flag}</span>
+              <span className={rowStyles.flagWrap} aria-hidden="true">
+                <span className={`${rowStyles.flag} ${styles.tripFlag}`}>{flag}</span>
               </span>
               <span>{trip.countryName}</span>
             </h3>
@@ -48,12 +49,12 @@ function TripItem({ trip, onRemove }: TripItemProps) {
             </div>
             {note && <p className={styles.note}>{note}</p>}
           </div>
-          <div className="row-meta">
+          <div className={rowStyles.meta}>
             <span className={styles.tripDays} aria-label={`${days} days in ${trip.countryName}`}>
               <span aria-hidden="true">{`${days}d`}</span>
             </span>
             <button
-              className="row-remove-button"
+              className={rowStyles.removeButton}
               type="button"
               title="Remove trip"
               aria-label={`Remove trip to ${trip.countryName}`}

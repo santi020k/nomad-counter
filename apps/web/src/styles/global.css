@@ -228,6 +228,70 @@ button {
   backdrop-filter: blur(16px);
 }
 
+.panel {
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.panel-title-stack {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.panel-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.panel-icon svg {
+  display: block;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.empty-state {
+  margin: 0;
+  border: 1px dashed color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: var(--radius);
+  padding: 14px;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  line-height: 1.55;
+}
+
+.form-help,
+.field-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.form-help {
+  display: grid;
+  gap: 3px;
+}
+
 .btn {
   display: inline-flex;
   min-height: 44px;
@@ -391,13 +455,81 @@ button {
   gap: 14px;
 }
 
+.ui-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ui-checkbox:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface-strong));
+}
+
+.ui-checkbox:has(.ui-checkbox-native:focus-visible) {
+  box-shadow: var(--focus-ring);
+}
+
+.ui-checkbox-native {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ui-checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.ui-checkbox-switch {
+  display: inline-flex;
+  align-items: center;
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  padding: 2px;
+  background: color-mix(in srgb, var(--muted) 24%, transparent);
+  transition: background 0.15s ease;
+}
+
+.ui-checkbox-knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--text) 20%, transparent);
+  transition: transform 0.15s ease;
+}
+
+.ui-checkbox-native:checked ~ .ui-checkbox-row .ui-checkbox-switch {
+  background: var(--accent);
+}
+
+.ui-checkbox-native:checked ~ .ui-checkbox-row .ui-checkbox-knob {
+  transform: translateX(16px);
+}
+
+.ui-checkbox-label {
+  color: color-mix(in srgb, var(--muted) 22%, var(--text));
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
 
   /* ── Responsive ─────────────────────────── */
   @media (max-width: 1080px) {
-    .app-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
-    }
-
     .inline-actions {
       width: 100%;
       justify-content: flex-start;
@@ -405,8 +537,7 @@ button {
   }
 
   @media (max-width: 840px) {
-    .hero,
-    .app-grid {
+    .hero {
       grid-template-columns: 1fr;
     }
 
@@ -465,43 +596,6 @@ button {
     .form-panel-footer .btn {
       width: 100%;
     }
-
-    .row-body {
-      align-items: flex-start;
-    }
-
-    .row-meta {
-      align-self: flex-start;
-    }
-
-    .summary-panel :global(.cc-count-row) {
-      gap: 8px;
-      padding: 6px 8px;
-    }
-
-    .summary-panel :global(.cc-flag-wrap) {
-      width: 4.1rem;
-      height: 3.15rem;
-      font-size: 2rem;
-    }
-
-    .summary-panel :global(.cc-donut-wrap) {
-      width: 72px;
-      height: 72px;
-    }
-
-    .summary-panel :global(.cc-donut-pct) {
-      font-size: 0.92rem;
-    }
-
-    .summary-panel :global(.cc-count-value) {
-      font-size: 2rem;
-    }
-
-    .summary-panel :global(.cc-level-pill) {
-      font-size: 0.66rem;
-      padding-inline: 7px;
-    }
   }
 
   /* ── Animations ─────────────────────────── */
@@ -512,22 +606,6 @@ button {
     }
 
     to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .summary-panel :global(.meter i) {
-      animation: none;
-    }
-
-    .summary-panel :global(.cc-donut-arc) {
-      transition: none;
-    }
-
-    .login-pending-banner {
-      animation: none;
       opacity: 1;
       transform: none;
     }

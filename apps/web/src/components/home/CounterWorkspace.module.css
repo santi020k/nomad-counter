@@ -1,4 +1,8 @@
 .section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: 18px;
+  align-items: start;
   margin-top: 36px;
 }
 
@@ -17,4 +21,16 @@
   color: var(--muted);
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+@media (max-width: 1080px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
+  }
+}
+
+@media (max-width: 840px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
 }

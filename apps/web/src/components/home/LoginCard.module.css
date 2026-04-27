@@ -155,3 +155,11 @@
 
 .changeEmail:hover { color: var(--accent); }
 .changeEmail:focus-visible { color: var(--text); border-radius: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pendingBanner {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

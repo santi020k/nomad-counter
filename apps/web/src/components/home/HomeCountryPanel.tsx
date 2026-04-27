@@ -3,6 +3,7 @@ import { iconSvg } from '../../lib/icons'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
 import type { HomeCountry } from '../../lib/app/types'
 import { CountryCombobox } from './CountryCombobox'
+import rowStyles from './Rows.module.css'
 import styles from './HomeCountryPanel.module.css'
 
 interface TrackedRowProps {
@@ -14,13 +15,13 @@ function TrackedRow({ country, onRemove }: TrackedRowProps) {
   const flag = countryCodeToFlagEmoji(country.countryCode)
 
   return (
-    <article className={`row row-tracked ${styles.trackedRow}`}>
-      <span className="row-accent" />
-      <div className="row-body">
-        <div className="row-info">
+    <article className={`${rowStyles.row} ${styles.trackedRow}`}>
+      <span className={rowStyles.accent} aria-hidden="true" />
+      <div className={rowStyles.body}>
+        <div className={rowStyles.info}>
           <strong>
-            <span className="row-flag-wrap" aria-hidden="true">
-              <span className="row-flag">{flag}</span>
+            <span className={rowStyles.flagWrap} aria-hidden="true">
+              <span className={rowStyles.flag}>{flag}</span>
             </span>
             {country.countryName}
           </strong>
@@ -29,9 +30,9 @@ function TrackedRow({ country, onRemove }: TrackedRowProps) {
             <span className={`${styles.pill} ${styles.pillWarn}`}>{`Warn at ${country.warningDays} days`}</span>
           </div>
         </div>
-        <div className="row-meta">
+        <div className={rowStyles.meta}>
           <button
-            className="row-remove-button"
+            className={rowStyles.removeButton}
             type="button"
             title="Remove tracked country"
             aria-label={`Stop tracking ${country.countryName}`}
