@@ -1,0 +1,12 @@
+---
+type Props = astroHTML.JSX.TextareaHTMLAttributes
+
+const {
+  class: className = '',
+  ...rest
+} = Astro.props as Props & { class?: string }
+
+const classes = ['ui-textarea', className].filter(Boolean).join(' ')
+---
+
+<textarea class={classes} {...rest}></textarea>

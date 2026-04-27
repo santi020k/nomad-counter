@@ -1,0 +1,24 @@
+---
+interface Props extends astroHTML.JSX.InputHTMLAttributes {
+  id: string
+  label: string
+  name: string
+  class?: string
+}
+
+const {
+  class: className = '',
+  id,
+  label,
+  name,
+  type: _type,
+  ...rest
+} = Astro.props as Props
+
+const classes = ['check', className].filter(Boolean).join(' ')
+---
+
+<label class={classes}>
+  <input id={id} name={name} type="checkbox" {...rest} />
+  <span>{label}</span>
+</label>

@@ -2,6 +2,12 @@
 import SiteFooter from '@/components/SiteFooter.astro'
 import SEO from '@/components/SEO.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
+import CheckboxControl from '@/components/forms/CheckboxControl.astro'
+import CountryComboboxField from '@/components/forms/CountryComboboxField.astro'
+import FormField from '@/components/forms/FormField.astro'
+import InputControl from '@/components/forms/InputControl.astro'
+import SelectControl from '@/components/forms/SelectControl.astro'
+import TextareaControl from '@/components/forms/TextareaControl.astro'
 import '@/styles/global.css'
 
 const title = 'Nomad Counter'
@@ -104,13 +110,19 @@ const websiteJsonLd = {
             </div>
           </div>
 
-          <div class="field" id="login-email-field">
-            <label for="login-email">Email</label>
-            <input id="login-email" name="email" type="email" autocomplete="email" required />
-          </div>
-          <div id="code-field" class="field field-code" hidden>
-            <label for="login-code">6-digit code</label>
-            <input
+          <FormField id="login-email-field" forId="login-email" label="Email">
+            <InputControl id="login-email" name="email" type="email" autocomplete="email" required />
+          </FormField>
+          <FormField
+            id="code-field"
+            class="field-code"
+            hidden
+            forId="login-code"
+            label="6-digit code"
+            hint="Codes expire after a short time. Check spam if you do not see it."
+            hintId="login-code-help"
+          >
+            <InputControl
               id="login-code"
               name="code"
               class="input-code"
@@ -123,8 +135,7 @@ const websiteJsonLd = {
               spellcheck="false"
               aria-describedby="login-code-help"
             />
-            <p id="login-code-help" class="field-hint">Codes expire after a short time. Check spam if you do not see it.</p>
-          </div>
+          </FormField>
 
           <p id="status" class="login-status" role="status" aria-live="polite"></p>
 
@@ -152,10 +163,10 @@ const websiteJsonLd = {
               </div>
               <div class="field compact">
                 <label for="window-mode">Window</label>
-                <select id="window-mode" aria-describedby="window-help">
+                <SelectControl id="window-mode" aria-describedby="window-help">
                   <option value="calendar-year">Calendar year</option>
                   <option value="rolling-365">Rolling 365 days</option>
-                </select>
+                </SelectControl>
                 <small id="window-help">Choose the date range used for exposure counts.</small>
               </div>
             </div>
@@ -182,7 +193,7 @@ const websiteJsonLd = {
                 <button id="export-csv" class="btn secondary" type="button">Export CSV</button>
                 <label class="btn secondary">
                   Import CSV
-                  <input id="import-csv" class="sr-only" type="file" accept=".csv,text/csv" />
+                  <InputControl id="import-csv" class="sr-only" type="file" accept=".csv,text/csv" />
                 </label>
               </div>
             </div>
@@ -200,54 +211,32 @@ const websiteJsonLd = {
               </span>
               Add trip
             </h2>
-            <div class="field">
-              <label for="trip-country-search">Country</label>
-              <div
-                class="combo country-combo"
-                data-combo-root
-                data-combo-for="trip-country"
-                data-combo-label="Trip country"
-              >
-                <input
-                  id="trip-country-search"
-                  class="combo-input"
-                  type="text"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  aria-controls="trip-country-listbox"
-                  aria-activedescendant=""
-                  autocomplete="off"
-                  placeholder="Search country"
-                />
-                <button class="combo-toggle" type="button" aria-label="Toggle country list" tabindex="-1">
-                  <span aria-hidden="true">▾</span>
-                </button>
-                <div id="trip-country-listbox" class="combo-list" role="listbox" aria-label="Trip country options"></div>
-                <select id="trip-country" name="countryCode" class="combo-native" aria-hidden="true" tabindex="-1"></select>
-              </div>
-            </div>
+            <CountryComboboxField
+              fieldLabel="Country"
+              comboLabel="Trip country"
+              searchId="trip-country-search"
+              listboxId="trip-country-listbox"
+              selectId="trip-country"
+              selectName="countryCode"
+            />
             <div class="grid-fit">
-              <div class="field">
-                <label for="trip-entry">Entry date</label>
-                <input id="trip-entry" name="entryDate" type="date" required />
-              </div>
-              <div class="field">
-                <label for="trip-exit">Exit date</label>
-                <input id="trip-exit" name="exitDate" type="date" required aria-describedby="trip-exit-help" />
-                <small id="trip-exit-help" class="field-hint">Required for completed stays. Disabled while “Currently there” is checked.</small>
-              </div>
+              <FormField forId="trip-entry" label="Entry date">
+                <InputControl id="trip-entry" name="entryDate" type="date" required />
+              </FormField>
+              <FormField
+                forId="trip-exit"
+                label="Exit date"
+                hint="Required for completed stays. Disabled while “Currently there” is checked."
+                hintId="trip-exit-help"
+              >
+                <InputControl id="trip-exit" name="exitDate" type="date" required aria-describedby="trip-exit-help" />
+              </FormField>
             </div>
-            <label class="check">
-              <input id="trip-open-ended" name="openEnded" type="checkbox" />
-              <span>Currently there</span>
-            </label>
+            <CheckboxControl id="trip-open-ended" name="openEnded" label="Currently there" />
             <p id="trip-form-status" class="form-status" role="status" aria-live="polite"></p>
-            <div class="field">
-              <label for="trip-note">Note</label>
-              <textarea id="trip-note" name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help"></textarea>
-              <small id="trip-note-help">Avoid sensitive tax, immigration, or identity details.</small>
-            </div>
+            <FormField forId="trip-note" label="Note" hint="Avoid sensitive tax, immigration, or identity details." hintId="trip-note-help">
+              <TextareaControl id="trip-note" name="note" rows="3" placeholder="Optional" aria-describedby="trip-note-help" />
+            </FormField>
             <button class="btn" type="submit">Add trip</button>
           </form>
 
@@ -258,42 +247,39 @@ const websiteJsonLd = {
               </span>
               Tracked country
             </h2>
-            <div class="field">
-              <label for="home-country-search">Country</label>
-              <div
-                class="combo country-combo"
-                data-combo-root
-                data-combo-for="home-country"
-                data-combo-label="Tracked country"
-              >
-                <input
-                  id="home-country-search"
-                  class="combo-input"
-                  type="text"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  aria-controls="home-country-listbox"
-                  aria-activedescendant=""
-                  autocomplete="off"
-                  placeholder="Search country"
-                />
-                <button class="combo-toggle" type="button" aria-label="Toggle country list" tabindex="-1">
-                  <span aria-hidden="true">▾</span>
-                </button>
-                <div id="home-country-listbox" class="combo-list" role="listbox" aria-label="Tracked country options"></div>
-                <select id="home-country" name="countryCode" class="combo-native" aria-hidden="true" tabindex="-1"></select>
-              </div>
-            </div>
+            <CountryComboboxField
+              fieldLabel="Country"
+              comboLabel="Tracked country"
+              searchId="home-country-search"
+              listboxId="home-country-listbox"
+              selectId="home-country"
+              selectName="countryCode"
+            />
             <div class="grid-fit">
-              <div class="field">
-                <label for="threshold-days">Threshold</label>
-                <input id="threshold-days" name="thresholdDays" type="number" min="1" max="366" value="183" required aria-describedby="threshold-help" />
-              </div>
-              <div class="field">
-                <label for="warning-days">Warning</label>
-                <input id="warning-days" name="warningDays" type="number" min="0" max="90" value="14" required aria-describedby="warning-help" />
-              </div>
+              <FormField forId="threshold-days" label="Threshold">
+                <InputControl
+                  id="threshold-days"
+                  name="thresholdDays"
+                  type="number"
+                  min="1"
+                  max="366"
+                  value="183"
+                  required
+                  aria-describedby="threshold-help"
+                />
+              </FormField>
+              <FormField forId="warning-days" label="Warning">
+                <InputControl
+                  id="warning-days"
+                  name="warningDays"
+                  type="number"
+                  min="0"
+                  max="90"
+                  value="14"
+                  required
+                  aria-describedby="warning-help"
+                />
+              </FormField>
             </div>
             <p class="form-help">
               <span id="threshold-help">Threshold is the day limit you want to watch.</span>

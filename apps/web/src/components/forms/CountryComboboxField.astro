@@ -1,0 +1,53 @@
+---
+interface Props {
+  comboLabel: string
+  listboxId: string
+  searchId: string
+  selectId: string
+  selectName: string
+  fieldLabel?: string
+  placeholder?: string
+  class?: string
+}
+
+const {
+  class: className = '',
+  comboLabel,
+  fieldLabel = 'Country',
+  listboxId,
+  placeholder = 'Search country',
+  searchId,
+  selectId,
+  selectName
+} = Astro.props as Props
+
+const fieldClasses = ['field', className].filter(Boolean).join(' ')
+---
+
+<div class={fieldClasses}>
+  <label for={searchId}>{fieldLabel}</label>
+  <div
+    class="combo country-combo"
+    data-combo-root
+    data-combo-for={selectId}
+    data-combo-label={comboLabel}
+  >
+    <input
+      id={searchId}
+      class="combo-input"
+      type="text"
+      role="combobox"
+      aria-expanded="false"
+      aria-autocomplete="list"
+      aria-controls={listboxId}
+      aria-activedescendant=""
+      autocomplete="off"
+      placeholder={placeholder}
+    />
+    <button class="combo-toggle" type="button" aria-label="Toggle country list" tabindex="-1">
+      <span aria-hidden="true">▾</span>
+    </button>
+    <div id={listboxId} class="combo-list" role="listbox" aria-label={`${comboLabel} options`}></div>
+    <select id={selectId} name={selectName} class="combo-native" aria-hidden="true" tabindex="-1"></select>
+  </div>
+</div>
