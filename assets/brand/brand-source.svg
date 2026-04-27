@@ -1,21 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
   <title>Nomad Counter editable brand source</title>
   <defs>
+    <linearGradient id="brand-gradient" x1="40" y1="216" x2="168" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#471AA0"/>
+      <stop offset="1" stop-color="#804BC4"/>
+    </linearGradient>
     <style>
-      .label{font:700 18px Inter,Arial,sans-serif;fill:#68736d}.word{font:800 48px Inter,Arial,sans-serif}
+      .label{font:700 18px Inter,Arial,sans-serif;fill:#6b7280}.word{font:800 48px Inter,Arial,sans-serif}
     </style>
   </defs>
-  <rect width="900" height="520" fill="#F7F4ED"/>
-  <text x="40" y="56" class="label">Logo master</text>
+  <rect width="900" height="520" fill="#F8FAFC"/>
+  <text x="40" y="56" class="label">Logo master - route stamp + 183 counter</text>
   <g transform="translate(40 88)">
-    <rect width="128" height="128" rx="28" fill="#0E7C66"/>
-    <path d="M31 77.5c14.2-33.8 51.3-34 66 0" fill="none" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
-    <path d="M64 29v70" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
-    <path d="M42 53h44" stroke="#F7F4ED" stroke-width="10" stroke-linecap="round"/>
-    <circle cx="64" cy="82" r="9" fill="#F4BD50"/>
+    <rect width="128" height="128" rx="28" fill="url(#brand-gradient)"/>
+    <circle cx="64" cy="64" r="38" fill="none" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="8"/>
+    <path d="M33 72c14-18 32-24 62-16" fill="none" stroke="#C7BAE2" stroke-width="7" stroke-linecap="round"/>
+    <path d="M42 43h44M42 85h44" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+    <text x="64" y="72" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="29" font-weight="800" text-anchor="middle">183</text>
+    <circle cx="95" cy="56" r="8" fill="#EAB308"/>
   </g>
-  <text x="200" y="156" class="word" fill="#18201D">Nomad</text>
-  <text x="200" y="201" class="word" fill="#0E7C66">Counter</text>
-  <text x="40" y="292" class="label">Palette: passport green, paper, route blue, warning amber, stamp red</text>
-  <rect x="40" y="320" width="100" height="100" fill="#0E7C66"/><rect x="160" y="320" width="100" height="100" fill="#F7F4ED"/><rect x="280" y="320" width="100" height="100" fill="#2F80ED"/><rect x="400" y="320" width="100" height="100" fill="#F4BD50"/><rect x="520" y="320" width="100" height="100" fill="#C23B22"/>
+  <text x="200" y="156" class="word" fill="#1F2937">Nomad</text>
+  <text x="200" y="201" class="word" fill="#471AA0">Counter</text>
+  <text x="40" y="292" class="label">Palette from Figma: primary violet, lavender, off-white app surface, gray UI, status accents</text>
+  <rect x="40" y="320" width="100" height="100" fill="#471AA0"/><rect x="160" y="320" width="100" height="100" fill="#804BC4"/><rect x="280" y="320" width="100" height="100" fill="#B579E6"/><rect x="400" y="320" width="100" height="100" fill="#F8FAFC"/><rect x="520" y="320" width="100" height="100" fill="#1F2937"/><rect x="640" y="320" width="100" height="100" fill="#EAB308"/><rect x="760" y="320" width="100" height="100" fill="#14B8A6"/>
 </svg>

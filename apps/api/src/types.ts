@@ -3,6 +3,8 @@ export interface Bindings {
   ALLOWED_ORIGIN?: string
   ALLOWED_ORIGINS?: string
   NOMAD_LOGIN_SECRET?: string
+  RESEND_API_KEY?: string
+  AUTH_EMAIL_FROM?: string
   SESSION_COOKIE_NAME?: string
 }
 

@@ -9,9 +9,9 @@ Personal web app for tracking calendar days spent in countries where tax residen
 - `apps/web`: Astro 6, Tailwind 4, Cloudflare Pages
 - `apps/api`: Hono on Cloudflare Workers
 - `packages/db`: Drizzle schema for Cloudflare D1
-- Auth: first-party private access code + D1-backed HTTP-only sessions
+- Auth: guest-first local mode plus first-party email-code sessions backed by D1
 
-The app intentionally has no Supabase, no Vercel, and no external auth provider. The access-code auth is the simplest production-usable option for a personal private tool: set one Cloudflare Worker secret and sign in with your email plus that code.
+The app intentionally has no Supabase and no Vercel. You can use the counter without signing in; trips stay in local browser storage. Email-code sign-in exists only to save that data to an account and sync it across devices.
 
 ## Local Dev
 
@@ -35,15 +35,17 @@ PUBLIC_API_URL=http://localhost:8787
 `apps/api/.dev.vars`:
 
 ```sh
-NOMAD_LOGIN_SECRET=change-me-locally
 ALLOWED_ORIGINS=http://localhost:4321
+RESEND_API_KEY=
 ```
 
 Production secrets:
 
 ```sh
-pnpm --filter @nomad-counter/api exec wrangler secret put NOMAD_LOGIN_SECRET
+pnpm --filter @nomad-counter/api exec wrangler secret put RESEND_API_KEY
 ```
+
+If `RESEND_API_KEY` is missing in local development, `/api/auth/request-code` returns a `devCode` in the JSON response so the auth flow can be tested without sending email.
 
 Cloudflare deploy variables/secrets:
 
@@ -51,6 +53,8 @@ Cloudflare deploy variables/secrets:
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_D1_DATABASE_ID`
 - `PUBLIC_API_URL=https://api.nomad.santi020k.com`
+- `RESEND_API_KEY`
+- `AUTH_EMAIL_FROM`
 
 ## Day Counting Rule
 
@@ -65,6 +69,8 @@ Date math uses `Temporal` in the API and ISO `YYYY-MM-DD` strings end to end, av
 - Trips with entry date, exit date, country, and open-ended “currently there” support
 - Current calendar-year and rolling-365-day views
 - CSV import and export
+- Guest mode with local browser storage
+- Email-code sign-in for account sync
 - `/stats` placeholder for future non-PII aggregate stats
 
 Deferred: iCal/Google Calendar import, map heatmap, PWA offline sync, and richer “what if?” planning.
@@ -101,3 +107,12 @@ pnpm build
 pnpm spellcheck
 pnpm knip
 ```
+
+## Project Guides
+
+- `AGENTS.md`: canonical instructions for AI coding agents.
+- `CLAUDE.md`: Claude-compatible pointer to the agent rules.
+- `llms.txt`: compact LLM-readable project brief.
+- `docs/brand-guidelines.md`: brand identity, voice, color, logo, UI, SEO, and accessibility guidance.
+- `docs/ai-collaboration.md`: practical workflow for using AI on this project.
+- `.agent/skills/seo/SKILL.md`: SEO skill adapted from the `unsaid` workflow.

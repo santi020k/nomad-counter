@@ -3,7 +3,22 @@ import '@/styles/global.css'
 
 const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
 const title = 'Nomad Counter'
-const description = 'A private 183-day tax residency exposure tracker for frequent travelers.'
+const description = 'Track travel days, compare residency thresholds, and avoid surprise 183-day tax exposure as a digital nomad.'
+const siteUrl = 'https://nomad.santi020k.com/'
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: title,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  url: siteUrl,
+  description,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD'
+  }
+}
 ---
 
 <!doctype html>
@@ -13,28 +28,39 @@ const description = 'A private 183-day tax residency exposure tracker for freque
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://nomad.santi020k.com/" />
+    <link rel="canonical" href={siteUrl} />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-16.png" sizes="16x16" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" />
     <link rel="icon" href="/favicon-48.png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0e7c66" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#471aa0" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0e7c66" />
+    <meta name="theme-color" content="#471aa0" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:site_name" content={title} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://nomad.santi020k.com/og-image.png" />
+    <meta property="og:image:alt" content="Nomad Counter 183-day residency exposure tracker preview" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://nomad.santi020k.com/og-image.png" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
     <title>{title}</title>
   </head>
   <body data-authenticated="false">
+    <a class="skip-link" href="#main-content">Skip to counter</a>
     <header class="topbar">
       <nav class="shell nav" aria-label="Main">
         <a href="/" class="brand" aria-label="Nomad Counter">
-          <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" />
+          <picture>
+            <source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
+            <img src="/logo.svg" alt="Nomad Counter" width="310" height="80" />
+          </picture>
         </a>
         <div class="nav-actions">
           <a class="btn secondary" href="/stats">Stats</a>
@@ -43,31 +69,37 @@ const description = 'A private 183-day tax residency exposure tracker for freque
       </nav>
     </header>
 
-    <main class="shell app-shell">
-      <section class="hero">
+    <main id="main-content" class="shell app-shell">
+      <section class="hero" data-animate>
         <div>
-          <p class="eyebrow">183-day residency exposure</p>
+          <p class="eyebrow"># Counting your days</p>
           <h1>Know your days before they count against you.</h1>
           <p>
-            Log stays, track rolling and calendar windows, and spot countries that are close to a tax residency threshold.
+            Explore your travel history, tally every day, and see when a country is getting close to a residency threshold.
           </p>
+          <div class="hero-actions">
+            <a class="btn" href="#counter">Start counting</a>
+            <a class="btn secondary" href="#faq">How it works</a>
+          </div>
         </div>
         <form id="login-form" class="card login-card" aria-label="Sign in">
-          <h2>Private access</h2>
+          <p id="sync-state" class="sync-state">Guest mode. Your data stays in this browser until you save it to an account.</p>
+          <h2>Save to your account</h2>
+          <p class="muted">Use the counter now. Enter your email only when you want to sync trips across devices.</p>
           <label class="field">
             <span>Email</span>
             <input name="email" type="email" autocomplete="email" required />
           </label>
-          <label class="field">
-            <span>Access code</span>
-            <input name="accessCode" type="password" autocomplete="current-password" required />
+          <label id="code-field" class="field" hidden>
+            <span>Email code</span>
+            <input name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" />
           </label>
-          <button class="btn" type="submit">Sign in</button>
+          <button class="btn" type="submit">Email me a code</button>
           <p id="status" role="status" aria-live="polite"></p>
         </form>
       </section>
 
-      <section class="app-grid" aria-label="Nomad Counter app">
+      <section id="counter" class="app-grid" aria-label="Nomad Counter app" data-animate>
         <div class="dashboard">
           <section class="panel summary-panel">
             <div class="panel-heading">
@@ -108,7 +140,7 @@ const description = 'A private 183-day tax residency exposure tracker for freque
           </section>
         </div>
 
-        <aside class="sidebar">
+        <div class="sidebar">
           <form id="trip-form" class="panel form-panel">
             <h2>Add trip</h2>
             <label class="field">
@@ -155,14 +187,38 @@ const description = 'A private 183-day tax residency exposure tracker for freque
             <button class="btn secondary" type="submit">Track country</button>
             <div id="home-country-list" class="list tight"></div>
           </form>
-        </aside>
+        </div>
       </section>
 
-      <section class="deferred">
-        <h2>Roadmap stubs</h2>
-        <p>
-          Deferred intentionally: calendar imports, map heatmap, PWA offline sync, and richer “what if?” planning. The current build keeps the high-value core solid.
-        </p>
+      <section class="marketing-grid" data-stagger>
+        <article>
+          <strong>Calendar-day math</strong>
+          <p>Entry and exit dates are counted inclusively, matching the conservative rule most tax guidance uses.</p>
+        </article>
+        <article>
+          <strong>Rolling windows</strong>
+          <p>Switch between the current calendar year and a rolling 365-day view for stricter jurisdictions.</p>
+        </article>
+        <article>
+          <strong>Guest-first privacy</strong>
+          <p>Try the full workflow locally. Email sign-in exists only to save your trip log to your account.</p>
+        </article>
+      </section>
+
+      <section id="faq" class="faq" data-animate>
+        <p class="eyebrow">You might be wondering</p>
+        <details open>
+          <summary>Why is 183 days the default?</summary>
+          <p>Many countries use 183 calendar days as a tax-residency signal. Some use different tests, so each tracked country can have its own threshold.</p>
+        </details>
+        <details>
+          <summary>Can I use Nomad Counter without signing in?</summary>
+          <p>Yes. Trips and country settings are saved in this browser. Sign in with an email code only when you want account sync.</p>
+        </details>
+        <details>
+          <summary>What does “currently there” do?</summary>
+          <p>Open-ended trips count from the entry date through today, so the dashboard keeps updating while you travel.</p>
+        </details>
       </section>
     </main>
 
@@ -185,6 +241,7 @@ const description = 'A private 183-day tax residency exposure tracker for freque
     border-bottom: 1px solid var(--line);
     background: color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter: blur(14px);
+    animation: header-enter 0.45s ease-out both;
   }
 
   .nav {
@@ -223,15 +280,15 @@ const description = 'A private 183-day tax residency exposure tracker for freque
   }
 
   .app-shell {
-    padding-block: 38px 24px;
+    padding-block: clamp(24px, 5vw, 64px) 24px;
   }
 
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
-    gap: 22px;
-    align-items: end;
-    min-height: 420px;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+    gap: clamp(22px, 5vw, 56px);
+    align-items: center;
+    min-height: min(650px, calc(100dvh - 110px));
   }
 
   .eyebrow {
@@ -252,7 +309,7 @@ const description = 'A private 183-day tax residency exposure tracker for freque
   h1 {
     max-width: 820px;
     margin-bottom: 16px;
-    font-size: clamp(3rem, 8vw, 7rem);
+    font-size: clamp(3.1rem, 8vw, 7.25rem);
     line-height: 0.92;
   }
 
@@ -263,6 +320,13 @@ const description = 'A private 183-day tax residency exposure tracker for freque
     line-height: 1.6;
   }
 
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
   .login-card,
   .panel {
     padding: 18px;
@@ -271,6 +335,17 @@ const description = 'A private 183-day tax residency exposure tracker for freque
   .login-card {
     display: grid;
     gap: 12px;
+  }
+
+  .sync-state {
+    width: fit-content;
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 10px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
   }
 
   #status {
@@ -285,7 +360,7 @@ const description = 'A private 183-day tax residency exposure tracker for freque
   }
 
   .app-grid {
-    display: none;
+    display: grid;
     grid-template-columns: minmax(0, 1fr) 360px;
     gap: 18px;
     align-items: start;
@@ -294,10 +369,6 @@ const description = 'A private 183-day tax residency exposure tracker for freque
 
   [data-authenticated="true"] .app-grid {
     display: grid;
-  }
-
-  [data-authenticated="true"] .login-card {
-    display: none;
   }
 
   .dashboard,
@@ -382,7 +453,7 @@ const description = 'A private 183-day tax residency exposure tracker for freque
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: var(--accent);
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
   }
 
   [data-level="warning"] .meter i {
@@ -435,14 +506,48 @@ const description = 'A private 183-day tax residency exposure tracker for freque
   }
 
   .deferred,
-  .footer {
+  .footer,
+  .faq {
     margin-top: 24px;
     color: var(--muted);
   }
 
-  .deferred {
+  .faq {
     border-top: 1px solid var(--line);
     padding-top: 24px;
+  }
+
+  .marketing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .marketing-grid article,
+  .faq details {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+  }
+
+  .marketing-grid strong,
+  .faq summary {
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  .marketing-grid p,
+  .faq p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .faq {
+    display: grid;
+    gap: 10px;
   }
 
   .footer {
@@ -470,6 +575,70 @@ const description = 'A private 183-day tax residency exposure tracker for freque
     .panel-heading,
     .footer {
       flex-direction: column;
+    }
+
+    .marketing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .brand img {
+      width: 148px;
+      max-width: none;
+    }
+
+    .nav-actions {
+      margin-left: auto;
+      justify-content: flex-end;
+    }
+
+    .api-pill {
+      display: none;
+    }
+
+    .sync-state {
+      width: 100%;
+      border-radius: 8px;
+    }
+  }
+
+  @keyframes header-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes content-enter {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-animate],
+    [data-stagger] > * {
+      animation: content-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    [data-stagger] > *:nth-child(2) {
+      animation-delay: 60ms;
+    }
+
+    [data-stagger] > *:nth-child(3) {
+      animation-delay: 120ms;
     }
   }
 </style>

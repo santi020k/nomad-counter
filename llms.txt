@@ -1,0 +1,58 @@
+# Nomad Counter
+
+Nomad Counter is a personal web app for tracking travel days and tax residency exposure. It counts calendar days spent in countries, compares them against per-country thresholds, and warns when a user is near or over the common 183-day residency signal.
+
+Canonical URL: https://nomad.santi020k.com
+API URL: https://api.nomad.santi020k.com
+
+## Product Rules
+
+- Inclusive calendar-day counting: entry date and exit date both count.
+- Any partial day in a country counts as one calendar day.
+- Open-ended trips count from entry date through today.
+- Default threshold is 183 days.
+- Warning window defaults to 14 days.
+- The app is an exposure tracker, not tax advice.
+
+## Architecture
+
+- Monorepo with pnpm workspaces and Turborepo.
+- Web app: Astro 6 and Tailwind 4 in `apps/web`.
+- API: Hono on Cloudflare Workers in `apps/api`.
+- Database: Cloudflare D1 with Drizzle schema in `packages/db`.
+- Auth: optional passwordless email-code sessions. Guest mode works without auth and stores data locally in the browser.
+- Deployment: Cloudflare Pages for web, Cloudflare Workers for API, Cloudflare D1 for data.
+
+## Brand
+
+Nomad Counter uses a precise, calm, travel-aware identity.
+
+- Primary: `#471AA0`.
+- Deep violet: `#4C1D95`.
+- Supporting purple: `#804BC4`.
+- Lavender: `#B579E6`.
+- Background: `#F8FAFC`.
+- Text: `#1F2937`.
+- Muted text: `#6B7280`.
+- Warning: `#EAB308`.
+- Success: `#14B8A6`.
+- Danger: `#DC2626`.
+- Typeface: Inter/system sans.
+
+## AI Guidance
+
+- Preserve guest-first use.
+- Keep auth simple and optional.
+- Use timezone-safe date math.
+- Prefer Cloudflare-native services.
+- Keep SEO metadata server-rendered.
+- Respect reduced motion.
+- Run lint, typecheck, tests, build, knip, and spellcheck before finalizing work.
+
+More context:
+
+- `README.md`
+- `AGENTS.md`
+- `docs/brand-guidelines.md`
+- `docs/ai-collaboration.md`
+- `.agent/skills/seo/SKILL.md`

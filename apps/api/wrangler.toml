@@ -12,10 +12,11 @@ migrations_dir = "migrations"
 [vars]
 ALLOWED_ORIGINS = "http://localhost:4321,https://nomad.santi020k.com,https://nomad-counter.pages.dev,https://5e9f6473.nomad-counter.pages.dev"
 SESSION_COOKIE_NAME = "nomad_session"
+AUTH_EMAIL_FROM = "Nomad Counter <login@nomad.santi020k.com>"
 
 # Local development values are loaded from apps/api/.dev.vars.
 # Production secret is set with:
-#   pnpm --filter @nomad-counter/api exec wrangler secret put NOMAD_LOGIN_SECRET
+#   pnpm --filter @nomad-counter/api exec wrangler secret put RESEND_API_KEY
 
 [dev]
 port = 8787

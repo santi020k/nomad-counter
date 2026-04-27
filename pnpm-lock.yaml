@@ -104,6 +104,9 @@ importers:
       '@astrojs/ts-plugin':
         specifier: ^1.10.7
         version: 1.10.7
+      '@axe-core/playwright':
+        specifier: ^4.11.2
+        version: 4.11.2(playwright-core@1.59.1)
       '@lhci/cli':
         specifier: ^0.15.1
         version: 0.15.1
@@ -199,6 +202,11 @@ packages:
 
   '@astrojs/yaml2ts@0.2.3':
     resolution: {integrity: sha512-PJzRmgQzUxI2uwpdX2lXSHtP4G8ocp24/t+bZyf5Fy0SZLSF9f9KXZoMlFM/XCGue+B0nH/2IZ7FpBYQATBsCg==}
+
+  '@axe-core/playwright@4.11.2':
+    resolution: {integrity: sha512-iP6hfNl9G0j/SEUSo8M7D80RbcDo9KRAAfDP4IT5OHB+Wm6zUHIrm8Y51BKI+Oyqduvipf9u1hcRy57zCBKzWQ==}
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -7315,6 +7323,11 @@ snapshots:
   '@astrojs/yaml2ts@0.2.3':
     dependencies:
       yaml: 2.8.3
+
+  '@axe-core/playwright@4.11.2(playwright-core@1.59.1)':
+    dependencies:
+      axe-core: 4.11.3
+      playwright-core: 1.59.1
 
   '@babel/code-frame@7.29.0':
     dependencies:
