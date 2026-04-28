@@ -5,6 +5,7 @@ Use `AGENTS.md` as the canonical agent guide. This file exists so Claude-style t
 ## Default Behavior
 
 - Read `AGENTS.md`, `README.md`, and relevant files before changing code.
+- Read `.agent/skills/code-standards/SKILL.md` before making code adjustments.
 - Preserve the guest-first product model.
 - Keep the Cloudflare-native architecture.
 - Respect the brand system in `docs/brand-guidelines.md`.

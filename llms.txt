@@ -41,6 +41,7 @@ Nomad Counter uses a precise, calm, travel-aware identity.
 
 ## AI Guidance
 
+- Read `.agent/skills/code-standards/SKILL.md` before code adjustments.
 - Preserve guest-first use.
 - Keep auth simple and optional.
 - Use timezone-safe date math.

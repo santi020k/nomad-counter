@@ -1,7 +1,10 @@
-import { useRef, useState, type SyntheticEvent } from 'react'
+import { type SyntheticEvent, useRef, useState } from 'react'
+
+import { CountryCombobox } from './CountryCombobox'
+
 import { iconSvg } from '../../lib/icons'
 import { validateTripForm } from '../../lib/tripForm'
-import { CountryCombobox } from './CountryCombobox'
+
 import styles from './TripFormPanel.module.css'
 
 interface TripInput {
@@ -26,12 +29,12 @@ export function TripFormPanel({ onAddTrip }: Props) {
   const [status, setStatus] = useState('')
   const [statusTone, setStatusTone] = useState<'ok' | 'error'>('ok')
   const [submitting, setSubmitting] = useState(false)
-
   const entryRef = useRef<HTMLInputElement>(null)
   const exitRef = useRef<HTMLInputElement>(null)
 
   const handleOpenEndedChange = (checked: boolean) => {
     setOpenEnded(checked)
+
     if (checked) {
       setExitDate('')
     }
@@ -39,6 +42,7 @@ export function TripFormPanel({ onAddTrip }: Props) {
 
   const handleEntryChange = (value: string) => {
     setEntryDate(value)
+
     if (exitRef.current && value && exitDate && exitDate < value) {
       setExitDate(value)
     }
@@ -46,7 +50,9 @@ export function TripFormPanel({ onAddTrip }: Props) {
 
   const openDatePicker = (ref: React.RefObject<HTMLInputElement | null>) => {
     const input = ref.current
+
     if (!input || input.disabled) return
+
     try {
       if (typeof input.showPicker === 'function') {
         input.showPicker()
@@ -60,36 +66,50 @@ export function TripFormPanel({ onAddTrip }: Props) {
 
   const reset = () => {
     setCountryCode('')
+
     setCountryName('')
+
     setEntryDate('')
+
     setExitDate('')
+
     setOpenEnded(false)
+
     setNote('')
+
     setStatus('')
   }
 
   const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
+
     setStatus('')
 
     const validated = validateTripForm({ entryDate, exitDate, openEnded })
 
     if (!validated.ok) {
       setStatus(validated.error)
+
       setStatusTone('error')
+
       return
     }
 
     setSubmitting(true)
+
     try {
       await onAddTrip({ countryCode, countryName, entryDate, exitDate: validated.exitDate, note: note || null })
+
       reset()
+
       if (validated.hint) {
         setStatus(validated.hint)
+
         setStatusTone('ok')
       }
     } catch (err) {
       setStatus(err instanceof Error ? err.message : 'Something went wrong.')
+
       setStatusTone('error')
     } finally {
       setSubmitting(false)
@@ -105,7 +125,7 @@ export function TripFormPanel({ onAddTrip }: Props) {
   )
 
   return (
-    <form className={`panel form-panel ${styles.panel}`} onSubmit={handleSubmit} noValidate>
+    <form id="trip-form" className={`panel form-panel ${styles.panel}`} onSubmit={handleSubmit} noValidate>
       <div className={`${styles.heading}`}>
         <span
           className={`${styles.headingIcon}`}
@@ -121,7 +141,11 @@ export function TripFormPanel({ onAddTrip }: Props) {
         id="trip-country"
         name="countryCode"
         label="Country"
-        onSelect={(code, name) => { setCountryCode(code); setCountryName(name) }}
+        onSelect={(code, name) => {
+          setCountryCode(code)
+
+          setCountryName(name)
+        }}
       />
 
       <fieldset className={styles.datesBlock}>
@@ -137,10 +161,19 @@ export function TripFormPanel({ onAddTrip }: Props) {
                 type="date"
                 required
                 value={entryDate}
-                onChange={e => { handleEntryChange(e.target.value) }}
+                onChange={e => {
+                  handleEntryChange(e.target.value)
+                }}
               />
               <span className={styles.dateAccent} aria-hidden="true" />
-              <button type="button" className={styles.dateOpen} aria-label="Open date picker" onClick={() => { openDatePicker(entryRef) }}>
+              <button
+                type="button"
+                className={styles.dateOpen}
+                aria-label="Open date picker"
+                onClick={() => {
+                  openDatePicker(entryRef)
+                }}
+              >
                 {calendarIcon}
               </button>
             </div>
@@ -159,10 +192,20 @@ export function TripFormPanel({ onAddTrip }: Props) {
                 min={entryDate || undefined}
                 value={exitDate}
                 aria-describedby="trip-exit-help"
-                onChange={e => { setExitDate(e.target.value) }}
+                onChange={e => {
+                  setExitDate(e.target.value)
+                }}
               />
               <span className={styles.dateAccent} aria-hidden="true" />
-              <button type="button" className={styles.dateOpen} aria-label="Open date picker" onClick={() => { openDatePicker(exitRef) }} disabled={openEnded}>
+              <button
+                type="button"
+                className={styles.dateOpen}
+                aria-label="Open date picker"
+                onClick={() => {
+                  openDatePicker(exitRef)
+                }}
+                disabled={openEnded}
+              >
                 {calendarIcon}
               </button>
             </div>
@@ -176,7 +219,9 @@ export function TripFormPanel({ onAddTrip }: Props) {
             type="checkbox"
             className="ui-checkbox-native"
             checked={openEnded}
-            onChange={e => { handleOpenEndedChange(e.target.checked) }}
+            onChange={e => {
+              handleOpenEndedChange(e.target.checked)
+            }}
           />
           <span className="ui-checkbox-row">
             <span className="ui-checkbox-switch" aria-hidden="true">
@@ -202,16 +247,20 @@ export function TripFormPanel({ onAddTrip }: Props) {
           placeholder="Optional"
           aria-describedby="trip-note-help"
           value={note}
-          onChange={e => { setNote(e.target.value) }}
+          onChange={e => {
+            setNote(e.target.value)
+          }}
         />
       </div>
 
       <div className={styles.footer}>
-        {status && (
-          <p className={`form-status ${styles.status}`} role="status" data-tone={statusTone === 'error' ? 'error' : undefined}>
-            {status}
-          </p>
-        )}
+        {status ?
+          (
+            <p id="trip-form-status" className={`form-status ${styles.status}`} role="status" data-tone={statusTone === 'error' ? 'error' : undefined}>
+              {status}
+            </p>
+          ) :
+          null}
         <button className="btn" type="submit" disabled={submitting}>Add trip</button>
       </div>
     </form>

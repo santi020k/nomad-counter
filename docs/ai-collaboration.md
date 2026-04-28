@@ -10,7 +10,8 @@ Read these files first:
 2. `README.md`
 3. `llms.txt`
 4. `docs/brand-guidelines.md`
-5. `.agent/skills/seo/SKILL.md` for SEO work
+5. `.agent/skills/code-standards/SKILL.md` before code adjustments
+6. `.agent/skills/seo/SKILL.md` for SEO work
 
 For implementation, inspect the relevant app files after reading the docs. Do not rely only on this guide.
 
@@ -55,6 +56,7 @@ Nomad Counter is a Cloudflare-native Astro + Hono + D1 app. It tracks inclusive 
 Before editing:
 
 - Check current git status.
+- Read `.agent/skills/code-standards/SKILL.md`.
 - Read nearby code.
 - Prefer existing patterns.
 - Identify whether the change affects web, API, DB, docs, or deployment.

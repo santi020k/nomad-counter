@@ -108,7 +108,7 @@ export function TripLogPanel({ trips, onRemoveTrip, onExportCsv, onImportCsv }: 
         </div>
       </div>
 
-      <ul className={`list ${styles.list}`} aria-labelledby="trip-log-heading">
+      <ul id="trip-list" className={`list ${styles.list}`} aria-labelledby="trip-log-heading">
         {sorted.length === 0 ? (
           <li className={styles.emptyItem}>
             <p className="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>

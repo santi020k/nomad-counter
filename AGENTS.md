@@ -19,6 +19,7 @@ The app is not tax advice. Keep copy clear, practical, and cautious.
 
 ## Working Rules
 
+- Before making any code adjustment, read and apply `.agent/skills/code-standards/SKILL.md`; it captures the repo ESLint and TypeScript standards agents must follow.
 - Match the conventions from the sibling santi020k repos, especially `fenix`, `private-website`, and `unsaid`.
 - Use `@santi020k/eslint-config-basic`; do not create a new shared lint config.
 - Prefer Cloudflare-native services.
@@ -95,6 +96,7 @@ For UI changes, also inspect at mobile and desktop widths.
 
 Project-local skills live in `.agent/skills/`. They were copied from the `unsaid` workflow and adapted for Nomad Counter where the app differs:
 
+- `code-standards` for the mandatory ESLint, TypeScript, and package convention workflow before code adjustments.
 - `seo`, `accessibility`, `testing`, and `maintenance` for quality workflows.
 - `web-design`, `ui-ux-pro-max`, `creating-components`, and accessibility lint skills for UI implementation and review.
 - `adding-pages`, `add-content`, and `content-collections` for future static pages or structured content.
