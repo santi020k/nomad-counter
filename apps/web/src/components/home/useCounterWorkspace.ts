@@ -3,9 +3,10 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { request } from '../../lib/app/apiClient'
 import { exportCsv, importCsv } from '../../lib/app/csv'
 import { summarizeLocal } from '../../lib/app/dateMath'
-import { getMessages, type Locale } from '../../lib/app/i18n'
+import { getMessages, readLocale, type Locale } from '../../lib/app/i18n'
 import { saveLocalState } from '../../lib/app/localStore'
 import { refreshRemote, syncLocalToAccount } from '../../lib/app/remoteSync'
+import type { SSRInitialData } from '../../lib/app/ssrTypes'
 import type { HomeCountry, PendingConfirmAction, State, Trip } from '../../lib/app/types'
 import { getSnapshot, initStoreFromLocal, setState, subscribe } from '../../lib/store'
 
@@ -70,8 +71,28 @@ function useScrollReveal() {
   }, [])
 }
 
-function useInitialSync() {
+function useInitialSync(initialData?: SSRInitialData | null) {
   useEffect(() => {
+    if (initialData) {
+      // Authenticated SSR path: store is pre-populated from server-rendered data.
+      // Persist to localStorage so offline / next guest-mode load still works,
+      // then skip the /api/auth/me round-trip — we already know the user.
+      setState(prev => ({
+        ...prev,
+        authenticated: true,
+        userEmail: initialData.userEmail,
+        trips: initialData.trips,
+        countries: initialData.countries,
+        summary: initialData.summary,
+        windowLabel: initialData.windowLabel,
+        windowMode: initialData.windowMode,
+        locale: readLocale()
+      }))
+      saveLocalState(initialData.trips, initialData.countries)
+      return
+    }
+
+    // Guest / unauthenticated path: seed from localStorage, then probe the API.
     initStoreFromLocal()
 
     request<{ user: { email: string } }>('/api/auth/me')
@@ -82,17 +103,18 @@ function useInitialSync() {
       .catch(() => {
         setState(prev => ({ ...prev, authenticated: false, userEmail: null }))
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
 
-export function useCounterWorkspace() {
+export function useCounterWorkspace(initialData?: SSRInitialData | null) {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   const [confirm, setConfirm] = useState<ConfirmState>(closedConfirm)
   const [editingTrip, setEditingTrip] = useState<Trip | null>(null)
   const [tripFormStatus, setTripFormStatus] = useState('')
   const messages = getMessages(state.locale)
 
-  useInitialSync()
+  useInitialSync(initialData)
   useScrollReveal()
 
   // Sync locale when the navbar LocaleToggle fires the custom event

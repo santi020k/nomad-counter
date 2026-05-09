@@ -1,5 +1,12 @@
 ---
-import CounterWorkspaceIsland from './CounterWorkspace'
+import CounterWorkspaceIsland from './CounterWorkspace.tsx'
+import type { SSRInitialData } from '@/lib/app/ssrTypes'
+
+interface Props {
+  initialData?: SSRInitialData | null
+}
+
+const { initialData = null } = Astro.props
 ---
 
-<CounterWorkspaceIsland client:load />
+<CounterWorkspaceIsland client:load initialData={initialData} />

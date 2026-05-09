@@ -5,8 +5,13 @@ import { TripFormPanel } from './TripFormPanel'
 import { TripLogPanel } from './TripLogPanel'
 import styles from './CounterWorkspace.module.css'
 import { useCounterWorkspace } from './useCounterWorkspace'
+import type { SSRInitialData } from '../../lib/app/ssrTypes'
 
-export default function CounterWorkspace() {
+interface Props {
+  initialData?: SSRInitialData | null
+}
+
+export default function CounterWorkspace({ initialData }: Props) {
   const {
     closeConfirm,
     confirm,
@@ -26,7 +31,7 @@ export default function CounterWorkspace() {
     messages,
     state,
     tripFormStatus
-  } = useCounterWorkspace()
+  } = useCounterWorkspace(initialData)
 
   return (
     <section id="counter" className={styles.section} aria-label="Nomad Counter app" data-animate>

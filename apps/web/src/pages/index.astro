@@ -9,6 +9,60 @@ import SiteFooter from '@/components/SiteFooter.astro'
 
 import '@/styles/global.css'
 
+import type { SSRInitialData } from '@/lib/app/ssrTypes'
+import type { CountrySummary, HomeCountry, Trip } from '@/lib/app/types'
+
+export const prerender = false
+
+// ── SSR auth + data prefetch ─────────────────────────────────────────────────
+// For authenticated users: fetch their data server-side so the workspace
+// renders with real data on first paint. Guests fall back to the
+// localStorage-based client-side init (no cookie → initialData stays null).
+
+const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
+const cookieHeader = Astro.request.headers.get('cookie') ?? ''
+
+let initialData: SSRInitialData | null = null
+
+try {
+  const meRes = await fetch(`${apiUrl}/api/auth/me`, {
+    headers: { cookie: cookieHeader }
+  })
+
+  if (meRes.ok) {
+    const me = await meRes.json() as { user: { email: string } }
+
+    const [tripsRes, countriesRes, summaryRes] = await Promise.all([
+      fetch(`${apiUrl}/api/trips`, { headers: { cookie: cookieHeader } }),
+      fetch(`${apiUrl}/api/home-countries`, { headers: { cookie: cookieHeader } }),
+      fetch(`${apiUrl}/api/summary?mode=calendar-year`, { headers: { cookie: cookieHeader } })
+    ])
+
+    if (tripsRes.ok && countriesRes.ok && summaryRes.ok) {
+      const [tripsData, countriesData, summaryData] = await Promise.all([
+        tripsRes.json() as Promise<{ trips: Trip[] }>,
+        countriesRes.json() as Promise<{ countries: HomeCountry[] }>,
+        summaryRes.json() as Promise<{
+          countries: CountrySummary[]
+          window: { startDate: string, endDate: string }
+        }>
+      ])
+
+      initialData = {
+        authenticated: true,
+        userEmail: me.user.email,
+        trips: tripsData.trips,
+        countries: countriesData.countries,
+        summary: summaryData.countries,
+        windowLabel: `${summaryData.window.startDate} to ${summaryData.window.endDate}`,
+        windowMode: 'calendar-year'
+      }
+    }
+  }
+} catch {
+  // API unreachable or session invalid — guest flow handles it client-side.
+}
+
 const title = 'Nomad Counter'
 const description = 'Track travel days, compare residency thresholds, and spot 183-day exposure early with a private, guest-first counter.'
 const siteUrl = 'https://nomad.santi020k.com/'
@@ -48,7 +102,7 @@ const websiteJsonLd = {
 
     <main id="main-content" class="shell app-shell">
       <HeroSection />
-      <CounterWorkspace />
+      <CounterWorkspace initialData={initialData} />
       <MarketingHighlights />
       <FaqSection />
     </main>

@@ -37,7 +37,7 @@ describe('validateTripForm', () => {
       openEnded: false
     })).toEqual({
       ok: false,
-      error: 'Exit date is required unless “Currently there” is checked.'
+      error: 'Exit date is required unless "Currently there" is checked.'
     })
   })
 
@@ -93,7 +93,7 @@ describe('validateTripForm', () => {
     })).toEqual({
       ok: true,
       exitDate: '2026-05-10',
-      hint: 'Future entry—double-check.'
+      hint: 'Future entry; double-check.'
     })
 
     vi.useRealTimers()

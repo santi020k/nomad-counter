@@ -3,6 +3,7 @@ import robotsTxt from 'astro-robots-txt'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import cloudflare from '@astrojs/cloudflare'
 import react from '@astrojs/react'
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
@@ -12,6 +13,7 @@ const site = 'https://nomad.santi020k.com'
 
 export default defineConfig({
   site,
+  adapter: cloudflare({ imageService: 'cloudflare' }),
   integrations: [
     react(),
     sitemap({
