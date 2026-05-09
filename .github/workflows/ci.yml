@@ -96,8 +96,10 @@ jobs:
           sed -i "s/database_id = .*/database_id = \"${CLOUDFLARE_D1_DATABASE_ID}\"/" apps/api/wrangler.toml
         env:
           CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+      - name: Authenticate with Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - run: pnpm run deploy
         env:
           PUBLIC_API_URL: https://api.nomad.santi020k.com
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
