@@ -13,9 +13,19 @@ const isLocalApiUrl = (value: string): boolean => {
 
 const configuredApiUrl = import.meta.env.PUBLIC_API_URL
 
-export const apiUrl = import.meta.env.DEV ?
-  configuredApiUrl ?? localApiUrl :
-  configuredApiUrl && !isLocalApiUrl(configuredApiUrl) ? configuredApiUrl : productionApiUrl
+const getApiUrl = (): string => {
+  if (import.meta.env.DEV) {
+    return configuredApiUrl ?? localApiUrl
+  }
+
+  if (configuredApiUrl && !isLocalApiUrl(configuredApiUrl)) {
+    return configuredApiUrl
+  }
+
+  return productionApiUrl
+}
+
+const apiUrl = getApiUrl()
 
 export const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
   const headers = new Headers(init?.headers)
