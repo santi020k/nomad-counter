@@ -429,11 +429,11 @@ button {
 }
 
 .form-panel .field textarea {
-  min-height: 88px;
+  min-height: 68px;
   resize: vertical;
   line-height: 1.55;
   letter-spacing: 0.01em;
-  padding-block: 12px;
+  padding-block: 10px;
 }
 
 .form-panel .field textarea::placeholder {

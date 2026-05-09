@@ -1,7 +1,6 @@
 export type Locale = 'en' | 'es'
 
 const localeKey = 'nomad-counter:locale'
-
 const isLocale = (value: string | null): value is Locale => value === 'en' || value === 'es'
 
 export const readLocale = (): Locale => {
@@ -14,7 +13,9 @@ export const readLocale = (): Locale => {
 
 export const saveLocale = (locale: Locale): void => {
   localStorage.setItem(localeKey, locale)
+
   document.documentElement.lang = locale
+
   window.dispatchEvent(new CustomEvent<Locale>('nomad-counter:locale-change', { detail: locale }))
 }
 
@@ -46,7 +47,12 @@ export interface Messages {
   exitDateHelp: string
   exportCsv: string
   importCsv: string
+  inboxCodeSent: (email: string) => string
+  inboxTitle: string
+  invalidLoginCode: string
   loginCode: string
+  loginCodeIntro: string
+  loginEmailIntro: string
   nearLimit: string
   newStay: string
   noTrips: string
@@ -97,10 +103,8 @@ const translations: Record<Locale, Messages> = {
     daysOverThreshold: (days: number) => `${String(days)} days over threshold`,
     daysRemaining: (days: number) => `${String(days)} days remaining`,
     defaultGuestState: 'Guest mode. Your data stays in this browser until you save it to an account.',
-    deleteCountryTrips: (name: string, count: number) =>
-      `This will stop tracking ${name} and delete all ${String(count)} trip${count === 1 ? '' : 's'} for this country from your travel log. You cannot undo this.`,
-    deleteCountryTripsOnly: (name: string, count: number) =>
-      `This will delete all ${String(count)} trip${count === 1 ? '' : 's'} to ${name} from your travel log. You cannot undo this.`,
+    deleteCountryTrips: (name: string, count: number) => `This will stop tracking ${name} and delete all ${String(count)} trip${count === 1 ? '' : 's'} for this country from your travel log. You cannot undo this.`,
+    deleteCountryTripsOnly: (name: string, count: number) => `This will delete all ${String(count)} trip${count === 1 ? '' : 's'} to ${name} from your travel log. You cannot undo this.`,
     edit: 'Edit',
     editTrip: 'Edit trip',
     emailCodeHelp: 'Codes expire after a short time. Check spam if you do not see it.',
@@ -112,7 +116,13 @@ const translations: Record<Locale, Messages> = {
     exitDateHelp: 'Required for completed stays. Disabled while "Currently there" is checked.',
     exportCsv: 'Export CSV',
     importCsv: 'Import CSV',
+    inboxCodeSent: (email: string) => `To ${email}`,
+    inboxTitle: 'Check your inbox',
+    invalidLoginCode: 'Enter the 6-digit code.',
     loginCode: '6-digit code',
+    loginCodeIntro: 'Enter the code from your email to upload this browser\'s trips.',
+    loginEmailIntro:
+      'Email yourself a one-time code when you want these local trips synced across devices.',
     nearLimit: 'Near limit',
     newStay: 'New stay',
     noTrips: 'No trips yet. Add your first stay or import a CSV.',
@@ -124,8 +134,7 @@ const translations: Record<Locale, Messages> = {
     remove: 'Remove',
     removeFromDashboard: 'Remove from dashboard',
     removeTrip: 'Remove trip',
-    removeTripConfirm: (entry: string, exit: string, country: string) =>
-      `Remove this stay (${entry} -> ${exit}) for ${country}? You cannot undo this.`,
+    removeTripConfirm: (entry: string, exit: string, country: string) => `Remove this stay (${entry} -> ${exit}) for ${country}? You cannot undo this.`,
     rolling365: 'Rolling 365 days',
     saveAccount: 'Save to your account',
     sendingCode: 'Sending code...',
@@ -134,10 +143,8 @@ const translations: Record<Locale, Messages> = {
     signInSync: 'Sign in and sync',
     signOut: 'Sign out',
     stopTracking: 'Stop tracking country',
-    stopTrackingConfirm: (name: string) =>
-      `Stop tracking ${name}? Its custom threshold and warning settings will be removed. Trips in your travel log are not deleted. You cannot undo this.`,
-    stopTrackingSummary: (name: string) =>
-      `This will stop tracking ${name} and remove its custom threshold from your settings. You cannot undo this.`,
+    stopTrackingConfirm: (name: string) => `Stop tracking ${name}? Its custom threshold and warning settings will be removed. Trips in your travel log are not deleted. You cannot undo this.`,
+    stopTrackingSummary: (name: string) => `This will stop tracking ${name} and remove its custom threshold from your settings. You cannot undo this.`,
     threshold: 'Threshold',
     trackCountry: 'Track country',
     trackedCountry: 'Tracked country',
@@ -164,10 +171,8 @@ const translations: Record<Locale, Messages> = {
     daysOverThreshold: (days: number) => `${String(days)} días sobre el límite`,
     daysRemaining: (days: number) => `${String(days)} días restantes`,
     defaultGuestState: 'Modo invitado. Tus datos quedan en este navegador hasta guardarlos en una cuenta.',
-    deleteCountryTrips: (name: string, count: number) =>
-      `Esto dejará de seguir ${name} y eliminará ${String(count)} viaje${count === 1 ? '' : 's'} de este país. No se puede deshacer.`,
-    deleteCountryTripsOnly: (name: string, count: number) =>
-      `Esto eliminará ${String(count)} viaje${count === 1 ? '' : 's'} a ${name}. No se puede deshacer.`,
+    deleteCountryTrips: (name: string, count: number) => `Esto dejará de seguir ${name} y eliminará ${String(count)} viaje${count === 1 ? '' : 's'} de este país. No se puede deshacer.`,
+    deleteCountryTripsOnly: (name: string, count: number) => `Esto eliminará ${String(count)} viaje${count === 1 ? '' : 's'} a ${name}. No se puede deshacer.`,
     edit: 'Editar',
     editTrip: 'Editar viaje',
     emailCodeHelp: 'Los códigos expiran pronto. Revisa spam si no lo ves.',
@@ -179,7 +184,13 @@ const translations: Record<Locale, Messages> = {
     exitDateHelp: 'Requerida para estadías finalizadas. Se desactiva si marcas "Estoy allí ahora".',
     exportCsv: 'Exportar CSV',
     importCsv: 'Importar CSV',
+    inboxCodeSent: (email: string) => `A ${email}`,
+    inboxTitle: 'Revisa tu correo',
+    invalidLoginCode: 'Ingresa el código de 6 dígitos.',
     loginCode: 'Código de 6 dígitos',
+    loginCodeIntro: 'Ingresa el código del correo para subir los viajes de este navegador.',
+    loginEmailIntro:
+      'Envíate un código de un solo uso cuando quieras sincronizar estos viajes entre dispositivos.',
     nearLimit: 'Cerca del límite',
     newStay: 'Nueva estadía',
     noTrips: 'Aún no hay viajes. Agrega tu primera estadía o importa un CSV.',
@@ -191,8 +202,7 @@ const translations: Record<Locale, Messages> = {
     remove: 'Eliminar',
     removeFromDashboard: 'Eliminar del panel',
     removeTrip: 'Eliminar viaje',
-    removeTripConfirm: (entry: string, exit: string, country: string) =>
-      `¿Eliminar esta estadía (${entry} -> ${exit}) en ${country}? No se puede deshacer.`,
+    removeTripConfirm: (entry: string, exit: string, country: string) => `¿Eliminar esta estadía (${entry} -> ${exit}) en ${country}? No se puede deshacer.`,
     rolling365: 'Últimos 365 días',
     saveAccount: 'Guardar en tu cuenta',
     sendingCode: 'Enviando código...',
@@ -201,10 +211,8 @@ const translations: Record<Locale, Messages> = {
     signInSync: 'Iniciar sesión y sincronizar',
     signOut: 'Cerrar sesión',
     stopTracking: 'Dejar de seguir país',
-    stopTrackingConfirm: (name: string) =>
-      `¿Dejar de seguir ${name}? Se eliminarán su límite y alertas personalizados. Los viajes no se borran. No se puede deshacer.`,
-    stopTrackingSummary: (name: string) =>
-      `Esto dejará de seguir ${name} y eliminará su límite personalizado. No se puede deshacer.`,
+    stopTrackingConfirm: (name: string) => `¿Dejar de seguir ${name}? Se eliminarán su límite y alertas personalizados. Los viajes no se borran. No se puede deshacer.`,
+    stopTrackingSummary: (name: string) => `Esto dejará de seguir ${name} y eliminará su límite personalizado. No se puede deshacer.`,
     threshold: 'Límite',
     trackCountry: 'Seguir país',
     trackedCountry: 'País seguido',
