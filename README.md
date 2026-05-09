@@ -74,7 +74,7 @@ If `RESEND_API_KEY` is missing in local development, `/api/auth/request-code` re
 Cloudflare deploy variables/secrets:
 
 - `CLOUDFLARE_ACCOUNT_ID`
-- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_API_TOKEN` (requires: `Account.Pages:Edit`, `Account.Worker Scripts:Edit`, `Account.D1:Edit`, `User.User Details:Read`, `User.Memberships:Read`)
 - `CLOUDFLARE_D1_DATABASE_ID`
 - `PUBLIC_API_URL=https://api.nomad.santi020k.com`
 - `RESEND_API_KEY`

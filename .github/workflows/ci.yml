@@ -88,7 +88,7 @@ jobs:
       - name: Configure D1 id
         run: |
           test -n "$CLOUDFLARE_D1_DATABASE_ID"
-          sed -i "s/REPLACE_WITH_YOUR_D1_ID/${CLOUDFLARE_D1_DATABASE_ID}/" apps/api/wrangler.toml
+          sed -i "s/database_id = .*/database_id = \"${CLOUDFLARE_D1_DATABASE_ID}\"/" apps/api/wrangler.toml
         env:
           CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
       - run: pnpm run deploy
