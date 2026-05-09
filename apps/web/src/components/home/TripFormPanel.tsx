@@ -92,7 +92,7 @@ export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, 
 
     setStatus('')
 
-    const validated = validateTripForm({ entryDate, exitDate, openEnded })
+    const validated = validateTripForm({ entryDate, exitDate, messages, openEnded })
 
     if (!validated.ok) {
       setStatus(validated.error)
@@ -121,7 +121,7 @@ export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, 
         setStatusTone('ok')
       }
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : 'Something went wrong.')
+      setStatus(err instanceof Error ? err.message : messages.somethingWentWrong)
 
       setStatusTone('error')
     } finally {
@@ -155,6 +155,8 @@ export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, 
         name="countryCode"
         label={messages.country}
         initialCode={countryCode}
+        placeholder={messages.searchCountry}
+        messages={messages}
         onSelect={(code, name) => {
           setCountryCode(code)
 
@@ -163,7 +165,7 @@ export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, 
       />
 
       <fieldset className={styles.datesBlock}>
-        <legend className="sr-only">Stay dates</legend>
+        <legend className="sr-only">{messages.stayDates}</legend>
         <div className={`grid-fit ${styles.dateGrid}`}>
           <div className="field">
             <label htmlFor="trip-entry">{messages.entryDate}</label>
@@ -183,7 +185,7 @@ export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, 
               <button
                 type="button"
                 className={styles.dateOpen}
-                aria-label="Open date picker"
+                aria-label={messages.openDatePicker}
                 onClick={() => {
                   openDatePicker(entryRef)
                 }}
@@ -214,7 +216,7 @@ export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, 
               <button
                 type="button"
                 className={styles.dateOpen}
-                aria-label="Open date picker"
+                aria-label={messages.openDatePicker}
                 onClick={() => {
                   openDatePicker(exitRef)
                 }}

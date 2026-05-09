@@ -4,8 +4,8 @@ const authorUrl = 'https://santi020k.com'
 const repositoryUrl = 'https://github.com/santi020k/nomad-counter'
 
 const links = [
-  { href: '/privacy/', label: 'Privacy' },
-  { href: '/terms/', label: 'Terms' }
+  { href: '/privacy/', key: 'footerPrivacy', label: 'Privacy' },
+  { href: '/terms/', key: 'footerTerms', label: 'Terms' }
 ]
 ---
 
@@ -14,16 +14,17 @@ const links = [
     <div>
       <p class="footer-kicker">Nomad Counter</p>
       <p class="footer-copy">
-        Built by <a href={authorUrl} rel="noopener noreferrer" target="_blank">Santiago Molina</a>.
-        Guest-first travel-day tracking for residency exposure, not tax advice.
+        <span data-i18n="footerBuiltBy">Built by</span>
+        <a href={authorUrl} rel="noopener noreferrer" target="_blank">Santiago Molina</a>.
+        <span data-i18n="footerCopy">Guest-first travel-day tracking for residency exposure, not tax advice.</span>
       </p>
     </div>
 
-    <nav aria-label="Legal">
+    <nav aria-label="Legal" data-i18n-aria-label="footerLegal">
       <ul class="footer-links">
         {links.map(link => (
           <li>
-            <a href={link.href}>{link.label}</a>
+            <a href={link.href} data-i18n={link.key}>{link.label}</a>
           </li>
         ))}
       </ul>
@@ -31,9 +32,12 @@ const links = [
   </div>
 
   <div class="footer-bottom">
-    <p>© {year} Nomad Counter. Keep your own records and confirm rules with a qualified advisor.</p>
+    <p>
+      © {year} Nomad Counter.
+      <span data-i18n="footerRights">Keep your own records and confirm rules with a qualified advisor.</span>
+    </p>
     <div class="footer-actions">
-      <a class="footer-action" href={authorUrl} rel="noopener noreferrer me" target="_blank" aria-label="Visit Santiago Molina website">
+      <a class="footer-action" href={authorUrl} rel="noopener noreferrer me" target="_blank" aria-label="Visit Santiago Molina website" data-i18n-aria-label="footerWebsiteLabel">
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" />
           <path d="M3.6 9h16.8" />
@@ -42,7 +46,7 @@ const links = [
         </svg>
         <span>Website</span>
       </a>
-      <a class="footer-action" href={repositoryUrl} rel="noopener noreferrer" target="_blank" aria-label="View Nomad Counter source code on GitHub">
+      <a class="footer-action" href={repositoryUrl} rel="noopener noreferrer" target="_blank" aria-label="View Nomad Counter source code on GitHub" data-i18n-aria-label="footerRepositoryLabel">
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M9 19c-4.3 1.4-4.3-2.1-6-2.5" />
           <path d="M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.4 4.4 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.8 11.8 0 0 0-6.2 0C6.6 3.8 5.6 4.1 5.6 4.1a4.4 4.4 0 0 0-.1 3.2A4.7 4.7 0 0 0 4.2 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22" />
@@ -55,7 +59,7 @@ const links = [
 
 <style>
   .site-footer {
-    margin-top: 40px;
+    margin-top: auto;
     padding-block: 32px 48px;
     color: var(--muted);
     font-size: 0.88rem;

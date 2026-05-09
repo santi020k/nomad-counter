@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { countries } from '../../lib/countries'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
+import type { Messages } from '../../lib/app/i18n'
 import styles from './CountryCombobox.module.css'
 
 interface Option {
@@ -34,11 +35,12 @@ interface Props {
   name: string
   label?: string
   initialCode?: string
+  messages?: Messages
   placeholder?: string
   onSelect?: (code: string, name: string) => void
 }
 
-export function CountryCombobox({ id, name, label = 'Country', initialCode = '', placeholder = 'Search country', onSelect }: Props) {
+export function CountryCombobox({ id, name, label = 'Country', initialCode = '', messages, placeholder = 'Search country', onSelect }: Props) {
   const listboxId = `${id}-listbox`
 
   const [query, setQuery] = useState<string>(() => {
@@ -124,16 +126,16 @@ export function CountryCombobox({ id, name, label = 'Country', initialCode = '',
         <button
           className={styles.toggle}
           type="button"
-          aria-label="Toggle country list"
+          aria-label={messages?.toggleCountryList ?? 'Toggle country list'}
           tabIndex={-1}
           onClick={() => { if (isOpen) { doClose() } else { doOpen(); inputRef.current?.focus() } }}
         >
           ⌄
         </button>
         {isOpen && (
-          <div id={listboxId} className={styles.list} role="listbox" aria-label={`${label} options`}>
+          <div id={listboxId} className={styles.list} role="listbox" aria-label={messages?.countryOptions(label) ?? `${label} options`}>
             {options.length === 0 ? (
-              <div className={styles.empty} aria-live="polite">No matching country.</div>
+              <div className={styles.empty} aria-live="polite">{messages?.noMatchingCountry ?? 'No matching country.'}</div>
             ) : (
               options.map((option, i) => (
                 <button

@@ -1,0 +1,119 @@
+<script is:inline>
+  ;(() => {
+    if (window.__nomadLocaleRuntime) return
+    window.__nomadLocaleRuntime = true
+
+    const localeKey = 'nomad-counter:locale'
+    const translations = {
+      en: {
+        counter: 'Counter',
+        faq1Body: 'Many countries use 183 calendar days as a tax-residency signal. Some use different tests, so each tracked country can have its own threshold.',
+        faq1Title: 'Why is 183 days the default?',
+        faq2Body: 'Yes. Trips and country settings are saved in this browser. Sign in with an email code only when you want account sync.',
+        faq2Title: 'Can I use Nomad Counter without signing in?',
+        faq3Body: 'Open-ended trips count from the entry date through today, so the dashboard keeps updating while you travel.',
+        faq3Title: 'What does "currently there" do?',
+        faqEyebrow: 'You might be wondering',
+        footerBuiltBy: 'Built by',
+        footerCopy: 'Guest-first travel-day tracking for residency exposure, not tax advice.',
+        footerLegal: 'Legal',
+        footerPrivacy: 'Privacy',
+        footerRepositoryLabel: 'View Nomad Counter source code on GitHub',
+        footerRights: 'Keep your own records and confirm rules with a qualified advisor.',
+        footerTerms: 'Terms',
+        footerWebsiteLabel: 'Visit Santiago Molina website',
+        heroActionPrimary: 'Start counting',
+        heroActionSecondary: 'How it works',
+        heroEyebrow: 'Counting your days',
+        heroFact1Label: 'Default threshold',
+        heroFact1Value: '183 days',
+        heroFact2Label: 'Counting rule',
+        heroFact2Value: 'Entry and exit count',
+        heroFact3Label: 'Privacy model',
+        heroFact3Value: 'Local until sync',
+        heroFactsLabel: 'Nomad Counter highlights',
+        heroLead: 'Log stays by country, count inclusive calendar days, and see when a common residency threshold deserves a closer look.',
+        heroTitle: 'Know your days before they count against you.',
+        languageSwitcher: 'Language switcher',
+        marketing1Body: 'Entry and exit dates are counted inclusively, matching the conservative rule most tax guidance uses.',
+        marketing1Title: 'Calendar-day math',
+        marketing2Body: 'Switch between the current calendar year and a rolling 365-day view for stricter jurisdictions.',
+        marketing2Title: 'Rolling windows',
+        marketing3Body: 'Try the full workflow locally. Email sign-in exists only to save your trip log to your account.',
+        marketing3Title: 'Guest-first privacy',
+        marketing4Body: 'Use the count as a planning signal, then confirm your situation with a qualified advisor.',
+        marketing4Title: 'Cautious by design',
+        skipContent: 'Skip to content',
+        skipCounter: 'Skip to counter',
+        startCounting: 'Start counting',
+        stats: 'Stats'
+      },
+      es: {
+        counter: 'Contador',
+        faq1Body: 'Muchos países usan 183 días calendario como señal de residencia fiscal. Otros usan pruebas distintas, así que cada país seguido puede tener su propio límite.',
+        faq1Title: '¿Por qué 183 días es el valor predeterminado?',
+        faq2Body: 'Sí. Los viajes y ajustes de país se guardan en este navegador. Inicia sesión con un código por correo solo cuando quieras sincronizar tu cuenta.',
+        faq2Title: '¿Puedo usar Nomad Counter sin iniciar sesión?',
+        faq3Body: 'Las estadías abiertas cuentan desde la fecha de entrada hasta hoy, así que el panel se mantiene actualizado mientras viajas.',
+        faq3Title: '¿Qué hace "Estoy allí ahora"?',
+        faqEyebrow: 'Quizá te preguntes',
+        footerBuiltBy: 'Creado por',
+        footerCopy: 'Seguimiento privado de días de viaje para exposición de residencia; no es asesoría fiscal.',
+        footerLegal: 'Legal',
+        footerPrivacy: 'Privacidad',
+        footerRepositoryLabel: 'Ver el código fuente de Nomad Counter en GitHub',
+        footerRights: 'Conserva tus propios registros y confirma las reglas con un asesor calificado.',
+        footerTerms: 'Términos',
+        footerWebsiteLabel: 'Visitar el sitio de Santiago Molina',
+        heroActionPrimary: 'Empezar a contar',
+        heroActionSecondary: 'Cómo funciona',
+        heroEyebrow: 'Cuenta tus días',
+        heroFact1Label: 'Límite predeterminado',
+        heroFact1Value: '183 días',
+        heroFact2Label: 'Regla de conteo',
+        heroFact2Value: 'Entrada y salida cuentan',
+        heroFact3Label: 'Modelo de privacidad',
+        heroFact3Value: 'Local hasta sincronizar',
+        heroFactsLabel: 'Puntos clave de Nomad Counter',
+        heroLead: 'Registra estadías por país, cuenta días calendario inclusivos y detecta cuándo un límite común de residencia merece atención.',
+        heroTitle: 'Conoce tus días antes de que cuenten en tu contra.',
+        languageSwitcher: 'Selector de idioma',
+        marketing1Body: 'Las fechas de entrada y salida cuentan de forma inclusiva, siguiendo una regla conservadora común en guías fiscales.',
+        marketing1Title: 'Cálculo por día calendario',
+        marketing2Body: 'Cambia entre el año calendario actual y una vista móvil de 365 días para jurisdicciones más estrictas.',
+        marketing2Title: 'Periodos móviles',
+        marketing3Body: 'Prueba todo el flujo localmente. El inicio por correo solo existe para guardar tu registro en una cuenta.',
+        marketing3Title: 'Privacidad primero',
+        marketing4Body: 'Usa el conteo como señal de planificación y confirma tu caso con un asesor calificado.',
+        marketing4Title: 'Diseño prudente',
+        skipContent: 'Saltar al contenido',
+        skipCounter: 'Saltar al contador',
+        startCounting: 'Empezar a contar',
+        stats: 'Estadísticas'
+      }
+    }
+
+    const readLocale = () => {
+      const stored = localStorage.getItem(localeKey)
+      return stored === 'es' ? 'es' : 'en'
+    }
+
+    const applyLocale = locale => {
+      const messages = translations[locale] || translations.en
+      document.documentElement.lang = locale
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const value = messages[el.dataset.i18n]
+        if (typeof value === 'string') el.textContent = value
+      })
+      document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+        const value = messages[el.dataset.i18nAriaLabel]
+        if (typeof value === 'string') el.setAttribute('aria-label', value)
+      })
+    }
+
+    applyLocale(readLocale())
+    window.addEventListener('nomad-counter:locale-change', event => {
+      applyLocale(event.detail === 'es' ? 'es' : 'en')
+    })
+  })()
+</script>

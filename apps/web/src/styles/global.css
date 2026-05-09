@@ -75,6 +75,8 @@
 }
 
 html {
+  display: flex;
+  flex-direction: column;
   min-height: 100%;
   background: var(--bg);
   color: var(--text);
@@ -168,7 +170,9 @@ html[data-scroll-reveal="ready"] [data-stagger] > *.is-visible {
 }
 
 body {
-  min-height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   background:
     radial-gradient(circle at 18% 8%, rgb(181 121 230 / 18%), transparent 36%),
@@ -179,6 +183,7 @@ body {
     var(--bg);
   background-size: auto, auto, auto, auto, 28px 28px;
 }
+
 
 button,
 input,

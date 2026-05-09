@@ -100,6 +100,8 @@ export function useCounterWorkspace() {
     const handler = (e: Event) => {
       const locale = (e as CustomEvent<Locale>).detail
       setState(prev => ({ ...prev, locale }))
+      const s = getSnapshot()
+      refreshLocalSummary(s)
     }
     window.addEventListener('nomad-counter:locale-change', handler)
     return () => { window.removeEventListener('nomad-counter:locale-change', handler) }
@@ -202,7 +204,7 @@ export function useCounterWorkspace() {
   const handleRemoveTrip = useCallback((tripId: string) => {
     const trip = getSnapshot().trips.find(t => t.id === tripId)
     if (!trip) return
-    const exitLabel = trip.exitDate ?? 'present'
+    const exitLabel = trip.exitDate ?? messages.present
     openConfirm(
       messages.removeTrip,
       messages.removeTripConfirm(trip.entryDate, exitLabel, trip.countryName),
@@ -282,17 +284,17 @@ export function useCounterWorkspace() {
         }
       }
     } catch (err) {
-      setTripFormStatus(err instanceof Error ? err.message : 'Something went wrong.')
+      setTripFormStatus(err instanceof Error ? err.message : messages.somethingWentWrong)
     }
-  }, [closeConfirm, confirm, editingTrip])
+  }, [closeConfirm, confirm, editingTrip, messages])
 
   const handleExportCsv = useCallback(() => { exportCsv() }, [])
 
   const handleImportCsv = useCallback(async (file: File) => {
     const result = await importCsv(file, { syncLocalToAccount })
     const [tone, msg] = result.split(':') as [string, string]
-    if (msg) setTripFormStatus(`${tone === 'error' ? 'Warning: ' : ''}${msg}`)
-  }, [])
+    if (msg) setTripFormStatus(`${tone === 'error' ? messages.warningPrefix : ''}${msg}`)
+  }, [messages])
 
   return {
     confirm,

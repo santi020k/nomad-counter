@@ -1,5 +1,6 @@
 ---
 import { LocaleToggle } from './LocaleToggle'
+import LocaleRuntime from '@/components/LocaleRuntime.astro'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 
 interface Props {
@@ -13,6 +14,7 @@ const showCounter = variant !== 'home'
 ---
 
 <header class="topbar">
+  <LocaleRuntime />
   <nav class="shell nav" aria-label="Main">
     <a href="/" class="brand" aria-label="Nomad Counter">
       <picture>
@@ -21,11 +23,11 @@ const showCounter = variant !== 'home'
       </picture>
     </a>
     <div class="nav-actions">
-      {showStats ? <a class={isHome ? 'nav-link' : 'btn secondary'} href="/stats/">Stats</a> : null}
+      {showStats ? <a class={isHome ? 'nav-link' : 'btn secondary'} href="/stats/" data-i18n="stats">Stats</a> : null}
       <LocaleToggle client:load />
       <ThemeToggle />
       {isHome ? <div class="nav-sep" aria-hidden="true"></div> : null}
-      {showCounter ? <a class="btn secondary" href="/#counter">Counter</a> : <a class="btn nav-cta" href="#counter">Start counting</a>}
+      {showCounter ? <a class="btn secondary" href="/#counter" data-i18n="counter">Counter</a> : <a class="btn nav-cta" href="#counter" data-i18n="startCounting">Start counting</a>}
     </div>
   </nav>
 </header>

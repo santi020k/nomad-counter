@@ -385,16 +385,6 @@ const flag = (code: string) => {
     margin: 0;
   }
 
-  /* ── Layout: footer always at bottom ───────────────────────── */
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-  }
-
-  #main-content.stats-shell {
-    flex: 1;
-  }
   @media (max-width: 640px) {
     .stats-country-row {
       grid-template-columns: 22px 22px 1fr auto;

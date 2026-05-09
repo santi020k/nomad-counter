@@ -30,6 +30,7 @@ export interface Messages {
   codeSent: string
   country: string
   countryDayCounts: string
+  countryOptions: (label: string) => string
   countingRule: string
   currentThere: string
   dayAbbrev: string
@@ -46,10 +47,15 @@ export interface Messages {
   emailCodeHelp: string
   emailMeCode: string
   entryDate: string
+  entryDateInvalid: string
+  entryDateRequired: string
   exceeded: string
   exposure: string
   exitDate: string
   exitDateHelp: string
+  exitDateInvalid: string
+  exitDateRequired: string
+  exitDateBeforeEntry: string
   exportCsv: string
   importCsv: string
   inboxCodeSent: (email: string) => string
@@ -61,6 +67,7 @@ export interface Messages {
   nearLimit: string
   newStay: string
   noTrips: string
+  noMatchingCountry: string
   note: string
   noteHelp: string
   onTrack: string
@@ -77,6 +84,7 @@ export interface Messages {
   rolling365: string
   saveAccount: string
   savingAccount: string
+  searchCountry: string
   sendingCode: string
   signedIn: string
   signedInHelp: string
@@ -96,6 +104,7 @@ export interface Messages {
   trackCountry: string
   trackedCountry: string
   trackedCountryEmpty: string
+  toggleCountryList: string
   travelLog: string
   tripDates: string
   tripData: string
@@ -103,6 +112,7 @@ export interface Messages {
   trips: string
   updateTrip: string
   verifyingCode: string
+  futureEntryHint: string
   warning: string
   warningDays: (days: number) => string
   warningHelp: string
@@ -122,6 +132,7 @@ const translations: Record<Locale, Messages> = {
     codeSent: 'Code sent. Enter the digits below when they arrive.',
     country: 'Country',
     countryDayCounts: 'Country day counts',
+    countryOptions: (label: string) => `${label} options`,
     countingRule:
       'Counting rule: any calendar day with presence in a country counts as one full day. Entry and exit dates are inclusive. This is a tracking aid, not tax advice.',
     currentThere: 'Currently there',
@@ -139,10 +150,15 @@ const translations: Record<Locale, Messages> = {
     emailCodeHelp: 'Codes expire after a short time. Check spam if you do not see it.',
     emailMeCode: 'Email me a code',
     entryDate: 'Entry date',
+    entryDateInvalid: 'Entry date is not a valid calendar date.',
+    entryDateRequired: 'Entry date is required.',
     exceeded: 'Exceeded',
     exposure: 'Exposure',
     exitDate: 'Exit date',
     exitDateHelp: 'Required for completed stays. Disabled while "Currently there" is checked.',
+    exitDateInvalid: 'Exit date is not a valid calendar date.',
+    exitDateRequired: 'Exit date is required unless "Currently there" is checked.',
+    exitDateBeforeEntry: 'Exit date must be on or after entry date.',
     exportCsv: 'Export CSV',
     importCsv: 'Import CSV',
     inboxCodeSent: (email: string) => `To ${email}`,
@@ -155,6 +171,7 @@ const translations: Record<Locale, Messages> = {
     nearLimit: 'Near limit',
     newStay: 'New stay',
     noTrips: 'No trips yet. Add your first stay or import a CSV.',
+    noMatchingCountry: 'No matching country.',
     note: 'Note',
     noteHelp: 'Avoid sensitive tax, immigration, or identity details.',
     onTrack: 'On track',
@@ -171,6 +188,7 @@ const translations: Record<Locale, Messages> = {
     rolling365: 'Rolling 365 days',
     saveAccount: 'Save to your account',
     savingAccount: 'Saving trips and settings to your account...',
+    searchCountry: 'Search country',
     sendingCode: 'Sending code...',
     signedIn: 'You are signed in',
     signedInHelp:
@@ -191,6 +209,7 @@ const translations: Record<Locale, Messages> = {
     trackCountry: 'Track country',
     trackedCountry: 'Tracked country',
     trackedCountryEmpty: 'Track a country to customize its threshold and warning range.',
+    toggleCountryList: 'Toggle country list',
     travelLog: 'Travel log',
     tripDates: 'Entry and exit dates',
     tripData: 'Trip data',
@@ -198,6 +217,7 @@ const translations: Record<Locale, Messages> = {
     trips: 'Trips',
     updateTrip: 'Update trip',
     verifyingCode: 'Verifying code...',
+    futureEntryHint: 'Future entry; double-check.',
     warning: 'Warning',
     warningDays: (days: number) => `Warn at ${String(days)} days`,
     warningHelp: 'Warning is how many days before the threshold should feel close.',
@@ -215,6 +235,7 @@ const translations: Record<Locale, Messages> = {
     codeSent: 'Código enviado. Ingresa los dígitos cuando lleguen.',
     country: 'País',
     countryDayCounts: 'Conteo de días por país',
+    countryOptions: (label: string) => `Opciones de ${label.toLowerCase()}`,
     countingRule:
       'Regla de conteo: cualquier día calendario con presencia en un país cuenta como un día completo. Entrada y salida son inclusivas. Es una ayuda de seguimiento, no asesoría fiscal.',
     currentThere: 'Estoy allí ahora',
@@ -232,10 +253,15 @@ const translations: Record<Locale, Messages> = {
     emailCodeHelp: 'Los códigos expiran pronto. Revisa spam si no lo ves.',
     emailMeCode: 'Enviarme un código',
     entryDate: 'Fecha de entrada',
+    entryDateInvalid: 'La fecha de entrada no es una fecha válida.',
+    entryDateRequired: 'La fecha de entrada es obligatoria.',
     exceeded: 'Excedido',
     exposure: 'Exposición',
     exitDate: 'Fecha de salida',
     exitDateHelp: 'Requerida para estadías finalizadas. Se desactiva si marcas "Estoy allí ahora".',
+    exitDateInvalid: 'La fecha de salida no es una fecha válida.',
+    exitDateRequired: 'La fecha de salida es obligatoria salvo que marques "Estoy allí ahora".',
+    exitDateBeforeEntry: 'La fecha de salida debe ser igual o posterior a la entrada.',
     exportCsv: 'Exportar CSV',
     importCsv: 'Importar CSV',
     inboxCodeSent: (email: string) => `A ${email}`,
@@ -248,6 +274,7 @@ const translations: Record<Locale, Messages> = {
     nearLimit: 'Cerca del límite',
     newStay: 'Nueva estadía',
     noTrips: 'Aún no hay viajes. Agrega tu primera estadía o importa un CSV.',
+    noMatchingCountry: 'No hay países que coincidan.',
     note: 'Nota',
     noteHelp: 'Evita detalles fiscales, migratorios o de identidad sensibles.',
     onTrack: 'En rango',
@@ -264,6 +291,7 @@ const translations: Record<Locale, Messages> = {
     rolling365: 'Últimos 365 días',
     saveAccount: 'Guardar en tu cuenta',
     savingAccount: 'Guardando viajes y ajustes en tu cuenta...',
+    searchCountry: 'Buscar país',
     sendingCode: 'Enviando código...',
     signedIn: 'Sesión iniciada',
     signedInHelp:
@@ -284,6 +312,7 @@ const translations: Record<Locale, Messages> = {
     trackCountry: 'Seguir país',
     trackedCountry: 'País seguido',
     trackedCountryEmpty: 'Sigue un país para personalizar su límite y rango de alerta.',
+    toggleCountryList: 'Abrir lista de países',
     travelLog: 'Registro de viajes',
     tripDates: 'Fechas de entrada y salida',
     tripData: 'Datos de viaje',
@@ -291,6 +320,7 @@ const translations: Record<Locale, Messages> = {
     trips: 'Viajes',
     updateTrip: 'Actualizar viaje',
     verifyingCode: 'Verificando código...',
+    futureEntryHint: 'Entrada futura; revísala dos veces.',
     warning: 'Alerta',
     warningDays: (days: number) => `Alertar a ${String(days)} días`,
     warningHelp: 'La alerta indica cuántos días antes del límite deben sentirse cercanos.',
