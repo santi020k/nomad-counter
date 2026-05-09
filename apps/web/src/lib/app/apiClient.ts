@@ -1,4 +1,21 @@
-export const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
+const productionApiUrl = 'https://api.nomad.santi020k.com'
+const localApiUrl = 'http://localhost:8787'
+
+const isLocalApiUrl = (value: string): boolean => {
+  try {
+    const { hostname } = new URL(value)
+
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
+  } catch {
+    return false
+  }
+}
+
+const configuredApiUrl = import.meta.env.PUBLIC_API_URL
+
+export const apiUrl = import.meta.env.DEV ?
+  configuredApiUrl ?? localApiUrl :
+  configuredApiUrl && !isLocalApiUrl(configuredApiUrl) ? configuredApiUrl : productionApiUrl
 
 export const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
   const headers = new Headers(init?.headers)

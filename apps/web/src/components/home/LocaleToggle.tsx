@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { readLocale, saveLocale, type Locale } from '../../lib/app/i18n'
+import { type Locale, readLocale, saveLocale } from '../../lib/app/i18n'
+
 import styles from './LocaleToggle.module.css'
 
 export function LocaleToggle() {
@@ -8,7 +9,9 @@ export function LocaleToggle() {
 
   const toggle = (next: Locale) => {
     if (next === locale) return
+
     saveLocale(next)
+
     setLocale(next)
   }
 
@@ -17,16 +20,22 @@ export function LocaleToggle() {
       <button
         type="button"
         className={styles.option}
+        aria-label="English"
         aria-pressed={locale === 'en'}
-        onClick={() => { toggle('en') }}
+        onClick={() => {
+          toggle('en')
+        }}
       >
         EN
       </button>
       <button
         type="button"
         className={styles.option}
+        aria-label="Español"
         aria-pressed={locale === 'es'}
-        onClick={() => { toggle('es') }}
+        onClick={() => {
+          toggle('es')
+        }}
       >
         ES
       </button>
