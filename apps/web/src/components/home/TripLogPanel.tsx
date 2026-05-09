@@ -15,7 +15,7 @@ interface TripItemProps {
 
 function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
   const titleId = `trip-log-title-${trip.id.replace(/[^a-zA-Z0-9_-]/g, '')}`
-  const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
+  const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : messages.present
   const days = inclusiveDays(trip.entryDate, trip.exitDate ?? todayIso())
   const flag = countryCodeToFlagEmoji(trip.countryCode)
   const note = trip.note?.trim()
@@ -32,7 +32,7 @@ function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
               </span>
               <span>{trip.countryName}</span>
             </h3>
-            <div className={styles.tripDates} role="group" aria-label="Entry and exit dates" aria-describedby={titleId}>
+            <div className={styles.tripDates} role="group" aria-label={messages.tripDates} aria-describedby={titleId}>
               <time className={styles.datePill} dateTime={trip.entryDate}>
                 <span className={styles.datePillAccent} aria-hidden="true" />
                 <span className={styles.datePillText}>{formatDisplayDate(trip.entryDate)}</span>
@@ -44,7 +44,7 @@ function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
                   <span className={styles.datePillText}>{exitLabel}</span>
                 </time>
               ) : (
-                <span className={`${styles.datePill} ${styles.datePillOpen}`} aria-label="Open stay (no exit date yet)">
+                <span className={`${styles.datePill} ${styles.datePillOpen}`} aria-label={messages.openStay}>
                   <span className={styles.datePillAccent} aria-hidden="true" />
                   <span className={styles.datePillText}>{exitLabel}</span>
                 </span>
@@ -53,8 +53,8 @@ function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
             {note && <p className={styles.note}>{note}</p>}
           </div>
           <div className={rowStyles.meta}>
-            <span className={styles.tripDays} aria-label={`${days} days in ${trip.countryName}`}>
-              <span aria-hidden="true">{`${days}d`}</span>
+            <span className={styles.tripDays} aria-label={messages.daysInCountry(days, trip.countryName)}>
+              <span aria-hidden="true">{`${String(days)}${messages.dayAbbrev}`}</span>
             </span>
             <button
               className={rowStyles.editButton}
@@ -70,7 +70,7 @@ function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
               className={rowStyles.removeButton}
               type="button"
               title={messages.removeTrip}
-              aria-label={`${messages.removeTrip} to ${trip.countryName}`}
+              aria-label={messages.removeTripFor(trip.countryName)}
               onClick={() => { onRemove(trip.id) }}
             >
               <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg('trash') }} />
@@ -103,7 +103,7 @@ export function TripLogPanel({ messages, trips, onEditTrip, onRemoveTrip, onExpo
           <div className={styles.titleBlock}>
             <p className="eyebrow">{messages.trips}</p>
             <h2 id="trip-log-heading">{messages.travelLog}</h2>
-            <p className={`muted ${styles.lede}`}>Newest stays first. Export or import CSV to move your history between devices.</p>
+            <p className={`muted ${styles.lede}`}>{messages.tripLogLede}</p>
           </div>
         </div>
         <div className={`inline-actions ${styles.actions}`} role="group" aria-label={messages.tripData}>

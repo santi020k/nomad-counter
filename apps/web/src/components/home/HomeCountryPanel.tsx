@@ -9,10 +9,11 @@ import styles from './HomeCountryPanel.module.css'
 
 interface TrackedRowProps {
   country: HomeCountry
+  messages: Messages
   onRemove: (id: string) => void
 }
 
-function TrackedRow({ country, onRemove }: TrackedRowProps) {
+function TrackedRow({ country, messages, onRemove }: TrackedRowProps) {
   const flag = countryCodeToFlagEmoji(country.countryCode)
 
   return (
@@ -27,20 +28,20 @@ function TrackedRow({ country, onRemove }: TrackedRowProps) {
             {country.countryName}
           </strong>
           <div className={styles.trackedMeta}>
-            <span className={styles.pill}>{`${country.thresholdDays}-day threshold`}</span>
-            <span className={`${styles.pill} ${styles.pillWarn}`}>{`Warn at ${country.warningDays} days`}</span>
+            <span className={styles.pill}>{messages.thresholdDays(country.thresholdDays)}</span>
+            <span className={`${styles.pill} ${styles.pillWarn}`}>{messages.warningDays(country.warningDays)}</span>
           </div>
         </div>
         <div className={rowStyles.meta}>
           <button
             className={rowStyles.removeButton}
             type="button"
-            title="Remove tracked country"
-            aria-label={`Stop tracking ${country.countryName}`}
+            title={messages.stopTracking}
+            aria-label={messages.stopTrackingCountry(country.countryName)}
             onClick={() => { onRemove(country.id) }}
           >
             <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg('trash') }} />
-            <span>Remove</span>
+            <span>{messages.remove}</span>
           </button>
         </div>
       </div>
@@ -87,7 +88,7 @@ export function HomeCountryPanel({ countries, messages, onAddCountry, onRemoveCo
       setThresholdDays('183')
       setWarningDays('14')
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : 'Something went wrong.')
+      setStatus(err instanceof Error ? err.message : messages.somethingWentWrong)
       setStatusTone('error')
     } finally {
       setSubmitting(false)
@@ -105,6 +106,8 @@ export function HomeCountryPanel({ countries, messages, onAddCountry, onRemoveCo
         id="home-country"
         name="countryCode"
         label={messages.country}
+        placeholder={messages.searchCountry}
+        messages={messages}
         onSelect={(code, name) => { setCountryCode(code); setCountryName(name) }}
       />
 
@@ -125,7 +128,7 @@ export function HomeCountryPanel({ countries, messages, onAddCountry, onRemoveCo
           />
         </div>
         <div className="field">
-          <label htmlFor="warning-days">Warning</label>
+          <label htmlFor="warning-days">{messages.warning}</label>
           <input
             id="warning-days"
             className="ui-input"
@@ -142,8 +145,8 @@ export function HomeCountryPanel({ countries, messages, onAddCountry, onRemoveCo
       </div>
 
       <p className="form-help">
-        <span id="threshold-help">Threshold is the day limit you want to watch.</span>
-        <span id="warning-help">Warning is how many days before the threshold should feel close.</span>
+        <span id="threshold-help">{messages.thresholdHelp}</span>
+        <span id="warning-help">{messages.warningHelp}</span>
       </p>
 
       <button className="btn secondary" type="submit" disabled={submitting}>{messages.trackCountry}</button>
@@ -156,10 +159,10 @@ export function HomeCountryPanel({ countries, messages, onAddCountry, onRemoveCo
 
       <div className={`list tight ${styles.list}`}>
         {countries.length === 0 ? (
-          <p className="muted empty-state">Track a country to customize its threshold and warning range.</p>
+          <p className="muted empty-state">{messages.trackedCountryEmpty}</p>
         ) : (
           countries.map(country => (
-            <TrackedRow key={country.id} country={country} onRemove={onRemoveCountry} />
+            <TrackedRow key={country.id} country={country} messages={messages} onRemove={onRemoveCountry} />
           ))
         )}
       </div>

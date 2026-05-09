@@ -127,7 +127,7 @@ export default function LoginCard() {
           'success'
         )
       } catch (err) {
-        showStatus(err instanceof Error ? err.message : 'Something went wrong.', 'error')
+        showStatus(err instanceof Error ? err.message : messages.somethingWentWrong, 'error')
       }
     } else {
       if (code.length !== codeLength) {
@@ -143,11 +143,11 @@ export default function LoginCard() {
           body: JSON.stringify({ email, code })
         })
         setState(prev => ({ ...prev, authenticated: true, userEmail: res.user.email }))
-        showStatus('Saving trips and settings to your account…', 'info')
+        showStatus(messages.savingAccount, 'info')
         await syncLocalToAccount()
-        showStatus('Signed in. Your counter is synced.', 'success')
+        showStatus(messages.signedInSynced, 'success')
       } catch (err) {
-        showStatus(err instanceof Error ? err.message : 'Something went wrong.', 'error')
+        showStatus(err instanceof Error ? err.message : messages.somethingWentWrong, 'error')
       }
     }
   }
@@ -179,7 +179,7 @@ export default function LoginCard() {
           <div>
             <h2 id="login-card-title">{messages.signedIn}</h2>
             <p className={`muted ${styles.sub}`}>
-              Trips and tracked countries sync to your account. Sign out anytime — your saved data stays on this account.
+              {messages.signedInHelp}
             </p>
           </div>
         </div>

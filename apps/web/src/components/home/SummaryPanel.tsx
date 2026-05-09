@@ -37,7 +37,7 @@ function CountryCard({ country, messages, onRemove }: CountryCardProps) {
   const gradId = `cc-donut-grad-${country.countryCode.toLowerCase()}`
   const flag = countryCodeToFlagEmoji(country.countryCode)
   const status = statusText(country, messages)
-  const ariaValueText = `${String(country.daysPresent)} of ${String(country.thresholdDays)} days. ${status}`
+  const ariaValueText = `${messages.daysCount(country.daysPresent)} / ${messages.daysCount(country.thresholdDays)}. ${status}`
 
   return (
     <li className={styles.summaryItem}>
@@ -59,7 +59,7 @@ function CountryCard({ country, messages, onRemove }: CountryCardProps) {
                     type="button"
                     className={styles.actionsBtn}
                     aria-haspopup="menu"
-                    aria-label={`Actions for ${country.countryName}`}
+                    aria-label={messages.actionsForCountry(country.countryName)}
                     onClick={e => {
                       const menu = (e.currentTarget as HTMLButtonElement).nextElementSibling as HTMLElement | null
                       if (!menu) return
@@ -83,9 +83,9 @@ function CountryCard({ country, messages, onRemove }: CountryCardProps) {
               </div>
             </div>
             <p className={styles.threshold}>
-              <span className={styles.thresholdLabel}>Residency threshold</span>
+              <span className={styles.thresholdLabel}>{messages.threshold}</span>
               {' '}
-              <span className={styles.thresholdValue}>{`${country.thresholdDays} days`}</span>
+              <span className={styles.thresholdValue}>{messages.daysCount(country.thresholdDays)}</span>
             </p>
           </div>
         </div>
@@ -189,7 +189,7 @@ export function SummaryPanel({ summary, windowLabel, windowMode, messages, onWin
       <ul className={styles.list} aria-labelledby="summary-panel-heading">
         {summary.length === 0 ? (
           <li className={styles.emptyItem}>
-            <p className="muted empty-state">Add a trip to see your residency exposure by country.</p>
+            <p className="muted empty-state">{messages.addTripEmpty}</p>
           </li>
         ) : (
           summary.map(country => (
