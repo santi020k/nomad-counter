@@ -3,9 +3,11 @@ import { HomeCountryPanel } from './HomeCountryPanel'
 import { SummaryPanel } from './SummaryPanel'
 import { TripFormPanel } from './TripFormPanel'
 import { TripLogPanel } from './TripLogPanel'
-import styles from './CounterWorkspace.module.css'
 import { useCounterWorkspace } from './useCounterWorkspace'
+
 import type { SSRInitialData } from '../../lib/app/ssrTypes'
+
+import styles from './CounterWorkspace.module.css'
 
 interface Props {
   initialData?: SSRInitialData | null
@@ -52,9 +54,7 @@ export default function CounterWorkspace({ initialData }: Props) {
           onImportCsv={handleImportCsv}
           messages={messages}
         />
-        {tripFormStatus && (
-          <p className={styles.importStatus} role="status">{tripFormStatus}</p>
-        )}
+        {tripFormStatus ? <p className={styles.importStatus} role="status">{tripFormStatus}</p> : null}
       </div>
       <div className={styles.sidebar}>
         <TripFormPanel
