@@ -1,6 +1,7 @@
 import { useSyncExternalStore, useState, type SyntheticEvent } from 'react'
 import { iconSvg } from '../../lib/icons'
 import { request } from '../../lib/app/apiClient'
+import { getMessages } from '../../lib/app/i18n'
 import { syncLocalToAccount } from '../../lib/app/remoteSync'
 import { getSnapshot, setState, subscribe } from '../../lib/store'
 import styles from './LoginCard.module.css'
@@ -19,6 +20,7 @@ function maskEmail(email: string): string {
 
 export default function LoginCard() {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  const messages = getMessages(state.locale)
   const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
@@ -33,7 +35,7 @@ export default function LoginCard() {
     if (state.authenticated) return
 
     if (step === 'email') {
-      showStatus('Sending code…', 'info')
+      showStatus(messages.sendingCode, 'info')
       try {
         const res = await request<{ devCode?: string }>('/api/auth/request-code', {
           method: 'POST',
@@ -42,14 +44,14 @@ export default function LoginCard() {
         setPendingEmail(email)
         setStep('code')
         showStatus(
-          res.devCode ? `Dev mode: your code is ${res.devCode}` : 'Code sent. Enter the digits below when they arrive.',
+          res.devCode ? `Dev mode: your code is ${res.devCode}` : messages.codeSent,
           'success'
         )
       } catch (err) {
         showStatus(err instanceof Error ? err.message : 'Something went wrong.', 'error')
       }
     } else {
-      showStatus('Verifying code…', 'info')
+      showStatus(messages.verifyingCode, 'info')
       try {
         const res = await request<{ user: { email: string } }>('/api/auth/verify-code', {
           method: 'POST',
@@ -85,12 +87,12 @@ export default function LoginCard() {
     return (
       <div className={`card ${styles.card}`} aria-labelledby="login-card-title">
         <p id="sync-state" className={styles.syncState}>
-          {`Synced to ${state.userEmail}`}
+          {messages.signedInStatus(state.userEmail)}
         </p>
         <div className={styles.head}>
           <span className={styles.icon} dangerouslySetInnerHTML={{ __html: iconSvg('mail') }} />
           <div>
-            <h2 id="login-card-title">You are signed in</h2>
+            <h2 id="login-card-title">{messages.signedIn}</h2>
             <p className={`muted ${styles.sub}`}>
               Trips and tracked countries sync to your account. Sign out anytime — your saved data stays on this account.
             </p>
@@ -98,7 +100,7 @@ export default function LoginCard() {
         </div>
         <div className={styles.actions}>
           <button type="button" className="btn secondary" style={{ width: '100%' }} onClick={handleSignOut}>
-            Sign out
+            {messages.signOut}
           </button>
         </div>
       </div>
@@ -108,13 +110,13 @@ export default function LoginCard() {
   return (
     <form className={`card ${styles.card}`} aria-labelledby="login-card-title" onSubmit={handleSubmit}>
       <p id="sync-state" className={styles.syncState}>
-        Guest mode. Your data stays in this browser until you save it to an account.
+        {messages.defaultGuestState}
       </p>
 
       <div className={styles.head}>
         <span className={styles.icon} dangerouslySetInnerHTML={{ __html: iconSvg('mail') }} />
         <div>
-          <h2 id="login-card-title">Save to your account</h2>
+          <h2 id="login-card-title">{messages.saveAccount}</h2>
           <p className={`muted ${styles.sub}`}>
             {step === 'code' ?
               'Enter the code from your email, then sign in to upload this browser\'s trips.' :
@@ -153,8 +155,8 @@ export default function LoginCard() {
 
       {step === 'code' && (
         <div className="field">
-          <label htmlFor="login-code">6-digit code</label>
-          <small id="login-code-help" className="field-hint">Codes expire after a short time. Check spam if you do not see it.</small>
+          <label htmlFor="login-code">{messages.loginCode}</label>
+          <small id="login-code-help" className="field-hint">{messages.emailCodeHelp}</small>
           <input
             id="login-code"
             className={`ui-input ${styles.codeInput}`}
@@ -180,11 +182,13 @@ export default function LoginCard() {
 
       <div className={styles.actions}>
         <button type="submit" className="btn">
-          {step === 'code' ? 'Sign in and sync' : 'Email me a code'}
+            {step === 'code' ? messages.signInSync : messages.emailMeCode}
         </button>
         {step === 'code' && (
           <button type="button" className={styles.changeEmail} onClick={handleChangeEmail}>
-            ← Use a different email
+            ←
+            {' '}
+            {messages.changeEmail}
           </button>
         )}
       </div>

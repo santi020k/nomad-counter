@@ -6,11 +6,12 @@ interface Props {
   title: string
   description: string
   confirmLabel?: string
+  cancelLabel?: string
   onConfirm: () => void
   onCancel: () => void
 }
 
-export function ConfirmDialog({ open, title, description, confirmLabel = 'Remove', onConfirm, onCancel }: Props) {
+export function ConfirmDialog({ open, title, description, confirmLabel = 'Remove', cancelLabel = 'Cancel', onConfirm, onCancel }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export function ConfirmDialog({ open, title, description, confirmLabel = 'Remove
         <h2 id="confirm-dialog-title">{title}</h2>
         <p className={`muted ${styles.desc}`}>{description}</p>
         <div className={styles.actions}>
-          <button type="button" className="btn secondary" onClick={onCancel}>Cancel</button>
+          <button type="button" className="btn secondary" onClick={onCancel}>{cancelLabel}</button>
           <button
             type="button"
             className="btn danger"

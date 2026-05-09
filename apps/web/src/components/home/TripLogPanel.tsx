@@ -1,16 +1,19 @@
 import { iconSvg } from '../../lib/icons'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
 import { formatDisplayDate, inclusiveDays, todayIso } from '../../lib/app/dateMath'
+import type { Messages } from '../../lib/app/i18n'
 import type { Trip } from '../../lib/app/types'
 import rowStyles from './Rows.module.css'
 import styles from './TripLogPanel.module.css'
 
 interface TripItemProps {
+  messages: Messages
+  onEdit: (id: string) => void
   trip: Trip
   onRemove: (id: string) => void
 }
 
-function TripItem({ trip, onRemove }: TripItemProps) {
+function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
   const titleId = `trip-log-title-${trip.id.replace(/[^a-zA-Z0-9_-]/g, '')}`
   const exitLabel = trip.exitDate ? formatDisplayDate(trip.exitDate) : 'present'
   const days = inclusiveDays(trip.entryDate, trip.exitDate ?? todayIso())
@@ -56,12 +59,22 @@ function TripItem({ trip, onRemove }: TripItemProps) {
             <button
               className={rowStyles.removeButton}
               type="button"
-              title="Remove trip"
-              aria-label={`Remove trip to ${trip.countryName}`}
+              title={messages.edit}
+              aria-label={`${messages.edit} ${trip.countryName}`}
+              onClick={() => { onEdit(trip.id) }}
+            >
+              <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg('edit') }} />
+              <span>{messages.edit}</span>
+            </button>
+            <button
+              className={rowStyles.removeButton}
+              type="button"
+              title={messages.removeTrip}
+              aria-label={`${messages.removeTrip} to ${trip.countryName}`}
               onClick={() => { onRemove(trip.id) }}
             >
               <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: iconSvg('trash') }} />
-              <span>Remove</span>
+              <span>{messages.remove}</span>
             </button>
           </div>
         </div>
@@ -71,13 +84,15 @@ function TripItem({ trip, onRemove }: TripItemProps) {
 }
 
 interface Props {
+  messages: Messages
   trips: Trip[]
+  onEditTrip: (id: string) => void
   onRemoveTrip: (id: string) => void
   onExportCsv: () => void
   onImportCsv: (file: File) => void
 }
 
-export function TripLogPanel({ trips, onRemoveTrip, onExportCsv, onImportCsv }: Props) {
+export function TripLogPanel({ messages, trips, onEditTrip, onRemoveTrip, onExportCsv, onImportCsv }: Props) {
   const sorted = [...trips].sort((a, b) => b.entryDate.localeCompare(a.entryDate))
 
   return (
@@ -86,15 +101,15 @@ export function TripLogPanel({ trips, onRemoveTrip, onExportCsv, onImportCsv }: 
         <div className={`panel-title-stack ${styles.titleStack}`}>
           <span className="panel-icon" dangerouslySetInnerHTML={{ __html: iconSvg('route', { size: 22 }) }} />
           <div className={styles.titleBlock}>
-            <p className="eyebrow">Trips</p>
-            <h2 id="trip-log-heading">Travel log</h2>
+            <p className="eyebrow">{messages.trips}</p>
+            <h2 id="trip-log-heading">{messages.travelLog}</h2>
             <p className={`muted ${styles.lede}`}>Newest stays first. Export or import CSV to move your history between devices.</p>
           </div>
         </div>
-        <div className={`inline-actions ${styles.actions}`} role="group" aria-label="Trip data">
-          <button className="btn secondary" type="button" onClick={onExportCsv}>Export CSV</button>
+        <div className={`inline-actions ${styles.actions}`} role="group" aria-label={messages.tripData}>
+          <button className="btn secondary" type="button" onClick={onExportCsv}>{messages.exportCsv}</button>
           <label className="btn secondary">
-            Import CSV
+            {messages.importCsv}
             <input
               className="sr-only"
               type="file"
@@ -111,11 +126,11 @@ export function TripLogPanel({ trips, onRemoveTrip, onExportCsv, onImportCsv }: 
       <ul id="trip-list" className={`list ${styles.list}`} aria-labelledby="trip-log-heading">
         {sorted.length === 0 ? (
           <li className={styles.emptyItem}>
-            <p className="muted empty-state trip-log-empty" role="status">No trips yet. Add your first stay or import a CSV.</p>
+            <p className="muted empty-state trip-log-empty" role="status">{messages.noTrips}</p>
           </li>
         ) : (
           sorted.map(trip => (
-            <TripItem key={trip.id} trip={trip} onRemove={onRemoveTrip} />
+            <TripItem key={trip.id} messages={messages} trip={trip} onEdit={onEditTrip} onRemove={onRemoveTrip} />
           ))
         )}
       </ul>

@@ -1,6 +1,7 @@
 import { useState, type SyntheticEvent } from 'react'
 import { iconSvg } from '../../lib/icons'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
+import type { Messages } from '../../lib/app/i18n'
 import type { HomeCountry } from '../../lib/app/types'
 import { CountryCombobox } from './CountryCombobox'
 import rowStyles from './Rows.module.css'
@@ -56,11 +57,12 @@ interface CountryInput {
 
 interface Props {
   countries: HomeCountry[]
+  messages: Messages
   onAddCountry: (input: CountryInput) => Promise<void>
   onRemoveCountry: (id: string) => void
 }
 
-export function HomeCountryPanel({ countries, onAddCountry, onRemoveCountry }: Props) {
+export function HomeCountryPanel({ countries, messages, onAddCountry, onRemoveCountry }: Props) {
   const [countryCode, setCountryCode] = useState('')
   const [countryName, setCountryName] = useState('')
   const [thresholdDays, setThresholdDays] = useState('183')
@@ -96,19 +98,19 @@ export function HomeCountryPanel({ countries, onAddCountry, onRemoveCountry }: P
     <form className={`panel form-panel ${styles.panel}`} onSubmit={handleSubmit}>
       <h2 className={styles.formTitle}>
         <span className={styles.formIcon} dangerouslySetInnerHTML={{ __html: iconSvg('globe') }} />
-        Tracked country
+        {messages.trackedCountry}
       </h2>
 
       <CountryCombobox
         id="home-country"
         name="countryCode"
-        label="Country"
+        label={messages.country}
         onSelect={(code, name) => { setCountryCode(code); setCountryName(name) }}
       />
 
       <div className="grid-fit">
         <div className="field">
-          <label htmlFor="threshold-days">Threshold</label>
+          <label htmlFor="threshold-days">{messages.threshold}</label>
           <input
             id="threshold-days"
             className="ui-input"
@@ -144,7 +146,7 @@ export function HomeCountryPanel({ countries, onAddCountry, onRemoveCountry }: P
         <span id="warning-help">Warning is how many days before the threshold should feel close.</span>
       </p>
 
-      <button className="btn secondary" type="submit" disabled={submitting}>Track country</button>
+      <button className="btn secondary" type="submit" disabled={submitting}>{messages.trackCountry}</button>
 
       {status && (
         <p className={styles.status} role="status" data-tone={statusTone === 'error' ? 'error' : undefined}>

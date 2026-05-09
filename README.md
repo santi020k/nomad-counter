@@ -121,6 +121,10 @@ Cloudflare targets:
 - API: Worker `nomad-counter-api`, route such as `api.nomad.santi020k.com/*`
 - DB: Cloudflare D1 `nomad-counter-db`
 
+Production operations assume Cloudflare-managed HTTPS, edge availability, and Workers/Pages latency. Validate the
+200 ms p95 API target with Cloudflare Analytics or an external monitor after deployment; the repository enforces code
+quality and deployment shape, while the live SLO must be measured in production.
+
 ## Quality
 
 ```sh

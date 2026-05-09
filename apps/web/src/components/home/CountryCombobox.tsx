@@ -34,10 +34,11 @@ interface Props {
   name: string
   label?: string
   initialCode?: string
+  placeholder?: string
   onSelect?: (code: string, name: string) => void
 }
 
-export function CountryCombobox({ id, name, label = 'Country', initialCode = '', onSelect }: Props) {
+export function CountryCombobox({ id, name, label = 'Country', initialCode = '', placeholder = 'Search country', onSelect }: Props) {
   const listboxId = `${id}-listbox`
 
   const [query, setQuery] = useState<string>(() => {
@@ -93,7 +94,7 @@ export function CountryCombobox({ id, name, label = 'Country', initialCode = '',
           aria-controls={listboxId}
           aria-activedescendant={activeOptionId}
           autoComplete="off"
-          placeholder="Search country"
+          placeholder={placeholder}
           value={query}
           onFocus={() => { inputRef.current?.select(); doOpen() }}
           onClick={() => { inputRef.current?.select(); if (!isOpen) doOpen() }}

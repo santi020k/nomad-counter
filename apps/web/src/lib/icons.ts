@@ -1,4 +1,4 @@
-type IconName = 'chart' | 'globe' | 'mail' | 'more' | 'pulse' | 'route' | 'trash'
+type IconName = 'chart' | 'edit' | 'globe' | 'mail' | 'more' | 'pulse' | 'route' | 'trash'
 
 interface IconOptions {
   size?: number
@@ -15,6 +15,10 @@ export const iconSvg = (name: IconName, options: IconOptions = {}): string => {
 
   if (name === 'globe') {
     return strokeIcon('<circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />', options)
+  }
+
+  if (name === 'edit') {
+    return strokeIcon('<path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />', { size: 14, strokeWidth: 1.8, ...options })
   }
 
   if (name === 'mail') {

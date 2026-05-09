@@ -1,10 +1,12 @@
 import { summarizeLocal } from './app/dateMath'
+import { readLocale } from './app/i18n'
 import { readLocalCountries, readLocalTrips } from './app/localStore'
 import type { State } from './app/types'
 
 const initial: State = {
   authenticated: false,
   countries: [],
+  locale: 'en',
   trips: [],
   summary: [],
   userEmail: null,
@@ -31,5 +33,5 @@ export const initStoreFromLocal = (): void => {
   const trips = readLocalTrips()
   const countries = readLocalCountries()
   const local = summarizeLocal(trips, countries, _state.windowMode)
-  setState(() => ({ ..._state, trips, countries, summary: local.summary, windowLabel: local.windowLabel }))
+  setState(() => ({ ..._state, countries, locale: readLocale(), trips, summary: local.summary, windowLabel: local.windowLabel }))
 }

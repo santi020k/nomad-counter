@@ -1,5 +1,6 @@
 import { iconSvg } from '../../lib/icons'
 import { countryCodeToFlagEmoji } from '../../lib/tripForm'
+import type { Messages } from '../../lib/app/i18n'
 import type { CountrySummary, ExposureLevel } from '../../lib/app/types'
 import styles from './SummaryPanel.module.css'
 
@@ -12,29 +13,30 @@ function progressPercent(country: CountrySummary) {
   return Math.min(100, Math.round((country.daysPresent / country.thresholdDays) * 100))
 }
 
-function statusText(country: CountrySummary) {
+function statusText(country: CountrySummary, messages: Messages) {
   return country.daysRemaining <= 0 ?
-    `${Math.abs(country.daysRemaining)} days over threshold` :
-    `${country.daysRemaining} days remaining`
+    messages.daysOverThreshold(Math.abs(country.daysRemaining)) :
+    messages.daysRemaining(country.daysRemaining)
 }
 
-function levelLabel(level: ExposureLevel) {
-  if (level === 'exceeded') return 'Exceeded'
-  if (level === 'warning') return 'Near limit'
-  return 'On track'
+function levelLabel(level: ExposureLevel, messages: Messages) {
+  if (level === 'exceeded') return messages.exceeded
+  if (level === 'warning') return messages.nearLimit
+  return messages.onTrack
 }
 
 interface CountryCardProps {
   country: CountrySummary
+  messages: Messages
   onRemove: (countryCode: string) => void
 }
 
-function CountryCard({ country, onRemove }: CountryCardProps) {
+function CountryCard({ country, messages, onRemove }: CountryCardProps) {
   const progress = progressPercent(country)
   const dashOffset = DONUT_CIRCUMFERENCE * (1 - progress / 100)
   const gradId = `cc-donut-grad-${country.countryCode.toLowerCase()}`
   const flag = countryCodeToFlagEmoji(country.countryCode)
-  const status = statusText(country)
+  const status = statusText(country, messages)
   const ariaValueText = `${String(country.daysPresent)} of ${String(country.thresholdDays)} days. ${status}`
 
   return (
@@ -51,7 +53,7 @@ function CountryCard({ country, onRemove }: CountryCardProps) {
                 <span className={styles.code}>{country.countryCode}</span>
               </div>
               <div className={styles.headerEnd}>
-                <span className={styles.levelPill}>{levelLabel(country.exposureLevel)}</span>
+                <span className={styles.levelPill}>{levelLabel(country.exposureLevel, messages)}</span>
                 <div className={styles.actions}>
                   <button
                     type="button"
@@ -74,7 +76,7 @@ function CountryCard({ country, onRemove }: CountryCardProps) {
                       role="menuitem"
                       onClick={() => { onRemove(country.countryCode) }}
                     >
-                      Remove
+                      {messages.remove}
                     </button>
                   </div>
                 </div>
@@ -124,7 +126,7 @@ function CountryCard({ country, onRemove }: CountryCardProps) {
               <span className={styles.countValue}>{country.daysPresent}</span>
               <span className={styles.countSuffix}>{`/ ${country.thresholdDays}`}</span>
             </p>
-            <p className={styles.countPct}>Days in window vs threshold</p>
+            <p className={styles.countPct}>{messages.daysInWindow}</p>
           </div>
         </div>
 
@@ -148,11 +150,12 @@ interface Props {
   summary: CountrySummary[]
   windowLabel: string
   windowMode: string
+  messages: Messages
   onWindowChange: (mode: string) => void
   onRemoveCountry: (countryCode: string) => void
 }
 
-export function SummaryPanel({ summary, windowLabel, windowMode, onWindowChange, onRemoveCountry }: Props) {
+export function SummaryPanel({ summary, windowLabel, windowMode, messages, onWindowChange, onRemoveCountry }: Props) {
   return (
     <section className={`panel ${styles.panel}`}>
       <div className={`panel-heading ${styles.heading}`}>
@@ -162,13 +165,13 @@ export function SummaryPanel({ summary, windowLabel, windowMode, onWindowChange,
             dangerouslySetInnerHTML={{ __html: iconSvg('chart', { size: 22 }) }}
           />
           <div className={styles.titleContent}>
-            <p className="eyebrow">Exposure</p>
-            <h2 id="summary-panel-heading">Country day counts</h2>
+            <p className="eyebrow">{messages.exposure}</p>
+            <h2 id="summary-panel-heading">{messages.countryDayCounts}</h2>
             <p id="window-label" className={`muted ${styles.windowLede}`}>{windowLabel}</p>
           </div>
         </div>
         <div className={`field compact ${styles.windowField}`}>
-          <label htmlFor="window-mode">Window</label>
+          <label htmlFor="window-mode">{messages.window}</label>
           <select
             id="window-mode"
             className="ui-select"
@@ -176,10 +179,10 @@ export function SummaryPanel({ summary, windowLabel, windowMode, onWindowChange,
             value={windowMode}
             onChange={e => { onWindowChange(e.target.value) }}
           >
-            <option value="calendar-year">Calendar year</option>
-            <option value="rolling-365">Rolling 365 days</option>
+            <option value="calendar-year">{messages.calendarYear}</option>
+            <option value="rolling-365">{messages.rolling365}</option>
           </select>
-          <small id="window-help">Choose the date range used for exposure counts.</small>
+          <small id="window-help">{messages.chooseWindow}</small>
         </div>
       </div>
 
@@ -190,13 +193,13 @@ export function SummaryPanel({ summary, windowLabel, windowMode, onWindowChange,
           </li>
         ) : (
           summary.map(country => (
-            <CountryCard key={country.countryCode} country={country} onRemove={onRemoveCountry} />
+            <CountryCard key={country.countryCode} country={country} messages={messages} onRemove={onRemoveCountry} />
           ))
         )}
       </ul>
 
       <p className={styles.rule}>
-        Counting rule: any calendar day with presence in a country counts as one full day. Entry and exit dates are inclusive. This is a tracking aid, not tax advice.
+        {messages.countingRule}
       </p>
     </section>
   )

@@ -3,6 +3,8 @@ import { type SyntheticEvent, useRef, useState } from 'react'
 import { CountryCombobox } from './CountryCombobox'
 
 import { iconSvg } from '../../lib/icons'
+import type { Messages } from '../../lib/app/i18n'
+import type { Trip } from '../../lib/app/types'
 import { validateTripForm } from '../../lib/tripForm'
 
 import styles from './TripFormPanel.module.css'
@@ -16,21 +18,26 @@ interface TripInput {
 }
 
 interface Props {
+  editingTrip: Trip | null
+  messages: Messages
   onAddTrip: (input: TripInput) => Promise<void>
+  onCancelEdit: () => void
+  onUpdateTrip: (input: TripInput) => Promise<void>
 }
 
-export function TripFormPanel({ onAddTrip }: Props) {
-  const [countryCode, setCountryCode] = useState('')
-  const [countryName, setCountryName] = useState('')
-  const [entryDate, setEntryDate] = useState('')
-  const [exitDate, setExitDate] = useState('')
-  const [openEnded, setOpenEnded] = useState(false)
-  const [note, setNote] = useState('')
+export function TripFormPanel({ editingTrip, messages, onAddTrip, onCancelEdit, onUpdateTrip }: Props) {
+  const [countryCode, setCountryCode] = useState(editingTrip?.countryCode ?? '')
+  const [countryName, setCountryName] = useState(editingTrip?.countryName ?? '')
+  const [entryDate, setEntryDate] = useState(editingTrip?.entryDate ?? '')
+  const [exitDate, setExitDate] = useState(editingTrip?.exitDate ?? '')
+  const [openEnded, setOpenEnded] = useState(editingTrip?.exitDate === null)
+  const [note, setNote] = useState(editingTrip?.note ?? '')
   const [status, setStatus] = useState('')
   const [statusTone, setStatusTone] = useState<'ok' | 'error'>('ok')
   const [submitting, setSubmitting] = useState(false)
   const entryRef = useRef<HTMLInputElement>(null)
   const exitRef = useRef<HTMLInputElement>(null)
+  const isEditing = editingTrip !== null
 
   const handleOpenEndedChange = (checked: boolean) => {
     setOpenEnded(checked)
@@ -98,7 +105,13 @@ export function TripFormPanel({ onAddTrip }: Props) {
     setSubmitting(true)
 
     try {
-      await onAddTrip({ countryCode, countryName, entryDate, exitDate: validated.exitDate, note: note || null })
+      const input = { countryCode, countryName, entryDate, exitDate: validated.exitDate, note: note || null }
+
+      if (isEditing) {
+        await onUpdateTrip(input)
+      } else {
+        await onAddTrip(input)
+      }
 
       reset()
 
@@ -132,15 +145,16 @@ export function TripFormPanel({ onAddTrip }: Props) {
           dangerouslySetInnerHTML={{ __html: iconSvg('route') }}
         />
         <div>
-          <p className="eyebrow">New stay</p>
-          <h2 className={styles.headingTitle}>Add trip</h2>
+          <p className="eyebrow">{messages.newStay}</p>
+          <h2 className={styles.headingTitle}>{isEditing ? messages.editTrip : messages.addTrip}</h2>
         </div>
       </div>
 
       <CountryCombobox
         id="trip-country"
         name="countryCode"
-        label="Country"
+        label={messages.country}
+        initialCode={countryCode}
         onSelect={(code, name) => {
           setCountryCode(code)
 
@@ -152,7 +166,7 @@ export function TripFormPanel({ onAddTrip }: Props) {
         <legend className="sr-only">Stay dates</legend>
         <div className={`grid-fit ${styles.dateGrid}`}>
           <div className="field">
-            <label htmlFor="trip-entry">Entry date</label>
+            <label htmlFor="trip-entry">{messages.entryDate}</label>
             <div className={styles.dateShell} data-date-shell="">
               <input
                 ref={entryRef}
@@ -179,8 +193,8 @@ export function TripFormPanel({ onAddTrip }: Props) {
             </div>
           </div>
           <div className="field">
-            <label htmlFor="trip-exit">Exit date</label>
-            <small id="trip-exit-help" className="field-hint">Required for completed stays. Disabled while "Currently there" is checked.</small>
+            <label htmlFor="trip-exit">{messages.exitDate}</label>
+            <small id="trip-exit-help" className="field-hint">{messages.exitDateHelp}</small>
             <div className={styles.dateShell} data-date-shell="">
               <input
                 ref={exitRef}
@@ -227,24 +241,24 @@ export function TripFormPanel({ onAddTrip }: Props) {
             <span className="ui-checkbox-switch" aria-hidden="true">
               <span className="ui-checkbox-knob" />
             </span>
-            <span className="ui-checkbox-label">Currently there</span>
+            <span className="ui-checkbox-label">{messages.currentThere}</span>
           </span>
         </label>
 
         <p id="trip-open-ended-help" className={styles.openEndedHint}>
-          When checked, exit date is optional until the stay ends.
+          {messages.openEndedHelp}
         </p>
       </fieldset>
 
       <div className="field">
-        <label htmlFor="trip-note">Note</label>
-        <small id="trip-note-help" className="field-hint">Avoid sensitive tax, immigration, or identity details.</small>
+        <label htmlFor="trip-note">{messages.note}</label>
+        <small id="trip-note-help" className="field-hint">{messages.noteHelp}</small>
         <textarea
           id="trip-note"
           className="ui-input"
           name="note"
           rows={3}
-          placeholder="Optional"
+          placeholder={messages.optional}
           aria-describedby="trip-note-help"
           value={note}
           onChange={e => {
@@ -261,7 +275,22 @@ export function TripFormPanel({ onAddTrip }: Props) {
             </p>
           ) :
           null}
-        <button className="btn" type="submit" disabled={submitting}>Add trip</button>
+        {isEditing && (
+          <button
+            className="btn secondary"
+            type="button"
+            disabled={submitting}
+            onClick={() => {
+              reset()
+              onCancelEdit()
+            }}
+          >
+            {messages.cancel}
+          </button>
+        )}
+        <button className="btn" type="submit" disabled={submitting}>
+          {isEditing ? messages.updateTrip : messages.addTrip}
+        </button>
       </div>
     </form>
   )

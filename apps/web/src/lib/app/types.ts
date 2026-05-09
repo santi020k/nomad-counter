@@ -30,6 +30,7 @@ export interface CountrySummary {
 export interface State {
   authenticated: boolean
   countries: HomeCountry[]
+  locale: 'en' | 'es'
   trips: Trip[]
   summary: CountrySummary[]
   userEmail: null | string

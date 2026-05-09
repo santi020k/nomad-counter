@@ -23,6 +23,21 @@
   font-weight: 600;
 }
 
+.localePanel {
+  display: flex;
+  gap: 8px;
+}
+
+.localePanel button {
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+.localePanel button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-strong));
+  color: var(--accent);
+}
+
 @media (max-width: 1080px) {
   .section {
     grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);

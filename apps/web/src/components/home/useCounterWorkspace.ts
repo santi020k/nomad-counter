@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { request } from '../../lib/app/apiClient'
 import { exportCsv, importCsv } from '../../lib/app/csv'
 import { summarizeLocal } from '../../lib/app/dateMath'
+import { getMessages, saveLocale, type Locale } from '../../lib/app/i18n'
 import { saveLocalState } from '../../lib/app/localStore'
 import { refreshRemote, syncLocalToAccount } from '../../lib/app/remoteSync'
 import type { HomeCountry, PendingConfirmAction, State, Trip } from '../../lib/app/types'
@@ -87,7 +88,9 @@ function useInitialSync() {
 export function useCounterWorkspace() {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   const [confirm, setConfirm] = useState<ConfirmState>(closedConfirm)
+  const [editingTrip, setEditingTrip] = useState<Trip | null>(null)
   const [tripFormStatus, setTripFormStatus] = useState('')
+  const messages = getMessages(state.locale)
 
   useInitialSync()
   useScrollReveal()
@@ -98,6 +101,11 @@ export function useCounterWorkspace() {
 
   const closeConfirm = useCallback(() => {
     setConfirm(prev => ({ ...prev, open: false, action: null }))
+  }, [])
+
+  const handleLocaleChange = useCallback((locale: Locale) => {
+    saveLocale(locale)
+    setState(prev => ({ ...prev, locale }))
   }, [])
 
   const handleWindowChange = useCallback(async (mode: string) => {
@@ -134,6 +142,44 @@ export function useCounterWorkspace() {
     persistLocalState(newTrips, s.countries, s.windowMode)
   }, [])
 
+  const handleEditTrip = useCallback((tripId: string) => {
+    const trip = getSnapshot().trips.find(t => t.id === tripId)
+    if (!trip) return
+    setEditingTrip(trip)
+    document.querySelector('#trip-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [])
+
+  const handleCancelEdit = useCallback(() => {
+    setEditingTrip(null)
+  }, [])
+
+  const handleUpdateTrip = useCallback(async (input: TripInput) => {
+    const current = editingTrip
+    if (!current) return
+
+    const s = getSnapshot()
+    if (s.authenticated && !current.id.startsWith('local_')) {
+      await request(`/api/trips/${current.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          countryCode: input.countryCode,
+          countryName: input.countryName,
+          entryDate: input.entryDate,
+          exitDate: input.exitDate,
+          note: input.note
+        })
+      })
+      setEditingTrip(null)
+      await refreshRemote()
+      return
+    }
+
+    const newTrips = s.trips.map(trip => trip.id === current.id ? { ...trip, ...input } : trip)
+    setState(prev => ({ ...prev, trips: newTrips }))
+    setEditingTrip(null)
+    persistLocalState(newTrips, s.countries, s.windowMode)
+  }, [editingTrip])
+
   const handleAddCountry = useCallback(async (input: CountryInput) => {
     const country: HomeCountry = { id: `local_${crypto.randomUUID()}`, ...input }
     const s = getSnapshot()
@@ -153,11 +199,11 @@ export function useCounterWorkspace() {
     if (!trip) return
     const exitLabel = trip.exitDate ?? 'present'
     openConfirm(
-      'Remove trip',
-      `Remove this stay (${trip.entryDate} -> ${exitLabel}) for ${trip.countryName}? You cannot undo this.`,
+      messages.removeTrip,
+      messages.removeTripConfirm(trip.entryDate, exitLabel, trip.countryName),
       { kind: 'trip', tripId }
     )
-  }, [openConfirm])
+  }, [messages, openConfirm])
 
   const handleRemoveSummaryCountry = useCallback((countryCode: string) => {
     const s = getSnapshot()
@@ -165,23 +211,23 @@ export function useCounterWorkspace() {
     const tripCount = s.trips.filter(t => t.countryCode === countryCode).length
     const hasTracked = s.countries.some(c => c.countryCode === countryCode)
     const desc = hasTracked && tripCount > 0 ?
-      `This will stop tracking ${name} and delete all ${String(tripCount)} trip${tripCount === 1 ? '' : 's'} for this country from your travel log. You cannot undo this.` :
+      messages.deleteCountryTrips(name, tripCount) :
       hasTracked ?
-        `This will stop tracking ${name} and remove its custom threshold from your settings. You cannot undo this.` :
-        `This will delete all ${String(tripCount)} trip${tripCount === 1 ? '' : 's'} to ${name} from your travel log. You cannot undo this.`
+        messages.stopTrackingSummary(name) :
+        messages.deleteCountryTripsOnly(name, tripCount)
 
-    openConfirm('Remove from dashboard', desc, { kind: 'summary-country', countryCode })
-  }, [openConfirm])
+    openConfirm(messages.removeFromDashboard, desc, { kind: 'summary-country', countryCode })
+  }, [messages, openConfirm])
 
   const handleRemoveTrackedCountry = useCallback((countryId: string) => {
     const country = getSnapshot().countries.find(c => c.id === countryId)
     if (!country) return
     openConfirm(
-      'Stop tracking country',
-      `Stop tracking ${country.countryName}? Its custom threshold and warning settings will be removed. Trips in your travel log are not deleted. You cannot undo this.`,
+      messages.stopTracking,
+      messages.stopTrackingConfirm(country.countryName),
       { kind: 'tracked-country', countryId }
     )
-  }, [openConfirm])
+  }, [messages, openConfirm])
 
   const handleConfirm = useCallback(async () => {
     const { action } = confirm
@@ -191,6 +237,9 @@ export function useCounterWorkspace() {
     const s = getSnapshot()
     try {
       if (action.kind === 'trip') {
+        if (editingTrip?.id === action.tripId) {
+          setEditingTrip(null)
+        }
         if (s.authenticated && !action.tripId.startsWith('local_')) {
           await request(`/api/trips/${action.tripId}`, { method: 'DELETE' })
           await refreshRemote()
@@ -230,7 +279,7 @@ export function useCounterWorkspace() {
     } catch (err) {
       setTripFormStatus(err instanceof Error ? err.message : 'Something went wrong.')
     }
-  }, [closeConfirm, confirm])
+  }, [closeConfirm, confirm, editingTrip])
 
   const handleExportCsv = useCallback(() => { exportCsv() }, [])
 
@@ -242,17 +291,23 @@ export function useCounterWorkspace() {
 
   return {
     confirm,
+    editingTrip,
+    handleCancelEdit,
     state,
+    messages,
     tripFormStatus,
     closeConfirm,
     handleAddCountry,
     handleAddTrip,
+    handleEditTrip,
     handleConfirm,
     handleExportCsv,
     handleImportCsv,
+    handleLocaleChange,
     handleRemoveSummaryCountry,
     handleRemoveTrackedCountry,
     handleRemoveTrip,
+    handleUpdateTrip,
     handleWindowChange
   }
 }
