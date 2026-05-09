@@ -24,6 +24,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - run: pnpm spellcheck
@@ -43,6 +44,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @nomad-counter/web exec playwright install chromium --with-deps
@@ -63,6 +65,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run build
@@ -84,6 +87,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - name: Configure D1 id

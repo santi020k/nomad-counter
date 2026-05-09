@@ -1,4 +1,4 @@
-const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
+export const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
 
 export const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
   const headers = new Headers(init?.headers)

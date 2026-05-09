@@ -2,6 +2,8 @@
 import MainNav from '@/components/home/MainNav.astro'
 import SEO from '@/components/SEO.astro'
 import SiteFooter from '@/components/SiteFooter.astro'
+import { request } from '@/lib/app/apiClient'
+import { countryCodeToFlagEmoji } from '@/lib/tripForm'
 
 import '@/styles/global.css'
 
@@ -23,18 +25,11 @@ interface PublicStats {
   generatedAt: string
 }
 
-const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8787'
-
 let stats: PublicStats | null = null
 let fetchError = false
 
 try {
-  const res = await fetch(`${apiUrl}/api/public-stats`)
-  if (res.ok) {
-    stats = await res.json() as PublicStats
-  } else {
-    fetchError = true
-  }
+  stats = await request<PublicStats>('/api/public-stats')
 } catch {
   fetchError = true
 }
@@ -47,12 +42,6 @@ const generatedDate = stats ? new Date(stats.generatedAt).toLocaleString('en-US'
 
 const maxTrips = stats ? Math.max(...stats.topCountries.map(c => c.tripCount), 1) : 1
 
-// Build flag emoji from ISO 3166-1 alpha-2 country code without using spread
-const flag = (code: string) => {
-  const a = code.toUpperCase().codePointAt(0) ?? 65
-  const b = code.toUpperCase().codePointAt(1) ?? 65
-  return String.fromCodePoint(0x1F1E6 - 65 + a) + String.fromCodePoint(0x1F1E6 - 65 + b)
-}
 ---
 
 <!doctype html>
@@ -127,7 +116,7 @@ const flag = (code: string) => {
                 return (
                   <li class="stats-country-row">
                     <span class="stats-rank" aria-hidden="true">#{i + 1}</span>
-                    <span class="stats-flag" aria-hidden="true">{flag(country.countryCode)}</span>
+                    <span class="stats-flag" aria-hidden="true">{countryCodeToFlagEmoji(country.countryCode)}</span>
                     <span class="stats-country-name">{country.countryName}</span>
                     <span class="stats-bar-track" role="presentation">
                       <span
