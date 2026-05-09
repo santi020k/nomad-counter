@@ -57,7 +57,7 @@ function TripItem({ messages, onEdit, trip, onRemove }: TripItemProps) {
               <span aria-hidden="true">{`${days}d`}</span>
             </span>
             <button
-              className={rowStyles.removeButton}
+              className={rowStyles.editButton}
               type="button"
               title={messages.edit}
               aria-label={`${messages.edit} ${trip.countryName}`}

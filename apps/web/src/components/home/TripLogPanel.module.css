@@ -43,13 +43,11 @@
 }
 
 .list {
+  display: grid;
+  gap: 10px;
   list-style: none;
   margin: 0;
   padding: 0 18px 18px;
-}
-
-.list:has(.item) {
-  gap: 12px;
 }
 
 .emptyItem {

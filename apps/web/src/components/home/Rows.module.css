@@ -93,6 +93,38 @@
   box-shadow: var(--focus-ring);
 }
 
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 34px;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  border-radius: var(--radius);
+  padding: 0 10px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: color-mix(in srgb, var(--accent) 78%, var(--text));
+  font-size: 0.78rem;
+  font-weight: 750;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.editButton:hover {
+  border-color: color-mix(in srgb, var(--accent) 44%, var(--line));
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.editButton:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
 @media (max-width: 640px) {
   .body {
     align-items: flex-start;

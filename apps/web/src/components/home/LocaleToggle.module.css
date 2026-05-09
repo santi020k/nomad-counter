@@ -1,0 +1,45 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 3px;
+  background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 10px;
+  border: none;
+  border-radius: calc(var(--radius) - 3px);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.option:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.option[aria-pressed='true'] {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.option:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

@@ -1,4 +1,5 @@
 ---
+import { LocaleToggle } from './LocaleToggle'
 import ThemeToggle from '@/components/ThemeToggle.astro'
 
 interface Props {
@@ -21,6 +22,7 @@ const showCounter = variant !== 'home'
     </a>
     <div class="nav-actions">
       {showStats ? <a class={isHome ? 'nav-link' : 'btn secondary'} href="/stats/">Stats</a> : null}
+      <LocaleToggle client:load />
       <ThemeToggle />
       {isHome ? <div class="nav-sep" aria-hidden="true"></div> : null}
       {showCounter ? <a class="btn secondary" href="/#counter">Counter</a> : <a class="btn nav-cta" href="#counter">Start counting</a>}

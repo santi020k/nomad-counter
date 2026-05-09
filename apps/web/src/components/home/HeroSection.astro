@@ -34,7 +34,7 @@ import LoginCardIsland from './LoginCard'
 <style is:global>
 /* ── Shell ──────────────────────────────── */
   .app-shell {
-    padding-block: clamp(24px, 5vw, 64px) 24px;
+    padding-block: clamp(12px, 2vw, 28px) 32px;
   }
 
   /* ── Hero ───────────────────────────────── */
@@ -43,8 +43,8 @@ import LoginCardIsland from './LoginCard'
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
     gap: clamp(22px, 5vw, 56px);
-    align-items: center;
-    min-height: min(650px, calc(100dvh - 110px));
+    align-items: start;
+    padding-block: clamp(16px, 3vh, 40px) clamp(24px, 4vh, 56px);
     isolation: isolate;
     overflow: clip;
   }
@@ -99,8 +99,9 @@ import LoginCardIsland from './LoginCard'
   h1 {
     max-width: 820px;
     margin-bottom: 18px;
-    font-size: clamp(3.1rem, 8vw, 7.25rem);
-    line-height: 0.92;
+    font-size: clamp(2.5rem, 5vw, 4.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
     background: linear-gradient(135deg, var(--text) 30%, var(--text) 52%, var(--accent) 80%, var(--accent-soft) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

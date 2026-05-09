@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { request } from '../../lib/app/apiClient'
 import { exportCsv, importCsv } from '../../lib/app/csv'
 import { summarizeLocal } from '../../lib/app/dateMath'
-import { getMessages, saveLocale, type Locale } from '../../lib/app/i18n'
+import { getMessages, type Locale } from '../../lib/app/i18n'
 import { saveLocalState } from '../../lib/app/localStore'
 import { refreshRemote, syncLocalToAccount } from '../../lib/app/remoteSync'
 import type { HomeCountry, PendingConfirmAction, State, Trip } from '../../lib/app/types'
@@ -95,17 +95,22 @@ export function useCounterWorkspace() {
   useInitialSync()
   useScrollReveal()
 
+  // Sync locale when the navbar LocaleToggle fires the custom event
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const locale = (e as CustomEvent<Locale>).detail
+      setState(prev => ({ ...prev, locale }))
+    }
+    window.addEventListener('nomad-counter:locale-change', handler)
+    return () => { window.removeEventListener('nomad-counter:locale-change', handler) }
+  }, [])
+
   const openConfirm = useCallback((title: string, description: string, action: PendingConfirmAction) => {
     setConfirm({ open: true, title, description, action })
   }, [])
 
   const closeConfirm = useCallback(() => {
     setConfirm(prev => ({ ...prev, open: false, action: null }))
-  }, [])
-
-  const handleLocaleChange = useCallback((locale: Locale) => {
-    saveLocale(locale)
-    setState(prev => ({ ...prev, locale }))
   }, [])
 
   const handleWindowChange = useCallback(async (mode: string) => {
@@ -303,7 +308,6 @@ export function useCounterWorkspace() {
     handleConfirm,
     handleExportCsv,
     handleImportCsv,
-    handleLocaleChange,
     handleRemoveSummaryCountry,
     handleRemoveTrackedCountry,
     handleRemoveTrip,

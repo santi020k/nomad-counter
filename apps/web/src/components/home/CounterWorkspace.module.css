@@ -1,15 +1,15 @@
 .section {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
-  gap: 18px;
+  gap: 22px;
   align-items: start;
-  margin-top: 36px;
+  margin-top: 20px;
 }
 
 .dashboard,
 .sidebar {
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .importStatus {
@@ -23,29 +23,16 @@
   font-weight: 600;
 }
 
-.localePanel {
-  display: flex;
-  gap: 8px;
-}
-
-.localePanel button {
-  flex: 1 1 0;
-  justify-content: center;
-}
-
-.localePanel button[aria-pressed='true'] {
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface-strong));
-  color: var(--accent);
-}
-
 @media (max-width: 1080px) {
   .section {
     grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
+    gap: 18px;
   }
 }
 
 @media (max-width: 840px) {
   .section {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 }

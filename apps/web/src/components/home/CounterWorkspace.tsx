@@ -18,7 +18,6 @@ export default function CounterWorkspace() {
     handleConfirm,
     handleExportCsv,
     handleImportCsv,
-    handleLocaleChange,
     handleRemoveSummaryCountry,
     handleRemoveTrackedCountry,
     handleRemoveTrip,
@@ -67,24 +66,6 @@ export default function CounterWorkspace() {
           onAddCountry={handleAddCountry}
           onRemoveCountry={handleRemoveTrackedCountry}
         />
-        <div className={styles.localePanel} aria-label="Language">
-          <button
-            className="btn secondary"
-            type="button"
-            aria-pressed={state.locale === 'en'}
-            onClick={() => { handleLocaleChange('en') }}
-          >
-            English
-          </button>
-          <button
-            className="btn secondary"
-            type="button"
-            aria-pressed={state.locale === 'es'}
-            onClick={() => { handleLocaleChange('es') }}
-          >
-            Español
-          </button>
-        </div>
       </div>
       <ConfirmDialog
         open={confirm.open}
