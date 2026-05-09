@@ -4,6 +4,7 @@ import { logger } from 'hono/logger'
 
 import { auth } from './routes/auth.js'
 import { countries } from './routes/countries.js'
+import { publicStats } from './routes/publicStats.js'
 import { summary } from './routes/summary.js'
 import { tripsRoute } from './routes/trips.js'
 import type { Bindings, Variables } from './types.js'
@@ -35,6 +36,7 @@ app.route('/api/auth', auth)
 app.route('/api/home-countries', countries)
 app.route('/api/trips', tripsRoute)
 app.route('/api/summary', summary)
+app.route('/api/public-stats', publicStats)
 
 app.notFound(c => c.json({ error: 'Not found.' }, 404))
 

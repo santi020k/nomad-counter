@@ -46,7 +46,6 @@ import LoginCardIsland from './LoginCard'
     align-items: start;
     padding-block: clamp(16px, 3vh, 40px) clamp(24px, 4vh, 56px);
     isolation: isolate;
-    overflow: clip;
   }
 
   .hero::before,
@@ -131,11 +130,42 @@ import LoginCardIsland from './LoginCard'
   }
 
   .hero-facts div {
-    border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--line));
-    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+    border-radius: var(--radius-lg);
     padding: 12px;
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
-    backdrop-filter: blur(10px);
+    background:
+      radial-gradient(
+        ellipse 80% 55% at 10% 0%,
+        color-mix(in srgb, var(--accent) 8%, transparent),
+        transparent 62%
+      ),
+      linear-gradient(
+        170deg,
+        color-mix(in srgb, var(--surface) 88%, transparent),
+        color-mix(in srgb, var(--surface) 72%, transparent)
+      );
+    backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow:
+      0 4px 14px color-mix(in srgb, var(--accent) 6%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 16%, transparent);
+    transition:
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.25s ease,
+      border-color 0.2s ease;
+  }
+
+  .hero-facts div:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+    box-shadow:
+      0 8px 22px color-mix(in srgb, var(--accent) 10%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 20%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-facts div {
+      transition: none;
+    }
   }
 
   .hero-facts dt {

@@ -2,6 +2,9 @@
   display: grid;
   gap: 14px;
   padding: 16px;
+  background:
+    radial-gradient(ellipse 80% 48% at 8% 0%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 56%),
+    transparent;
 }
 
 .heading {

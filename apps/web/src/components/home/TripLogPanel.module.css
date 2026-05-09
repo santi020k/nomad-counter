@@ -1,5 +1,6 @@
 .panel {
   background:
+    radial-gradient(ellipse 90% 52% at 6% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 58%),
     linear-gradient(168deg, color-mix(in srgb, var(--accent) 3.5%, transparent), transparent 42%),
     var(--surface);
 }

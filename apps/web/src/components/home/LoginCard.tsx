@@ -78,7 +78,17 @@ export default function LoginCard() {
   }
 
   const handleCodeKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === 'Backspace' && codeDigits[index] === '' && index > 0) {
+    if (e.key === 'Backspace' && codeDigits[index] !== '') {
+      e.preventDefault()
+      setCodeDigits(prev => {
+        const next = [...prev]
+        next[index] = ''
+        return next
+      })
+      return
+    }
+
+    if (e.key === 'Backspace' && index > 0) {
       e.preventDefault()
       setCodeDigits(prev => {
         const next = [...prev]
