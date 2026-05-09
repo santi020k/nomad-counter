@@ -167,16 +167,36 @@
 }
 
 .status {
-  min-height: 20px;
   margin: 0;
-  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 4%, transparent), transparent 44%),
+    color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: color-mix(in srgb, var(--text) 86%, var(--accent));
   font-size: 0.82rem;
   font-weight: 600;
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
-.status[data-tone="error"] { color: var(--danger); }
-.status[data-tone="success"] { color: var(--success); }
+.status[data-tone="error"] {
+  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 4%, transparent), transparent 44%),
+    color-mix(in srgb, var(--danger) 11%, var(--surface));
+  color: color-mix(in srgb, var(--danger) 78%, var(--text));
+}
+
+.status[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--success) 40%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 4%, transparent), transparent 44%),
+    color-mix(in srgb, var(--success) 12%, var(--surface));
+  color: color-mix(in srgb, var(--success) 76%, var(--text));
+}
 
 .actions {
   display: flex;

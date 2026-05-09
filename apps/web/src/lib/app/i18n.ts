@@ -45,6 +45,7 @@ export interface Messages {
   edit: string
   editTrip: string
   emailCodeHelp: string
+  emailCodeSendFailed: string
   emailMeCode: string
   entryDate: string
   entryDateInvalid: string
@@ -148,6 +149,7 @@ const translations: Record<Locale, Messages> = {
     edit: 'Edit',
     editTrip: 'Edit trip',
     emailCodeHelp: 'Codes expire after a short time. Check spam if you do not see it.',
+    emailCodeSendFailed: 'We could not send the email code right now. Please try again in a moment.',
     emailMeCode: 'Email me a code',
     entryDate: 'Entry date',
     entryDateInvalid: 'Entry date is not a valid calendar date.',
@@ -251,6 +253,7 @@ const translations: Record<Locale, Messages> = {
     edit: 'Editar',
     editTrip: 'Editar viaje',
     emailCodeHelp: 'Los códigos expiran pronto. Revisa spam si no lo ves.',
+    emailCodeSendFailed: 'No pudimos enviar el código por email ahora. Inténtalo de nuevo en un momento.',
     emailMeCode: 'Enviarme un código',
     entryDate: 'Fecha de entrada',
     entryDateInvalid: 'La fecha de entrada no es una fecha válida.',

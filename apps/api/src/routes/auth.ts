@@ -1,14 +1,14 @@
+import { and, eq } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { getCookie } from 'hono/cookie'
-import { zValidator } from '@hono/zod-validator'
-import { and, eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { createDb } from '../lib/db.js'
-import { sendLoginCode } from '../lib/email.js'
+import { EmailDeliveryError, sendLoginCode } from '../lib/email.js'
 import { clearSessionCookie, getSessionCookieName, hashSecret, makeId, now, requireUser, setSessionCookie } from '../lib/http.js'
 import type { Bindings, Variables } from '../types.js'
 
+import { zValidator } from '@hono/zod-validator'
 import { loginCodes, sessions, users } from '@nomad-counter/db'
 
 export const auth = new Hono<{ Bindings: Bindings, Variables: Variables }>()
@@ -30,6 +30,7 @@ const upsertUserAndCreateSession = async (db: ReturnType<typeof createDb>, email
   const timestamp = now()
   const existingUsers = await db.select().from(users).where(eq(users.email, email)).limit(1)
   const existingUser = existingUsers.at(0)
+
   const user = existingUser ?? {
     id: makeId('usr'),
     email,
@@ -63,7 +64,17 @@ auth.post('/request-code', zValidator('json', emailSchema), async c => {
   const timestamp = now()
   const expiresAt = new Date(timestamp.getTime() + 1000 * 60 * 10)
   const codeHash = await hashSecret(`${email}:${code}`)
-  const status = await sendLoginCode({ code, email, env: c.env })
+  let status: Awaited<ReturnType<typeof sendLoginCode>>
+
+  try {
+    status = await sendLoginCode({ code, email, env: c.env })
+  } catch (err) {
+    if (err instanceof EmailDeliveryError) {
+      return c.json({ error: 'We could not send the email code right now. Check the email service configuration and try again.' }, 502)
+    }
+
+    throw err
+  }
 
   await db.insert(loginCodes).values({
     id: makeId('cod'),
@@ -87,11 +98,13 @@ auth.post('/verify-code', zValidator('json', verifyCodeSchema), async c => {
   const { email, code } = c.req.valid('json')
   const db = createDb(c.env.DB)
   const codeHash = await hashSecret(`${email}:${code}`)
+
   const codeRows = await db
     .select()
     .from(loginCodes)
     .where(and(eq(loginCodes.email, email), eq(loginCodes.codeHash, codeHash)))
     .limit(1)
+
   const loginCode = codeRows.at(0)
 
   if (!loginCode || loginCode.consumedAt || loginCode.expiresAt <= now()) {
@@ -115,6 +128,7 @@ auth.post('/login', zValidator('json', legacyLoginSchema), async c => {
   }
 
   const body = c.req.valid('json')
+
   const [givenHash, expectedHash] = await Promise.all([
     hashSecret(body.accessCode),
     hashSecret(configuredSecret)

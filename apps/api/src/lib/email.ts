@@ -6,6 +6,10 @@ interface SendCodeParams {
   env: Bindings
 }
 
+export class EmailDeliveryError extends Error {
+  override name = 'EmailDeliveryError'
+}
+
 export const sendLoginCode = async ({ code, email, env }: SendCodeParams): Promise<'sent' | 'skipped'> => {
   if (!env.RESEND_API_KEY) {
     return 'skipped'
@@ -40,7 +44,7 @@ export const sendLoginCode = async ({ code, email, env }: SendCodeParams): Promi
 
     console.error('Resend API Error:', errorText)
 
-    throw new Error(`Unable to send email code. Resend error: ${errorText}`)
+    throw new EmailDeliveryError('Unable to send email code.')
   }
 
   return 'sent'
