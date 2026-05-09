@@ -4,7 +4,7 @@ import { type Locale, readLocale, saveLocale } from '../../lib/app/i18n'
 
 import styles from './LocaleToggle.module.css'
 
-export const LocaleToggle = (): React.JSX.Element => {
+export const LocaleToggle = () => {
   const [locale, setLocale] = useState<Locale>(() => readLocale())
 
   const toggle = (next: Locale) => {
