@@ -5,7 +5,7 @@ Personal web app for tracking calendar days spent in countries where tax residen
 ## Stack
 
 - pnpm 10 workspaces + Turborepo
-- Node 22.12+, TypeScript 6, ESLint 10
+- Node 22.22.2+, TypeScript 6, ESLint 10
 - `apps/web`: Astro 6, Tailwind 4, Cloudflare Pages
 - `apps/api`: Hono on Cloudflare Workers
 - `packages/db`: Drizzle schema for Cloudflare D1
