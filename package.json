@@ -7,7 +7,7 @@
   "type": "module",
   "packageManager": "pnpm@10.32.1",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "build": "turbo run build",
@@ -25,17 +25,15 @@
     "pre-commit": "lint-staged --quiet",
     "pre-push": "pnpm run spellcheck && pnpm run knip && pnpm run accesslint && pnpm turbo run lint check",
     "accesslint": "pnpm --filter @nomad-counter/web test tests/accessibility.spec.ts",
-    "commit": "cz"
+    "verify": "pnpm audit --audit-level high && pnpm run spellcheck && pnpm run build && pnpm run lint && pnpm run check && pnpm run knip && pnpm run test"
   },
   "devDependencies": {
-    "commitizen": "^4.3.1",
-    "cspell": "^10.0.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^10.2.1",
+    "cspell": "^10.0.1",
+    "eslint": "^10.9.0",
     "husky": "^9.1.7",
-    "knip": "^6.7.0",
+    "knip": "^6.32.2",
     "lint-staged": "^16.4.0",
-    "turbo": "^2.9.6",
+    "turbo": "^2.10.11",
     "typescript": "^6.0.3"
   },
   "lint-staged": {
@@ -54,18 +52,18 @@
   },
   "pnpm": {
     "overrides": {
+      "@cloudflare/workers-types": "5.20260822.1",
       "esbuild": "^0.25.0",
-      "sharp": "^0.34.5"
+      "sharp": "^0.35.3",
+      "tmp": "0.2.7",
+      "undici": "7.29.0",
+      "uuid": "11.1.1",
+      "ws": "8.21.0"
     },
     "onlyBuiltDependencies": [
       "esbuild",
       "sharp",
       "workerd"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

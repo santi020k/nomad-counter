@@ -1,3 +1,8 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+auditConfig:
+  # extract-zip 2.0.2 is the first patched release, but it is not published yet.
+  ignoreGhsas:
+    - GHSA-jmr9-qjv8-65gv

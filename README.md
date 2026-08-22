@@ -5,7 +5,7 @@ Personal web app for tracking calendar days spent in countries where tax residen
 ## Stack
 
 - pnpm 10 workspaces + Turborepo
-- Node 22+, TypeScript 6, ESLint 10
+- Node 22.12+, TypeScript 6, ESLint 10
 - `apps/web`: Astro 6, Tailwind 4, Cloudflare Pages
 - `apps/api`: Hono on Cloudflare Workers
 - `packages/db`: Drizzle schema for Cloudflare D1
@@ -121,6 +121,11 @@ Cloudflare targets:
 - API: Worker `nomad-counter-api`, route such as `api.nomad.santi020k.com/*`
 - DB: Cloudflare D1 `nomad-counter-db`
 
+The SSR frontend remains on Astro 6 while it is hosted on Cloudflare Pages.
+Astro 7 removed Pages support from its Cloudflare adapter, so that major upgrade
+must be paired with a deliberate Pages-to-Workers migration and custom-domain
+switch rather than treated as a routine dependency update.
+
 Production operations assume Cloudflare-managed HTTPS, edge availability, and Workers/Pages latency. Validate the
 200 ms p95 API target with Cloudflare Analytics or an external monitor after deployment; the repository enforces code
 quality and deployment shape, while the live SLO must be measured in production.
@@ -134,7 +139,13 @@ pnpm test
 pnpm build
 pnpm spellcheck
 pnpm knip
+pnpm verify
 ```
+
+Pull requests run `pnpm verify` in one read-only GitHub Actions job. Production
+deployment remains a separate, sequential job that runs only after changes reach
+`main`, avoiding a duplicate post-merge quality build. CodeQL runs for relevant
+pull requests and once per month.
 
 ## Project Guides
 
@@ -144,3 +155,4 @@ pnpm knip
 - `docs/brand-guidelines.md`: brand identity, voice, color, logo, UI, SEO, and accessibility guidance.
 - `docs/ai-collaboration.md`: practical workflow for using AI on this project.
 - `.agent/skills/seo/SKILL.md`: SEO skill adapted from the `unsaid` workflow.
+- `SECURITY.md`: private vulnerability reporting policy.

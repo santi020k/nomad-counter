@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -28,32 +28,33 @@
     "lighthouse:mobile": "lhci autorun --config=lighthouserc.mobile.cjs"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.0.0",
-    "@astrojs/react": "^5.0.4",
-    "@astrojs/sitemap": "^3.7.2",
-    "@tailwindcss/vite": "^4.2.4",
-    "astro": "^6.1.9",
+    "@astrojs/cloudflare": "^12.6.13",
+    "@astrojs/react": "^5.0.7",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^6.4.8",
     "astro-robots-txt": "^1.0.0",
-    "date-fns": "^4.1.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.4"
+    "date-fns": "^4.4.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
-    "@astrojs/ts-plugin": "^1.10.7",
-    "@axe-core/playwright": "^4.11.2",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/ts-plugin": "^1.10.11",
+    "@axe-core/playwright": "^4.13.0",
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.59.1",
-    "@santi020k/eslint-config-astro": "^1.5.0",
-    "@santi020k/eslint-config-basic": "^1.5.0",
-    "@santi020k/eslint-config-react": "^1.5.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "eslint": "^10.2.1",
-    "sharp": "^0.34.5",
+    "@playwright/test": "^1.62.1",
+    "@santi020k/eslint-config-astro": "^1.6.0",
+    "@santi020k/eslint-config-basic": "^1.6.0",
+    "@santi020k/eslint-config-react": "^1.6.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "eslint": "^10.9.0",
+    "sharp": "^0.35.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.5",
-    "wrangler": "^4.85.0"
+    "vite": "^7.3.6",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.125.0"
   }
 }
