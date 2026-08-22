@@ -7,7 +7,7 @@
   "type": "module",
   "sideEffects": false,
   "engines": {
-    "node": ">=22"
+    "node": ">=22.22.2"
   },
   "types": "./dist/index.d.ts",
   "exports": {
@@ -16,7 +16,10 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "drizzle"],
+  "files": [
+    "dist",
+    "drizzle"
+  ],
   "scripts": {
     "build": "tsc",
     "check": "tsc --noEmit",
@@ -28,7 +31,7 @@
     "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
-    "@santi020k/eslint-config-basic": "^1.5.0",
+    "@santi020k/eslint-config-basic": "^1.6.0",
     "drizzle-kit": "^0.31.10",
     "typescript": "^6.0.3"
   }

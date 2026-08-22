@@ -11,7 +11,7 @@ The app is not tax advice. Keep copy clear, practical, and cautious.
 ## Current Architecture
 
 - Monorepo using pnpm 10 workspaces and Turborepo.
-- `apps/web`: Astro 6, Tailwind 4, static Cloudflare Pages frontend.
+- `apps/web`: Astro 6, Tailwind 4, Cloudflare Pages frontend with on-demand rendering.
 - `apps/api`: Hono Worker API on Cloudflare Workers.
 - `packages/db`: Drizzle schema for Cloudflare D1.
 - Auth is guest-first. The counter works locally without sign-in; email-code auth only saves and syncs data to an account.
@@ -111,6 +111,8 @@ Prefer these local skills before inventing a new workflow.
 - DB is Cloudflare D1.
 - Production email-code auth requires `RESEND_API_KEY`.
 - Do not deploy a production auth flow that relies on local `devCode` behavior.
+- Do not upgrade the SSR frontend to Astro 7 without also planning and validating
+  the required Cloudflare Pages-to-Workers migration and custom-domain switch.
 
 ## Useful Files
 

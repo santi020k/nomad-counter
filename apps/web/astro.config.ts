@@ -13,7 +13,7 @@ const site = 'https://nomad.santi020k.com'
 
 export default defineConfig({
   site,
-  adapter: cloudflare({ imageService: 'cloudflare' }),
+  adapter: cloudflare({ imageService: 'compile' }),
   integrations: [
     react(),
     sitemap({
