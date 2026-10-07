@@ -35,7 +35,7 @@
 
 .option[aria-pressed='true'] {
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   box-shadow: 0 1px 4px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 

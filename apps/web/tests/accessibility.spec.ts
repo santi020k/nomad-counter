@@ -18,3 +18,16 @@ for (const pageUnderTest of pages) {
     await expectNoUnexpectedAccessibilityViolations(page)
   })
 }
+
+test('retired homepage stays accessible on mobile in dark mode', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' })
+  await page.goto('/')
+
+  await expect(page.locator('#main-content')).toBeVisible()
+  await expectNoUnexpectedAccessibilityViolations(page)
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)
+
+  expect(overflow).toBe(false)
+})

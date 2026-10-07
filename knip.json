@@ -5,7 +5,7 @@
       "entry": ["wrangler.toml"]
     },
     "apps/web": {
-      "entry": ["src/pages/**/*.astro", "lighthouserc.cjs", "lighthouserc.mobile.cjs"]
+      "entry": ["src/pages/**/*.astro", "src/components/home/CounterWorkspace.astro", "src/components/home/LoginCard.tsx", "lighthouserc.cjs", "lighthouserc.mobile.cjs"]
     },
     "packages/db": {
       "entry": []

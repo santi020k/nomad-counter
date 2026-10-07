@@ -1,5 +1,8 @@
 # Nomad Counter
 
+> **Project status:** retired. The public website is a read-only showcase. Account tracking, sign-in, sync, and live statistics are unavailable, and the production database has been deleted. Preserve the original app/API source as project history; do not recreate the database or deploy the API. Publish only `@nomad-counter/web`. The original architecture notes below describe the former app.
+
+
 Personal web app for tracking calendar days spent in countries where tax residency exposure matters.
 
 ## Stack

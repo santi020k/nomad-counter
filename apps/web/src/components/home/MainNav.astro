@@ -10,7 +10,7 @@ interface Props {
 const { variant = 'home' } = Astro.props
 const isHome = variant === 'home'
 const showStats = variant !== 'stats'
-const showCounter = variant !== 'home'
+const historyHref = isHome ? '#history' : '/#history'
 ---
 
 <header class="topbar">
@@ -23,11 +23,11 @@ const showCounter = variant !== 'home'
       </picture>
     </a>
     <div class="nav-actions">
-      {showStats ? <a class={isHome ? 'nav-link' : 'btn secondary'} href="/stats/" data-i18n="stats">Stats</a> : null}
+      {showStats ? <a class={isHome ? 'nav-link' : 'btn secondary'} href="/stats/" data-i18n="stats">Past statistics</a> : null}
       <LocaleToggle client:load />
       <ThemeToggle />
       {isHome ? <div class="nav-sep" aria-hidden="true"></div> : null}
-      {showCounter ? <a class="btn secondary" href="/#counter" data-i18n="counter">Counter</a> : <a class="btn nav-cta" href="#counter" data-i18n="startCounting">Start counting</a>}
+      <a class="btn secondary nav-cta" href={historyHref} data-i18n="projectHistory">Project history</a>
     </div>
   </nav>
 </header>

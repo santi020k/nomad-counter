@@ -1,21 +1,15 @@
----
-import LoginCardIsland from './LoginCard'
----
-
 <section class="hero" data-animate>
   <div>
-    <p class="eyebrow" data-i18n="heroEyebrow">Counting your days</p>
+    <p class="eyebrow" data-i18n="heroEyebrow">Retired project · Historical showcase</p>
     <h1 data-i18n="heroTitle">Know your days before they count against you.</h1>
-    <p data-i18n="heroLead">
-      Log stays by country, count inclusive calendar days, and see when a common residency threshold deserves a closer look.
-    </p>
+    <p data-i18n="heroLead">Nomad Counter explored a simple idea: make travel-day tracking clear and private. The app is now retired; this site preserves its design and story.</p>
     <div class="hero-actions">
-      <a class="btn" href="#counter" data-i18n="heroActionPrimary">Start counting</a>
-      <a class="btn secondary" href="#faq" data-i18n="heroActionSecondary">How it works</a>
+      <a class="btn" href="#history" data-i18n="heroActionPrimary">Explore the project</a>
+      <a class="btn secondary" href="#faq" data-i18n="heroActionSecondary">How it worked</a>
     </div>
     <dl class="hero-facts" aria-label="Nomad Counter highlights" data-i18n-aria-label="heroFactsLabel">
       <div>
-        <dt data-i18n="heroFact1Label">Default threshold</dt>
+        <dt data-i18n="heroFact1Label">Original threshold</dt>
         <dd data-i18n="heroFact1Value">183 days</dd>
       </div>
       <div>
@@ -23,15 +17,24 @@ import LoginCardIsland from './LoginCard'
         <dd data-i18n="heroFact2Value">Entry and exit count</dd>
       </div>
       <div>
-        <dt data-i18n="heroFact3Label">Privacy model</dt>
+        <dt data-i18n="heroFact3Label">Original privacy model</dt>
         <dd data-i18n="heroFact3Value">Local until sync</dd>
       </div>
     </dl>
   </div>
-  <LoginCardIsland client:load />
+  <section class="card archive-card" aria-labelledby="archive-status-title">
+    <p class="eyebrow" data-i18n="archiveStatus">No longer an active app</p>
+    <h2 id="archive-status-title" data-i18n="archiveTitle">A project kept for its story.</h2>
+    <p data-i18n="archiveBody">Travel tracking, sign-in, account sync, and live statistics are no longer available. This is a read-only record of the original project.</p>
+    <a class="btn secondary" href="https://github.com/santi020k/nomad-counter" data-i18n="archiveSource">View the source code</a>
+  </section>
 </section>
 
 <style is:global>
+  .archive-card { padding: 24px; }
+  .archive-card h2 { font-size: 1.6rem; line-height: 1.25; }
+  .hero .archive-card p:not(.eyebrow) { font-size: 1rem; }
+
 /* ── Shell ──────────────────────────────── */
   .app-shell {
     padding-block: clamp(12px, 2vw, 28px) 32px;
@@ -58,10 +61,10 @@ import LoginCardIsland from './LoginCard'
   }
 
   .hero::before {
-    width: 480px;
+    width: min(480px, 100%);
     height: 480px;
     top: -180px;
-    right: -140px;
+    right: 0;
     background: radial-gradient(circle, color-mix(in srgb, var(--accent-soft) 22%, transparent), transparent 65%);
   }
 
@@ -69,7 +72,7 @@ import LoginCardIsland from './LoginCard'
     width: 260px;
     height: 260px;
     bottom: -60px;
-    left: -80px;
+    left: 0;
     background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%);
   }
 
