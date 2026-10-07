@@ -47,6 +47,8 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
+      - name: Use the official Ubuntu mirror for browser dependencies
+        run: printf '%s\n' 'https://archive.ubuntu.com/ubuntu' | sudo tee /etc/apt/apt-mirrors.txt > /dev/null
       - run: pnpm --filter @nomad-counter/web exec playwright install chromium --with-deps
       - run: pnpm turbo run test --filter=@nomad-counter/web
         env:
