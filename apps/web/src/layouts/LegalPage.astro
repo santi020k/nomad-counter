@@ -8,9 +8,11 @@ import '@/styles/global.css'
 interface Props {
   title: string
   description: string
+  ogImage?: string
+  legalHistory?: boolean
 }
 
-const { title, description } = Astro.props
+const { title, description, ogImage = '/og-legal.png', legalHistory = true } = Astro.props
 const siteUrl = 'https://nomad.santi020k.com'
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
 ---
@@ -18,7 +20,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
 <!doctype html>
 <html lang="en">
   <head>
-    <SEO title={title} description={description} ogImage="/og-legal.png" canonicalUrl={canonicalUrl} />
+    <SEO title={title} description={description} ogImage={ogImage} canonicalUrl={canonicalUrl} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -27,12 +29,17 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
     <main id="main-content" class="shell legal-shell">
       <article class="legal-page">
         <header class="legal-header">
-          <p class="eyebrow">Legal</p>
+          <p class="eyebrow">{legalHistory ? 'Legal' : 'Project archive'}</p>
           <h1>{title}</h1>
           <p>{description}</p>
-          <span>Last updated April 27, 2026</span>
+          <span>Archive notice added October 7, 2026</span>
         </header>
         <div class="legal-content">
+          <section aria-label="Project status">
+            <h2>Retired project</h2>
+            <p>Nomad Counter is no longer an active service. Tracking, sign-in, account sync, and live statistics are unavailable. The account database has been deleted.</p>
+            {legalHistory && <p>The original privacy and terms text below is retained for historical context.</p>}
+          </section>
           <slot />
         </div>
       </article>

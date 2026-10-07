@@ -10,6 +10,7 @@
   --muted: #6b7280;
   --line: #e5e7eb;
   --accent: #471aa0;
+  --on-accent: white;
   --accent-strong: #4c1d95;
   --accent-soft: #b579e6;
   --sky: #804bc4;
@@ -36,6 +37,7 @@
     --muted: #d1c7e8;
     --line: #4a3976;
     --accent: #b579e6;
+    --on-accent: #17122a;
     --accent-strong: #d8c7ff;
     --accent-soft: #804bc4;
     --sky: #c7bae2;
@@ -58,6 +60,7 @@
   --muted: #d1c7e8;
   --line: #4a3976;
   --accent: #b579e6;
+  --on-accent: #17122a;
   --accent-strong: #d8c7ff;
   --accent-soft: #804bc4;
   --sky: #c7bae2;
@@ -217,7 +220,7 @@ button {
   border-radius: var(--radius);
   padding: 10px 12px;
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   font-weight: 800;
   text-decoration: none;
   transition: transform 0.18s ease;
@@ -317,7 +320,7 @@ button {
   border-radius: var(--radius);
   padding: 0 16px;
   background: linear-gradient(135deg, var(--accent), var(--sky));
-  color: white;
+  color: var(--on-accent);
   font-weight: 750;
   text-decoration: none;
   transition:

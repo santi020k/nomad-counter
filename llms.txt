@@ -1,3 +1,5 @@
+Project status: retired. The public website is a read-only historical showcase; tracking, sign-in, account sync, and live statistics are unavailable. The database has been deleted. The following notes describe the former app.
+
 # Nomad Counter
 
 Nomad Counter is a personal web app for tracking travel days and tax residency exposure. It counts calendar days spent in countries, compares them against per-country thresholds, and warns when a user is near or over the common 183-day residency signal.

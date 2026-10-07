@@ -67,15 +67,15 @@ await Promise.all([
   png('android-chrome-192.png', 192),
   png('android-chrome-512.png', 512),
   sharp(mark).resize(64, 64).png().toFile(path.join(publicDir, 'favicon.ico')),
-  generateOgImage('og-image.png', 'Know your days before they count against you.', 'A private 183-day residency exposure tracker.'),
-  generateOgImage('og-stats.png', 'Public Nomad Counter Statistics', 'Aggregate travel trends and platform health.'),
-  generateOgImage('og-legal.png', 'Legal & Privacy Policy', 'How we handle your data and privacy.')
+  generateOgImage('og-image.png', 'Nomad Counter · Project archive', 'A retired travel-day tracking project.'),
+  generateOgImage('og-stats.png', 'Nomad Counter · Past statistics', 'Live statistics ended with the retired app.'),
+  generateOgImage('og-legal.png', 'Legal & Privacy Policy', 'Historical policies for the retired project.')
 ])
 
 await fs.writeFile(path.join(publicDir, 'site.webmanifest'), `${JSON.stringify({
   name: 'Nomad Counter',
   short_name: 'Nomad',
-  description: 'Private 183-day tax residency exposure tracker.',
+  description: 'Retired travel-day tracking project and historical showcase.',
   start_url: '/',
   display: 'standalone',
   background_color: '#f8fafc',
